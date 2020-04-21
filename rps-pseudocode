@@ -1,0 +1,47 @@
+/*
+Requirements:
+1. Write pseudocode for a Rock/Paper/Scissors game.
+2. Get names from the users.
+3. Play a game of best 2 of 3 rounds. Each "choice" is a random assignment
+4. Report the winner and the results of each round.
+5. Report the ties as part of the output. "Round 1 - John chose paper, Jim chose rock. - John won"
+6. continue till one player has 2 points.
+7. "John wins 2-1 with 3 ties."
+*/
+
+//Use Random class number generator
+
+//variables for 2 user names
+
+//variables for number of wins for each player
+
+//variables for each player's choice (array or list for each player)
+
+//variable for result of each round (array or list)
+
+//get player 1 name
+
+//get player 2 name
+
+//start game loop do
+////generate and store random choice for player 1 
+////generate and store random choice for player 2 
+////determine outcome and store result
+/*
+use switch statement that checks user1 choice
+case rock: if user2 choice is scissor user1 win. if user2 choice is paper user2 win.
+case paper: if user2 choice is rock user1 win. if user2 choice is scissor user2 win.
+case scissor: if user2 choice is paper user1 win. if user2 choice is rock user2 win.
+default : nothing
+*/
+////if not tie increment winner counter
+//while player1wins less than 2 and player2wins less than 2
+
+//print results
+/*iterate through results and print message in following format : 
+"Round [#] '-' user1 chose [choice], user2 chose [choice]. '-' [winner] won" 
+Example: "Round 1 - John chose paper, Jim chose rock. - John won"
+*/
+
+/*print final statement in following format : 
+"[winner] wins [user1wins] '-' [user2wins] with [length of results - ([user1wins] + [user2wins])] ties."*/
