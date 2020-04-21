@@ -2,6 +2,13 @@
 
 namespace stack
 {
+    public enum Season {
+        Spring,
+        Summer,
+        Autumn,
+        Winter
+
+    }
     public class Stack
     {
         Entry top;
@@ -41,6 +48,12 @@ namespace stack
             stack.Push("world");
             stack.Push("hello");
 
+            Season s = Season.Autumn;
+            if ($"{s}" == "Autumn") {
+                Console.WriteLine("equals");
+            } else{
+                Console.WriteLine("not equal");
+            }
             // hello
             Console.WriteLine(stack.Pop());
             // world
