@@ -30,11 +30,12 @@ namespace RockPaperScissors
 			//variables for number of wins for each player
 			int player1Wins = 0;
 			int player2Wins = 0;
+
 			//variables for each player's choice (array or list for each player)
 			List<Choice> player1Choices = new List<Choice>();
 			List<Choice> player2Choices = new List<Choice>();
 
-			//variable for result of each round (array or list)
+			//list for result of each round
 			List<string> result = new List<string>();
 
 			//get player 1 name
@@ -45,7 +46,7 @@ namespace RockPaperScissors
 			Console.Write("Enter name for player 2: ");
 			player2Name = Console.ReadLine();
 
-			//prompt players to start game
+			//prompt players to start game (possible additional requirement not listed in the written version)
 			//Console.WriteLine("Press any key to start");
 			//Console.ReadKey();
 
@@ -73,10 +74,12 @@ namespace RockPaperScissors
 						if((Choice)roll2 == Choice.Scissors)
 						{
 							result.Add(player1Name);
+							////if not tie increment winner counter
 							player1Wins++;
 						}else if ((Choice)roll2 == Choice.Paper)
 						{
 							result.Add(player2Name);
+							////if not tie increment winner counter
 							player2Wins++;
 						}
 						else
@@ -117,22 +120,23 @@ namespace RockPaperScissors
 							result.Add(null);
 						}
 						break;
+
 					default:
 						break;
 				}
-				////if not tie increment winner counter
 
 			} while (player1Wins < 2 && player2Wins < 2);
 			
 			//while player1wins less than 2 and player2wins less than 2
 
-			//print results
 			/*iterate through results and print message in following format : 
 			"Round [#] '-' user1 chose [choice], user2 chose [choice]. '-' [winner] won" 
 			Example: "Round 1 - John chose paper, Jim chose rock. - John won"
 			*/
+			//print results
 			for(int i = 0; i < player1Choices.Count; i++)
 			{
+				// A null player in results indicates a tie.
 				if (result[i] == null)
 				{
 					Console.WriteLine($"Round {i + 1} - {player1Name} chose {player1Choices[i]}, {player2Name} chose {player2Choices[i]} - was a tie.");
@@ -143,9 +147,12 @@ namespace RockPaperScissors
 				}				
 			}
 
+			// Calculate the number of ties by subtracting the sum of player1 & player2
+			// wins from the total number of rounds played.
+			int ties = player1Choices.Count - (player1Wins + player2Wins);
+
 			/*print final statement in following format : 
 			"[winner] wins [user1wins] '-' [user2wins] with [length of results - ([user1wins] + [user2wins])] ties."*/
-			int ties = player1Choices.Count - (player1Wins + player2Wins);
 			if (player1Wins > player2Wins)
 			{
 				Console.WriteLine($"{player1Name} wins {player1Wins}-{player2Wins} with {ties} ties.");
