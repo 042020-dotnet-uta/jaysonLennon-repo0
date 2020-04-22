@@ -9,8 +9,8 @@ namespace RockPaperScissors {
             this.name = name;
         }
 
-        public static Player FromConsole(int playerNumber) {
-			Console.Write($"Enter name for player {playerNumber}: ");
+        public static Player FromConsole(string prompt) {
+			Console.Write(prompt);
             return new Player(Console.ReadLine());
         }
     }
