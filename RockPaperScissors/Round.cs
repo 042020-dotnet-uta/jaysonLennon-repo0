@@ -1,5 +1,6 @@
 
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace RockPaperScissors
 {
@@ -19,6 +20,8 @@ namespace RockPaperScissors
 
         // The players that played in this round.
         public Player p1, p2;
+
+        private ILogger _logger;
 
         public static RoundResult DetermineWinner(Choice p1Choice, Choice p2Choice)
         {
@@ -56,14 +59,16 @@ namespace RockPaperScissors
             }
         }
 
-        public Round(Player p1, Player p2, int roundNumber, Random rng)
+        public Round(Player p1, Player p2, int roundNumber, Random rng, ILogger logger)
         {
+            this._logger = logger;
             this.p1 = p1;
             this.p2 = p2;
             this.p1Choice = (Choice)rng.Next(3);
             this.p2Choice = (Choice)rng.Next(3);
             this.roundNumber = roundNumber;
             this.result = Round.DetermineWinner(p1Choice, p2Choice);
+            _logger.LogTrace($"Round result: {this.result}");
 
             // Save the win or loss count for each player.
             Round.AdjustPlayerWinLossCount(p1, p2, this.result);
