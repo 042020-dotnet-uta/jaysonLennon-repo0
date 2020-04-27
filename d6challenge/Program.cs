@@ -6,9 +6,11 @@ namespace d6challenge
     {
         static void Main(string[] args)
         {
+            // Track total number of occurrences.
             var numSweetNSalty = 0;
             var numSweet= 0;
             var numSalty = 0;
+
             // Loop 1 through 100
             for (var i = 1; i <= 100; i++)
             {
