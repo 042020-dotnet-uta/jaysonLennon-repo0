@@ -42,10 +42,10 @@ INSERT INTO EmpDetails VALUES (3, 3, 55000, '321 Main Street', 'Unit 3', 'Metrop
 INSERT INTO Employee (EmployeeId, FirstName, LastName, SSN) VALUES (4, 'Tina', 'Smith', '333-44-9999');
 INSERT INTO EmpDetails VALUES (4, 4, 49000, '900 Tina Turnpike', 'Bldg3', 'Suburbs, 12333', 'AZ', 'USA');
 
--- add department Marketing
+-- add department Marketing (see above)
 
 -- list all employees in Marketing
-SELECT * FROM Employee
+SELECT EmployeeId, FirstName, LastName FROM Employee
 WHERE DeptId IN (SELECT DepartmentId FROM Department WHERE Name = 'Marketing');
 
 -- report total salary of Marketing
