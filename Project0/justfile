@@ -1,0 +1,14 @@
+fresh-migrate:
+    rm -Rf StoreDb/store.sqlite
+    rm -Rf StoreDb/Migrations
+    cd StoreDb && dotnet ef migrations add InitialCreate
+    cd StoreDb && dotnet-ef database update
+
+build:
+    cd StoreDb && dotnet build
+    
+run:
+    cd StoreDb && dotnet run
+
+test:
+    cd TestStoreDb && dotnet test
