@@ -1,8 +1,6 @@
-# wipe the database and migrations, then rebuild from scratch
-rebuild-db:
+# re-migrate the database
+migrate:
     rm -Rf StoreCli/store.sqlite
-    rm -Rf StoreDb/Migrations
-    dotnet ef migrations add --startup-project StoreCli --project StoreDb InitialCreate
     dotnet ef database update --startup-project StoreCli --project StoreDb
 
 # build all
