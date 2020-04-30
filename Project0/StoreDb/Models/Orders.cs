@@ -12,6 +12,7 @@ namespace StoreDb
         public DateTime TimeCreated { get; set; }
         public DateTime TimeSubmitted { get; set; }
         public DateTime TimeFulfilled { get; set; }
+        public double AmountPaid { get; set; }
         public virtual List<OrderDetail> OrderDetails { get; } = new List<OrderDetail>();
     }
 
@@ -20,6 +21,7 @@ namespace StoreDb
         public Guid OrderDetailId { get; set; }
         public virtual Order Order { get; set; }
         public virtual Product Product { get; set; }
+        public double AmountCharged { get; set; }
         public int Quantity { get; set; }
     }
 }

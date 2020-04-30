@@ -158,7 +158,8 @@ namespace StoreDb.Migrations
                     LocationId = table.Column<Guid>(nullable: true),
                     TimeCreated = table.Column<DateTime>(nullable: false),
                     TimeSubmitted = table.Column<DateTime>(nullable: false),
-                    TimeFulfilled = table.Column<DateTime>(nullable: false)
+                    TimeFulfilled = table.Column<DateTime>(nullable: false),
+                    AmountPaid = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -184,6 +185,7 @@ namespace StoreDb.Migrations
                     OrderDetailId = table.Column<Guid>(nullable: false),
                     OrderId = table.Column<Guid>(nullable: true),
                     ProductId = table.Column<Guid>(nullable: true),
+                    AmountCharged = table.Column<double>(nullable: false),
                     Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

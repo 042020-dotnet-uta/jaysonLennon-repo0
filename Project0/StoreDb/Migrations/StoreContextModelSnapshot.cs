@@ -94,6 +94,9 @@ namespace StoreDb.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<double>("AmountPaid")
+                        .HasColumnType("REAL");
+
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("TEXT");
 
@@ -123,6 +126,9 @@ namespace StoreDb.Migrations
                     b.Property<Guid>("OrderDetailId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
+
+                    b.Property<double>("AmountCharged")
+                        .HasColumnType("REAL");
 
                     b.Property<Guid?>("OrderId")
                         .HasColumnType("TEXT");
