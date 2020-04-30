@@ -13,14 +13,18 @@ namespace StoreCliMenu
         public void PrintMenu()
         {
             Console.Clear();
-            Console.Write("--- Create new customer ---\n\n");
+            CliPrinter.Title("Create new customer");
         }
 
         public void InputLoop()
         {
             Console.Write("Customer first name: ");
-            var name = Console.ReadLine();
-            var customer = new StoreDb.Customer(name);
+            var firstName = Console.ReadLine();
+            Console.Write("Customer last name: ");
+            var lastName = Console.ReadLine();
+
+            var customer = new StoreDb.Customer(firstName);
+            customer.LastName = lastName;
 
             Console.WriteLine("\nAdding new customer...");
 

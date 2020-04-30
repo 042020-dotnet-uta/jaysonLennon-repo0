@@ -10,7 +10,7 @@ namespace StoreCli
     {
         public static void Title(string title)
         {
-            Console.WriteLine($"=== {title} ===");
+            Console.WriteLine($"=== {title} ===\n\n");
         }
     }
     public class CliInput
