@@ -6,32 +6,6 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace StoreDb
 {
-    public static class StoreExtensions 
-    {
-        public static IQueryable<Customer> FindCustomerByFirstName(this StoreContext ctx, string firstName)
-        {
-            firstName = firstName.ToLower();
-            return from customer in ctx.Customers
-                    where customer.FirstName.ToLower().Contains(firstName)
-                    select customer;
-        }
-
-        public static IQueryable<Customer> FindCustomerByLastName(this StoreContext ctx, string lastName)
-        {
-            lastName = lastName.ToLower();
-            return from customer in ctx.Customers
-                    where customer.LastName.ToLower().Contains(lastName)
-                    select customer;
-        }
-
-        public static IQueryable<Customer> FindCustomerByName(this StoreContext ctx, string name)
-        {
-            name = name.ToLower();
-            return from customer in ctx.Customers
-                    where customer.FirstName.ToLower().Contains(name) || customer.LastName.ToLower().Contains(name)
-                    select customer;
-        }
-    }
 
     public class StoreContext : DbContext
     {

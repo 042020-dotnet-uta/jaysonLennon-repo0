@@ -14,7 +14,7 @@ namespace StoreDb
         public string Password { get; set; }
         public virtual Location DefaultLocation { get; set; }
 
-        private Customer(){}
+        public Customer(){}
 
         public Customer(string firstName)
         {

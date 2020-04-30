@@ -1,14 +1,27 @@
-fresh-migrate:
-    rm -Rf StoreDb/store.sqlite
+# wipe the database and migrations, then rebuild from scratch
+rebuild-db:
+    rm -Rf StoreCli/store.sqlite
     rm -Rf StoreDb/Migrations
-    cd StoreDb && dotnet ef migrations add InitialCreate
-    cd StoreDb && dotnet-ef database update
+    dotnet ef migrations add --startup-project StoreCli --project StoreDb InitialCreate
+    dotnet ef database update --startup-project StoreCli --project StoreDb
 
+# build all
 build:
-    cd StoreDb && dotnet build
-    
-run:
-    cd StoreDb && dotnet run
+    dotnet build StoreDb
+    dotnet build StoreCli
 
+# build cli
+build-cli:
+    dotnet build StoreCli
+
+# build database project
+build-db:
+    dotnet build StoreDb
+
+# run cli project
+run:
+    dotnet run StoreCli
+
+# run tests
 test:
-    cd TestStoreDb && dotnet test
+    dotnet test TestStoreDb

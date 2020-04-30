@@ -34,6 +34,9 @@ namespace StoreDb.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Password")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("TEXT");
 

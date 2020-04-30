@@ -6,7 +6,7 @@ using System;
 
 namespace TestStoreDb
 {
-    public class TestApi
+    public class TestUtil
     {
         public static DbContextOptions<StoreContext> GetMemDbOptions(string dbName)
         {

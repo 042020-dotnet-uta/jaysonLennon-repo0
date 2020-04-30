@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using StoreDb;
 using System;
+using StoreExtensions;
 
 namespace TestStoreDb
 {
@@ -12,7 +13,7 @@ namespace TestStoreDb
         [Fact]
         public void SearchesForCustomerByFirstName()
         {
-            var options = TestApi.GetMemDbOptions("SearchesForCustomerByFirstName");
+            var options = TestUtil.GetMemDbOptions("SearchesForCustomerByFirstName");
 
             using (var db = new StoreContext(options))
             {
@@ -50,7 +51,7 @@ namespace TestStoreDb
         [Fact]
         public void SearchesForCustomerByLastName()
         {
-            var options = TestApi.GetMemDbOptions("SearchesForCustomerByLastName");
+            var options = TestUtil.GetMemDbOptions("SearchesForCustomerByLastName");
 
             using (var db = new StoreContext(options))
             {
@@ -91,7 +92,7 @@ namespace TestStoreDb
         [Fact]
         public void SearchesForCustomerByName()
         {
-            var options = TestApi.GetMemDbOptions("SearchesForCustomerByName");
+            var options = TestUtil.GetMemDbOptions("SearchesForCustomerByName");
 
             using (var db = new StoreContext(options))
             {
