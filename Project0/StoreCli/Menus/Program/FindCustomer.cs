@@ -39,7 +39,9 @@ namespace StoreCliMenu
         {
             ClearConsoleRow(QueryRow);
             Console.SetCursorPosition(0, QueryRow);
+            Console.Write("Search: ");
             Console.Write(term);
+            Console.Write("_");
         }
 
         public void InputLoop()
