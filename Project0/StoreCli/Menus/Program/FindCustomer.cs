@@ -50,6 +50,10 @@ namespace StoreCliMenu
             ConsoleKeyInfo cki;
             string searchTerm = "";
 
+            this.DisplaySearchTerm("");
+            Console.SetCursorPosition(0, ResultRow);
+            Console.WriteLine("=============================");
+
             do
             {
                 cki = Console.ReadKey(true);
