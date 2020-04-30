@@ -16,7 +16,7 @@ namespace StoreCliMenu
         public void PrintMenu()
         {
             Console.Clear();
-            Console.Write("--- Find Customer ---\n\n");
+            CliPrinter.Title("Find Customer");
         }
 
         private void ClearResults()
@@ -76,10 +76,12 @@ namespace StoreCliMenu
                 Console.SetCursorPosition(0, ResultRow);
                 Console.WriteLine("=============================");
 
+                if (searchTerm.Length == 0) continue;
+
                 using (var db = new StoreDb.StoreContext(this.MenuController.ContextOptions))
                 {
-                    var customers = db.FindCustomerByName(searchTerm);
-                    Console.WriteLine($"customer count = {customers.Count()}");
+                    var customers = db.FindCustomerByName(searchTerm).Take(20);
+                    Console.Write($"{customers.Count()} customers found.\n\n");
                     foreach (var customer in customers)
                     {
                         Console.WriteLine($"{customer.CustomerId}: {customer.FirstName} {customer.LastName}");
