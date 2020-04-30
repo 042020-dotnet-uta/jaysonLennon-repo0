@@ -10,7 +10,7 @@ namespace StoreDb
     public class StoreContext : DbContext
     {
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductDetail> ProductDetails { get; set; }
+        public DbSet<ProductComponent> ProductComponents { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<LocationInventory> LocationInventories { get; set; }

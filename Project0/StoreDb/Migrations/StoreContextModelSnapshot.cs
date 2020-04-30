@@ -148,29 +148,34 @@ namespace StoreDb.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("REAL");
+
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("StoreDb.ProductDetail", b =>
+            modelBuilder.Entity("StoreDb.ProductComponent", b =>
                 {
-                    b.Property<Guid>("ProductDetailId")
+                    b.Property<Guid>("ProductComponentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid?>("ProductId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("ProductDetailId");
+                    b.HasKey("ProductComponentId");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
 
-                    b.ToTable("ProductDetails");
+                    b.ToTable("ProductComponents");
                 });
 
             modelBuilder.Entity("StoreDb.Promotion", b =>
@@ -266,13 +271,11 @@ namespace StoreDb.Migrations
                         .HasForeignKey("ProductId");
                 });
 
-            modelBuilder.Entity("StoreDb.ProductDetail", b =>
+            modelBuilder.Entity("StoreDb.ProductComponent", b =>
                 {
-                    b.HasOne("StoreDb.Product", "Product")
-                        .WithOne("Detail")
-                        .HasForeignKey("StoreDb.ProductDetail", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("StoreDb.Product", null)
+                        .WithMany("ProductComponents")
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("StoreDb.Promotion", b =>

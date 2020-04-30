@@ -24,7 +24,9 @@ namespace StoreDb.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    ProductId = table.Column<Guid>(nullable: false)
+                    ProductId = table.Column<Guid>(nullable: false),
+                    Price = table.Column<double>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -94,22 +96,22 @@ namespace StoreDb.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductDetails",
+                name: "ProductComponents",
                 columns: table => new
                 {
-                    ProductDetailId = table.Column<Guid>(nullable: false),
+                    ProductComponentId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    ProductId = table.Column<Guid>(nullable: false)
+                    ProductId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductDetails", x => x.ProductDetailId);
+                    table.PrimaryKey("PK_ProductComponents", x => x.ProductComponentId);
                     table.ForeignKey(
-                        name: "FK_ProductDetails_Products_ProductId",
+                        name: "FK_ProductComponents_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "ProductId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -237,10 +239,9 @@ namespace StoreDb.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductDetails_ProductId",
-                table: "ProductDetails",
-                column: "ProductId",
-                unique: true);
+                name: "IX_ProductComponents_ProductId",
+                table: "ProductComponents",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Promotions_LocationId",
@@ -267,7 +268,7 @@ namespace StoreDb.Migrations
                 name: "OrderDetails");
 
             migrationBuilder.DropTable(
-                name: "ProductDetails");
+                name: "ProductComponents");
 
             migrationBuilder.DropTable(
                 name: "Promotions");

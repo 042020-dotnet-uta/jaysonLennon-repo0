@@ -7,20 +7,17 @@ namespace StoreDb
     public class Product
     {
         public Guid ProductId { get; set; }
-        public virtual ProductDetail Detail { get; set; }
+        public double Price { get; set; }
+        public string Name { get; set; }
+        public virtual List<ProductComponent> ProductComponents { get; set; } = new List<ProductComponent>();
 
         private Product(){}
-        public Product(string name)
-        {
-            this.Detail = new ProductDetail { Name = name };
-        }
+        public Product(string name) { }
     }
 
-    public class ProductDetail
+    public class ProductComponent
     {
-        public Guid ProductDetailId { get; set; }
+        public Guid ProductComponentId { get; set; }
         public string Name { get; set; }
-        public Guid ProductId { get; set; }
-        public virtual Product Product { get; set; }
     }
 }
