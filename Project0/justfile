@@ -7,20 +7,20 @@ rebuild-db:
 
 # build all
 build:
-    dotnet build StoreDb
-    dotnet build StoreCli
+    cd StoreDb && dotnet build StoreDb
+    cd StoreCli && dotnet build StoreCli
 
 # build cli
 build-cli:
-    dotnet build StoreCli
+    cd StoreCli && dotnet build StoreCli
 
 # build database project
 build-db:
-    dotnet build StoreDb
+    cd StoreDb && dotnet build StoreDb
 
 # run cli project
 run:
-    dotnet run StoreCli
+    cd StoreCli && dotnet run
 
 # run tests
 test:
