@@ -6,6 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace StoreCli
 {
+    public static class MenuHelper
+    {
+        public static void AbortThenExit(this CliMenu menu, string message)
+        {
+            Console.Write($"\n{message}\n\nPress any key to return.");
+            Console.ReadKey(true);
+            menu.MenuExit();
+        }
+    }
+
     public class CliPrinter
     {
         public static void Title(string title)

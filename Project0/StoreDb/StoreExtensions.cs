@@ -41,5 +41,19 @@ namespace StoreExtensions
                 db.SaveChanges();
             }
         }
+
+        public static void AddLocation(this DbContextOptions<StoreContext> options, Location location)
+        {
+            using (var db = new StoreContext(options))
+            {
+                db.AddLocation(location);
+            }
+        }
+
+        public static void AddLocation(this StoreContext ctx, Location location)
+        {
+            ctx.Add(location);
+            ctx.SaveChanges();
+        }
     }
 }

@@ -7,16 +7,22 @@ namespace StoreDb
     public class Location
     {
         public Guid LocationId { get; private set; }
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public virtual List<LocationInventory> Inventory { get; } = new List<LocationInventory>();
+        public string Name { get; private set; }
+        public string Address { get; private set; }
+        public virtual List<LocationInventory> Inventory { get; private set; } = new List<LocationInventory>();
+
+        private Location(){}
+        public Location(string name)
+        {
+            this.Name = name;
+        }
     }
 
     public class LocationInventory
     {
         public Guid LocationInventoryId { get; private set; }
-        public virtual Product Product { get; set; }
-        public virtual Location Location { get; set; }
+        public virtual Product Product { get; private set; }
+        public virtual Location Location { get; private set; }
 
         public int Quantity { get; private set; }
 

@@ -35,7 +35,7 @@ namespace StoreCli
             this.MenuController.Push(menu);
         }
 
-        protected void MenuExit()
+        public void MenuExit()
         {
             this.MenuController.Pop();
         }
