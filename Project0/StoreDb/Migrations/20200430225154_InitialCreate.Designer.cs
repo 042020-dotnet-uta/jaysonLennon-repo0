@@ -9,7 +9,7 @@ using StoreDb;
 namespace StoreDb.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20200430225049_InitialCreate")]
+    [Migration("20200430225154_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
