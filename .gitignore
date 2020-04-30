@@ -353,7 +353,7 @@ MigrationBackup/
 **/.vscode/
 
 # SQLite database files
-*.sqlite
+*.sqlite*
 
 # Backup files
 **/*~
