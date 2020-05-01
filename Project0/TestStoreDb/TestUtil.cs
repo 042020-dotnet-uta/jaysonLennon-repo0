@@ -12,6 +12,7 @@ namespace TestStoreDb
         {
             return new DbContextOptionsBuilder<StoreContext>()
                        .UseInMemoryDatabase(databaseName: dbName)
+                       .UseLazyLoadingProxies()
                        .Options;
         }
     }
