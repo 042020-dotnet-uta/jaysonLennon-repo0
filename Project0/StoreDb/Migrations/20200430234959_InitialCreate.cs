@@ -70,32 +70,6 @@ namespace StoreDb.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LocationInventories",
-                columns: table => new
-                {
-                    LocationInventoryId = table.Column<Guid>(nullable: false),
-                    ProductId = table.Column<Guid>(nullable: true),
-                    LocationId = table.Column<Guid>(nullable: true),
-                    Quantity = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LocationInventories", x => x.LocationInventoryId);
-                    table.ForeignKey(
-                        name: "FK_LocationInventories_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
-                        principalColumn: "LocationId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_LocationInventories_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "ProductId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProductComponents",
                 columns: table => new
                 {
@@ -179,6 +153,32 @@ namespace StoreDb.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LocationInventories",
+                columns: table => new
+                {
+                    LocationInventoryId = table.Column<Guid>(nullable: false),
+                    ProductComponentId = table.Column<Guid>(nullable: true),
+                    LocationId = table.Column<Guid>(nullable: true),
+                    Quantity = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LocationInventories", x => x.LocationInventoryId);
+                    table.ForeignKey(
+                        name: "FK_LocationInventories_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
+                        principalColumn: "LocationId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LocationInventories_ProductComponents_ProductComponentId",
+                        column: x => x.ProductComponentId,
+                        principalTable: "ProductComponents",
+                        principalColumn: "ProductComponentId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderDetails",
                 columns: table => new
                 {
@@ -216,9 +216,9 @@ namespace StoreDb.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LocationInventories_ProductId",
+                name: "IX_LocationInventories_ProductComponentId",
                 table: "LocationInventories",
-                column: "ProductId");
+                column: "ProductComponentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_OrderId",
@@ -270,19 +270,19 @@ namespace StoreDb.Migrations
                 name: "OrderDetails");
 
             migrationBuilder.DropTable(
-                name: "ProductComponents");
+                name: "Promotions");
 
             migrationBuilder.DropTable(
-                name: "Promotions");
+                name: "ProductComponents");
 
             migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "PromotionType");
 
             migrationBuilder.DropTable(
-                name: "PromotionType");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Customers");

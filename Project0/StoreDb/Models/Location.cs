@@ -21,15 +21,15 @@ namespace StoreDb
     public class LocationInventory
     {
         public Guid LocationInventoryId { get; private set; }
-        public virtual Product Product { get; private set; }
+        public virtual ProductComponent ProductComponent { get; private set; }
         public virtual Location Location { get; private set; }
 
         public int Quantity { get; private set; }
 
         private LocationInventory(){}
-        public LocationInventory(Product product, Location location)
+        public LocationInventory(ProductComponent productComponent, Location location)
         {
-            this.Product = product;
+            this.ProductComponent = productComponent;
             this.Location = location;
         }
     }

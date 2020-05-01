@@ -9,8 +9,8 @@ using StoreDb;
 namespace StoreDb.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20200430225359_Seed")]
-    partial class Seed
+    [Migration("20200430234959_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -75,7 +75,7 @@ namespace StoreDb.Migrations
                     b.Property<Guid?>("LocationId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("ProductId")
+                    b.Property<Guid?>("ProductComponentId")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Quantity")
@@ -85,7 +85,7 @@ namespace StoreDb.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductComponentId");
 
                     b.ToTable("LocationInventories");
                 });
@@ -252,9 +252,9 @@ namespace StoreDb.Migrations
                         .WithMany("Inventory")
                         .HasForeignKey("LocationId");
 
-                    b.HasOne("StoreDb.Product", "Product")
+                    b.HasOne("StoreDb.ProductComponent", "ProductComponent")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductComponentId");
                 });
 
             modelBuilder.Entity("StoreDb.Order", b =>
