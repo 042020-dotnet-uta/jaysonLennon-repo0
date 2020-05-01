@@ -73,7 +73,7 @@ namespace StoreDb.Migrations
                     b.Property<Guid?>("LocationId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("ProductComponentId")
+                    b.Property<Guid?>("ProductId")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Quantity")
@@ -83,7 +83,7 @@ namespace StoreDb.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.HasIndex("ProductComponentId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("LocationInventories");
                 });
@@ -250,9 +250,9 @@ namespace StoreDb.Migrations
                         .WithMany("Inventory")
                         .HasForeignKey("LocationId");
 
-                    b.HasOne("StoreDb.ProductComponent", "ProductComponent")
+                    b.HasOne("StoreDb.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductComponentId");
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("StoreDb.Order", b =>
