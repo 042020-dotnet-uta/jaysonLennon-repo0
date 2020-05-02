@@ -38,13 +38,13 @@ namespace StoreDb.Migrations
                 columns: table => new
                 {
                     CustomerId = table.Column<Guid>(nullable: false),
+                    Login = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
-                    DefaultLocationLocationId = table.Column<Guid>(nullable: true),
-                    Login = table.Column<string>(nullable: true)
+                    DefaultLocationLocationId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
