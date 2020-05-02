@@ -4,14 +4,14 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using StoreCli;
 
-namespace StoreCliMenu
+namespace StoreCliMenuAdmin
 {
     class Customer : CliMenu, IMenu
     {
         public Customer(MenuController menuController): base(menuController)
         {
-            this.AddListMenuOption("Add Customer", ConsoleKey.D1, () => new StoreCliMenu.AddCustomer(this.MenuController));
-            this.AddListMenuOption("Find Customer", ConsoleKey.D2, () => new StoreCliMenu.FindCustomer(this.MenuController));
+            this.AddListMenuOption("Add Customer", ConsoleKey.D1, () => new StoreCliMenuAdmin.AddCustomer(this.MenuController));
+            this.AddListMenuOption("Find Customer", ConsoleKey.D2, () => new StoreCliMenuAdmin.FindCustomer(this.MenuController));
         }
         public void PrintMenu()
         {

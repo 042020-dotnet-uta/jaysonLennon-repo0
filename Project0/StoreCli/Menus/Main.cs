@@ -10,9 +10,8 @@ namespace StoreCliMenu
     {
         public Main(MenuController menuController) : base(menuController)
         {
-            this.AddListMenuOption("Customer", ConsoleKey.D1, () => new StoreCliMenu.Customer(this.MenuController));
-            this.AddListMenuOption("Query", ConsoleKey.D2, () => new StoreCliMenu.Query(this.MenuController));
-            this.AddListMenuOption("Location Admin", ConsoleKey.D3, () => new StoreCliMenu.LocationAdmin(this.MenuController));
+            this.AddListMenuOption("User", ConsoleKey.D1, () => new StoreCliMenuUser.Main(this.MenuController));
+            this.AddListMenuOption("Administrator", ConsoleKey.D2, () => new StoreCliMenuAdmin.Main(this.MenuController));
         }
 
         public void PrintMenu()

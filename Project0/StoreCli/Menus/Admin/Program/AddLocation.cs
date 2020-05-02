@@ -2,7 +2,7 @@ using System;
 using StoreCli;
 using StoreExtensions;
 
-namespace StoreCliMenu
+namespace StoreCliMenuAdmin
 {
     class AddLocation : CliMenu, IMenu
     {

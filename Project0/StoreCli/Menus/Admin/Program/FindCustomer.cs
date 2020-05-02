@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using StoreCli;
 using StoreExtensions;
 
-namespace StoreCliMenu
+namespace StoreCliMenuAdmin
 {
     class FindCustomer : CliMenu, IMenu
     {
