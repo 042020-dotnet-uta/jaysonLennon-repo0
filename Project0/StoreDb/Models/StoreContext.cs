@@ -14,7 +14,7 @@ namespace StoreDb
         public DbSet<Location> Locations { get; set; }
         public DbSet<LocationInventory> LocationInventories { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<OrderLineItem> OrderLineItems { get; set; }
 
         public StoreContext() { }
         public StoreContext(DbContextOptions<StoreContext> options) : base(options)

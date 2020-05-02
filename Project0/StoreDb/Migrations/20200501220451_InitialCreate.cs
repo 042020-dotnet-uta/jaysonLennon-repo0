@@ -112,10 +112,10 @@ namespace StoreDb.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderDetails",
+                name: "OrderLineItems",
                 columns: table => new
                 {
-                    OrderDetailId = table.Column<Guid>(nullable: false),
+                    OrderLineItemId = table.Column<Guid>(nullable: false),
                     OrderId = table.Column<Guid>(nullable: true),
                     ProductId = table.Column<Guid>(nullable: true),
                     AmountCharged = table.Column<double>(nullable: false),
@@ -123,15 +123,15 @@ namespace StoreDb.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderDetails", x => x.OrderDetailId);
+                    table.PrimaryKey("PK_OrderLineItems", x => x.OrderLineItemId);
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Orders_OrderId",
+                        name: "FK_OrderLineItems_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Products_ProductId",
+                        name: "FK_OrderLineItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "ProductId",
@@ -154,13 +154,13 @@ namespace StoreDb.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetails_OrderId",
-                table: "OrderDetails",
+                name: "IX_OrderLineItems_OrderId",
+                table: "OrderLineItems",
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetails_ProductId",
-                table: "OrderDetails",
+                name: "IX_OrderLineItems_ProductId",
+                table: "OrderLineItems",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
@@ -180,7 +180,7 @@ namespace StoreDb.Migrations
                 name: "LocationInventories");
 
             migrationBuilder.DropTable(
-                name: "OrderDetails");
+                name: "OrderLineItems");
 
             migrationBuilder.DropTable(
                 name: "Orders");

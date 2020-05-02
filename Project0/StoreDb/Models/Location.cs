@@ -9,9 +9,8 @@ namespace StoreDb
         public Guid LocationId { get; private set; }
         public string Name { get; private set; }
         public string Address { get; private set; }
-        public virtual List<LocationInventory> Inventory { get; private set; } = new List<LocationInventory>();
 
-        private Location(){}
+        public Location() { }
         public Location(string name)
         {
             this.Name = name;
@@ -26,11 +25,31 @@ namespace StoreDb
 
         public int Quantity { get; private set; }
 
-        private LocationInventory(){}
-        public LocationInventory(Product product, Location location)
+        public LocationInventory() { }
+        public LocationInventory(Product product, Location location, int quantity)
         {
             this.Product = product;
             this.Location = location;
+            this.Quantity = quantity;
+        }
+
+        // Attempts to adjust the quantity of this inventory item.
+        // If there is an insufficient quantity of items, then
+        // no adjustment will take place.
+        //
+        // If no adjustment occurs, then a null is returned.
+        // Otherwise, the amount remaining in stock will be returned.
+        public Nullable<int> TryAdjustQuantity(int amount)
+        {
+            if (this.Quantity - amount < 0)
+            {
+                return null;
+            }
+            else
+            {
+                this.Quantity += amount;
+                return this.Quantity;
+            }
         }
     }
 }

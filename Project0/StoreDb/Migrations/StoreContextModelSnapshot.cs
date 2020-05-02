@@ -121,9 +121,9 @@ namespace StoreDb.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("StoreDb.OrderDetail", b =>
+            modelBuilder.Entity("StoreDb.OrderLineItem", b =>
                 {
-                    b.Property<Guid>("OrderDetailId")
+                    b.Property<Guid>("OrderLineItemId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -139,13 +139,13 @@ namespace StoreDb.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("OrderDetailId");
+                    b.HasKey("OrderLineItemId");
 
                     b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderLineItems");
                 });
 
             modelBuilder.Entity("StoreDb.Product", b =>
@@ -175,7 +175,7 @@ namespace StoreDb.Migrations
             modelBuilder.Entity("StoreDb.LocationInventory", b =>
                 {
                     b.HasOne("StoreDb.Location", "Location")
-                        .WithMany("Inventory")
+                        .WithMany()
                         .HasForeignKey("LocationId");
 
                     b.HasOne("StoreDb.Product", "Product")
@@ -194,10 +194,10 @@ namespace StoreDb.Migrations
                         .HasForeignKey("LocationId");
                 });
 
-            modelBuilder.Entity("StoreDb.OrderDetail", b =>
+            modelBuilder.Entity("StoreDb.OrderLineItem", b =>
                 {
                     b.HasOne("StoreDb.Order", "Order")
-                        .WithMany("OrderDetails")
+                        .WithMany("OrderLineItems")
                         .HasForeignKey("OrderId");
 
                     b.HasOne("StoreDb.Product", "Product")

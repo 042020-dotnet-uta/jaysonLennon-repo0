@@ -10,7 +10,13 @@ namespace StoreDb
         public double Price { get; set; }
         public string Name { get; set; }
 
-        private Product(){}
-        public Product(string name) { }
+        public Product(){}
+        public Product(string name) {
+            this.Name = name;
+        }
+        public Product(string name, double price) {
+            this.Name = name;
+            this.Price = price;
+        }
     }
 }
