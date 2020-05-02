@@ -9,8 +9,8 @@ using StoreDb;
 namespace StoreDb.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20200502010830_UserLogin")]
-    partial class UserLogin
+    [Migration("20200502011205_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,9 @@ namespace StoreDb.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Login")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")

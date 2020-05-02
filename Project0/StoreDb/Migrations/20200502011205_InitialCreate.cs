@@ -43,7 +43,8 @@ namespace StoreDb.Migrations
                     Address = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
-                    DefaultLocationLocationId = table.Column<Guid>(nullable: true)
+                    DefaultLocationLocationId = table.Column<Guid>(nullable: true),
+                    Login = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

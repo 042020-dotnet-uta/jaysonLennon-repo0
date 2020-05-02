@@ -13,6 +13,7 @@ namespace StoreDb
         public string PhoneNumber { get; set; }
         public string Password { get; set; }
         public virtual Location DefaultLocation { get; set; }
+        public string Login { get; set; }
 
         public Customer(){}
 
