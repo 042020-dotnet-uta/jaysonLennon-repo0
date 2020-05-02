@@ -130,5 +130,10 @@ namespace StoreExtensions
                 return (from c in db.Customers where c.Login == login select c).Count() > 0;
             }
         }
+
+        public static IQueryable<Location> GetLocations (this StoreContext ctx)
+        {
+            return from l in ctx.Locations orderby l.Name select l;
+        }
     }
 }
