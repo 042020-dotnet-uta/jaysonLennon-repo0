@@ -53,14 +53,9 @@ namespace StoreExtensions
         {
             using (var db = new StoreContext(options))
             {
-                db.AddLocation(location);
+                db.Add(location);
+                db.SaveChanges();
             }
-        }
-
-        public static void AddLocation(this StoreContext ctx, Location location)
-        {
-            ctx.Add(location);
-            ctx.SaveChanges();
         }
 
         public static PlaceOrderResult PlaceOrder(this StoreContext ctx, Order order)
@@ -92,6 +87,20 @@ namespace StoreExtensions
                 transaction.Commit();
             }
             return PlaceOrderResult.Ok;
+        }
+
+        public static bool VerifyCredentials(this DbContextOptions<StoreContext> options, string login, string password)
+        {
+            Console.WriteLine($"check: {login}:{password}");
+            // TODO: Hash passwords
+            using (var db = new StoreContext(options))
+            {
+                var customer =
+                    from c in db.Customers
+                    where login == c.Login && password == c.Password
+                    select c;
+                return customer.Count() == 1;
+            }
         }
     }
 }

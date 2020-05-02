@@ -129,5 +129,48 @@ namespace TestStoreDb
                                                 .LastName);
             }
         }
+
+        [Fact]
+        public void VerifiesCredentials()
+        {
+            var options = TestUtil.GetMemDbOptions("LogsCustomerInWithValidCredentials");
+
+            string customerLogin = Guid.NewGuid().ToString();
+            string password = "123";
+            using (var db = new StoreContext(options))
+            {
+                var customer = new Customer(Guid.NewGuid().ToString());
+                customer.Password = password;
+                customer.Login = customerLogin;
+                db.Add(customer);
+
+                db.SaveChanges();
+            }
+
+            {
+                // Login and password are both valid.
+                var verifyOk = options.VerifyCredentials(customerLogin, password);
+                Assert.True(verifyOk);
+            }
+
+            {
+                // Login is ok, but password is wrong.
+                var verifyOk = options.VerifyCredentials(customerLogin, Guid.NewGuid().ToString());
+                Assert.False(verifyOk);
+            }
+
+            {
+                // Login is wrong, but password is ok.
+                var verifyOk = options.VerifyCredentials(Guid.NewGuid().ToString(), password);
+                Assert.False(verifyOk);
+            }
+
+            {
+                // Both login and password are wrong.
+                var verifyOk = options.VerifyCredentials(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
+                Assert.False(verifyOk);
+            }
+
+        }
     }
 }
