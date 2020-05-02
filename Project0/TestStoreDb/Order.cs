@@ -29,10 +29,11 @@ namespace TestStoreDb
             var options = TestUtil.GetMemDbOptions("PlacesOrderWithSingleLineItem");
 
             String productName;
-
+            Guid customerId;
             using (var db = new StoreContext(options))
             {
                 var (customer, location, product, inventory) = SimplePopulate(db);
+                customerId = customer.CustomerId;
                 productName = product.Name;
 
                 var order = new Order(customer, location);
@@ -46,7 +47,7 @@ namespace TestStoreDb
 
             using (var db = new StoreContext(options))
             {
-                var customer = (from c in db.Customers select c).First();
+                var customer = (from c in db.Customers where c.CustomerId == customerId select c).First();
 
                 var order  = (from o in db.Orders
                               where o.Customer.CustomerId == customer.CustomerId
@@ -131,9 +132,11 @@ namespace TestStoreDb
             var options = TestUtil.GetMemDbOptions("RejectsOrderWhenNotEnoughInventory");
 
             String product1Name, product2Name;
+            Guid customerId;
             using (var db = new StoreContext(options))
             {
                 var (customer, location, product1, inventory) = SimplePopulate(db);
+                customerId = customer.CustomerId;
                 var product2 = new Product(Guid.NewGuid().ToString(), 2.0);
                 db.Add(product2);
                 var inventory2 = new LocationInventory(product2, location, 20);
@@ -158,7 +161,7 @@ namespace TestStoreDb
 
             using (var db = new StoreContext(options))
             {
-                var customer = (from c in db.Customers select c).First();
+                var customer = (from c in db.Customers where c.CustomerId == customerId select c).First();
 
                 var order  = (from o in db.Orders
                               where o.Customer.CustomerId == customer.CustomerId
@@ -185,9 +188,11 @@ namespace TestStoreDb
             var options = TestUtil.GetMemDbOptions("RejectsOrderWithNonExistentInventory");
 
             String productName;
+            Guid customerId;
             using (var db = new StoreContext(options))
             {
                 var (customer, location, product1, inventory) = SimplePopulate(db);
+                customerId = customer.CustomerId;
                 var product2 = new Product(Guid.NewGuid().ToString(), 2.0);
                 db.Add(product2);
                 productName = product1.Name;
@@ -212,7 +217,7 @@ namespace TestStoreDb
 
             using (var db = new StoreContext(options))
             {
-                var customer = (from c in db.Customers select c).First();
+                var customer = (from c in db.Customers where c.CustomerId == customerId select c).First();
 
                 var order  = (from o in db.Orders
                               where o.Customer.CustomerId == customer.CustomerId
