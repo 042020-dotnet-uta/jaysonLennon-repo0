@@ -1,8 +1,7 @@
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Security.Cryptography;
 
 namespace StoreExtensions
 {
@@ -91,13 +90,12 @@ namespace StoreExtensions
 
         public static bool VerifyCredentials(this DbContextOptions<StoreContext> options, string login, string password)
         {
-            Console.WriteLine($"check: {login}:{password}");
-            // TODO: Hash passwords
+            var hashed = Util.Hash.Sha256(password);
             using (var db = new StoreContext(options))
             {
                 var customer =
                     from c in db.Customers
-                    where login == c.Login && password == c.Password
+                    where login == c.Login && hashed == c.Password
                     select c;
                 return customer.Count() == 1;
             }

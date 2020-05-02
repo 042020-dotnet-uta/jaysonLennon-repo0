@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Security.Cryptography;
 
 namespace StoreDb
 {
@@ -12,7 +12,13 @@ namespace StoreDb
         public string LastName { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
-        public string Password { get; set; }
+        private string password;
+        public string Password
+        {
+            get { return password; }
+            set { password = Util.Hash.Sha256(value); }
+        }
+
         public virtual Location DefaultLocation { get; set; }
 
         public Customer(){}
