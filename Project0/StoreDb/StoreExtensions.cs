@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
 
 namespace StoreExtensions
 {
@@ -17,7 +16,7 @@ namespace StoreExtensions
         Ok,
         AccountNameExists,
         MissingLogin,
-        MissingPassword
+        MissingPassword,
     }
 
     public static class StoreExtensions
@@ -121,6 +120,14 @@ namespace StoreExtensions
                 db.Add(customer);
                 db.SaveChanges();
                 return CreateUserAccountResult.Ok;
+            }
+        }
+
+        public static bool LoginExists(this DbContextOptions<StoreContext> options, string login)
+        {
+            using (var db = new StoreContext(options))
+            {
+                return (from c in db.Customers where c.Login == login select c).Count() > 0;
             }
         }
     }
