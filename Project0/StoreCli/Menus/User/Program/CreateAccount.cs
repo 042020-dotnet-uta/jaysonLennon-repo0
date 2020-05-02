@@ -1,5 +1,8 @@
 using System;
 using StoreCli;
+using StoreExtensions;
+using Microsoft.EntityFrameworkCore;
+using StoreDb;
 
 namespace StoreCliMenuUser
 {
@@ -14,24 +17,42 @@ namespace StoreCliMenuUser
 
         public void InputLoop()
         {
-            Console.Write("First Name: ");
-            var firstName = Console.ReadLine();
+            string PasswordLoop()
+            {
+                var pass = "";
+                do {
+                    Console.Write("Create Password: ");
+                    pass = CliInput.GetPassword();
+                    if (pass == "") CliPrinter.Error("Please provide a password.");
+                } while (pass == "");
+                return pass;
+            }
 
-            Console.Write("Last Name: ");
-            var lastName = Console.ReadLine();
+            string EmailLoop(DbContextOptions<StoreContext> dbOptions)
+            {
+                var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.Required;
+                string login = "";
+                do
+                {
+                    login = CliInput.GetLine(cliOptions, CliInput.EmailValidator, "Email Address:");
+                    if (dbOptions.LoginExists(login))
+                        CliPrinter.Error("That email address is already in use.");
+                    else break;
+                } while (true);
+                return login;
+            }
 
-            Console.Write("Email Address: ");
-            var email = Console.ReadLine();
+            var dbOptions = this.MenuController.ContextOptions;
+            var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.Required;
 
-            Console.Write("Password: ");
-            var password = CliInput.GetPassword();
+            var customer = new StoreDb.Customer();
+            customer.FirstName = CliInput.GetLine(cliOptions, CliInput.NameValidator, "First Name:");
+            customer.LastName = CliInput.GetLine(cliOptions, CliInput.NameValidator, "Last Name:");
+            customer.Login = EmailLoop(dbOptions);
+            customer.Password = PasswordLoop();
 
-            Console.WriteLine("\n Logging in...");
-
-            Console.WriteLine("\nLogin complete. Press any key to return.");
-            Console.ReadKey(true);
-
-            this.MenuExit();
+            // TODO: go straight to the user options.
+            this.AbortThenExit("Account created.");
         }
     }
 }
