@@ -133,7 +133,7 @@ namespace TestStoreDb
         [Fact]
         public void VerifiesCredentials()
         {
-            var options = TestUtil.GetMemDbOptions("LogsCustomerInWithValidCredentials");
+            var options = TestUtil.GetMemDbOptions("VerifiesCredentials");
 
             string customerLogin = Guid.NewGuid().ToString();
             string password = "123";
@@ -170,7 +170,23 @@ namespace TestStoreDb
                 var verifyOk = options.VerifyCredentials(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
                 Assert.False(verifyOk);
             }
+        }
 
+        [Fact]
+        public void CreatesUserAccount()
+        {
+            var options = TestUtil.GetMemDbOptions("CreatesUserAccount");
+            var customer = new Customer();
+
+            Assert.Equal(CreateUserAccountResult.MissingLogin, options.CreateUserAccount(customer));
+
+            customer.Login = Guid.NewGuid().ToString();
+            Assert.Equal(CreateUserAccountResult.MissingPassword, options.CreateUserAccount(customer));
+
+            customer.Password = "123";
+            Assert.Equal(CreateUserAccountResult.Ok, options.CreateUserAccount(customer));
+
+            Assert.Equal(CreateUserAccountResult.AccountNameExists, options.CreateUserAccount(customer));
         }
     }
 }

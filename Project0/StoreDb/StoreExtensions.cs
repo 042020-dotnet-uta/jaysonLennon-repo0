@@ -12,6 +12,13 @@ namespace StoreExtensions
         Ok,
         OutOfStock
     }
+    public enum CreateUserAccountResult
+    {
+        Ok,
+        AccountNameExists,
+        MissingLogin,
+        MissingPassword
+    }
 
     public static class StoreExtensions
     {
@@ -98,6 +105,22 @@ namespace StoreExtensions
                     where login == c.Login && hashed == c.Password
                     select c;
                 return customer.Count() == 1;
+            }
+        }
+
+        public static CreateUserAccountResult CreateUserAccount(this DbContextOptions<StoreContext> options, Customer customer)
+        {
+            if (customer.Login == null || customer.Login == "") return CreateUserAccountResult.MissingLogin;
+            if (customer.Password == null) return CreateUserAccountResult.MissingPassword;
+
+            using (var db = new StoreContext(options))
+            {
+                var loginExists = from c in db.Customers where c.Login == customer.Login select c;
+                if (loginExists.Count() > 0) return CreateUserAccountResult.AccountNameExists;
+
+                db.Add(customer);
+                db.SaveChanges();
+                return CreateUserAccountResult.Ok;
             }
         }
     }
