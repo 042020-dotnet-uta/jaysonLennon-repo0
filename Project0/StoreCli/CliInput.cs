@@ -1,8 +1,5 @@
-
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace StoreCli
 {
@@ -10,7 +7,7 @@ namespace StoreCli
     {
         public static void AbortThenExit(this CliMenu menu, string message)
         {
-            Console.Write($"\n{message}\n\nPress any key to return.");
+            Console.Write($"\n\n{message}\n\nPress any key to continue.");
             Console.ReadKey(true);
             menu.MenuExit();
         }
@@ -22,9 +19,41 @@ namespace StoreCli
         {
             Console.WriteLine($"=== {title} ===\n\n");
         }
+
+        public static void Error(string message)
+        {
+            Console.WriteLine($"{message}\n");
+        }
     }
     public class CliInput
     {
+        public static bool EmailValidator(string value)
+        {
+            var re = new Regex(@".+@.+\..+");
+            if (!re.IsMatch(value))
+            {
+                CliPrinter.Error("Please enter a valid email address.");
+                return false;
+            }
+            return true;
+        }
+
+        public static bool NameValidator(string value)
+        {
+            foreach(char c in value.ToCharArray())
+            {
+                if (!Char.IsLetter(c))
+                {
+                    if (c == '.' || c == ' ') continue;
+                    else {
+                        CliPrinter.Error("Only letters are allowed in a name.");
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         public static string GetPassword()
         {
             string password = "";
@@ -39,9 +68,50 @@ namespace StoreCli
                     } else {
                         password = "";
                     }
+                } else {
+                    if (!Char.IsControl(cki.KeyChar)) password += cki.KeyChar;
                 }
             } while (true);
         }
+
+        [Flags]
+        public enum GetLineOptions
+        {
+            TrimSpaces = 1,
+            AllowEmpty = 2,
+            AbortOnEmpty = 4,
+            Required = 8,
+        }
+
+        public static string GetLine(GetLineOptions options, Func<string, bool> validator, string prompt)
+        {
+            string input = "";
+            do
+            {
+                Console.Write($"{prompt} ");
+
+                input = Console.ReadLine();
+
+                if ((options & GetLineOptions.TrimSpaces) != 0) input = input.Trim();
+
+                if ((options & GetLineOptions.AbortOnEmpty) != 0 && input == "") return null;
+
+                if ((options & GetLineOptions.AllowEmpty) != 0 && input == "") break;
+
+                if ((options & GetLineOptions.Required) != 0 && input == "")
+                {
+                    CliPrinter.Error("Empty value not allowed.");
+                    continue;
+                }
+
+                if (!validator(input)) continue;
+                else break;
+
+            } while (true);
+
+            return input;
+        }
+
         public static int? GetInt(string input)
         {
             try
