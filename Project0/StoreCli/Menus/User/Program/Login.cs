@@ -1,6 +1,8 @@
 using System;
 using StoreCli;
 using StoreExtensions;
+using Microsoft.EntityFrameworkCore;
+using StoreDb;
 
 namespace StoreCliMenuUser
 {
@@ -10,22 +12,34 @@ namespace StoreCliMenuUser
         public void PrintMenu()
         {
             Console.Clear();
-            CliPrinter.Title("User Login");
+            CliPrinter.Title("Login");
         }
 
         public void InputLoop()
         {
-            Console.Write("Username: ");
-            var firstName = Console.ReadLine();
-            Console.Write("Password: ");
-            var password = CliInput.GetPassword();
+            var dbOptions = this.MenuController.ContextOptions;
+            var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.AbortOnEmpty;
 
-            Console.WriteLine("\n Logging in...");
+            do
+            {
+                var login = CliInput.GetLine(cliOptions, CliInput.EmailValidator, "Login:");
+                if (login == "" || login == null) {
+                    this.MenuExit();
+                    break;
+                }
 
-            Console.WriteLine("\nLogin complete. Press any key to return.");
-            Console.ReadKey(true);
+                var password = CliInput.GetPassword("Password:");
 
-            this.MenuExit();
+                if (dbOptions.VerifyCredentials(login, password))
+                {
+                    this.MenuExit();
+                    this.MenuAdd(new StoreCliMenuUser.Main(this.MenuController));
+                    break;
+                } else {
+                    CliPrinter.Error("Invalid login.");
+                }
+            } while (true);
+
         }
     }
 }

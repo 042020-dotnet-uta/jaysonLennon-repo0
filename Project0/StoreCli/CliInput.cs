@@ -27,6 +27,13 @@ namespace StoreCli
     }
     public class CliInput
     {
+        public static void PressAnyKey(string message) {
+            Console.WriteLine(message);
+        }
+        public static void PressAnyKey() {
+            PressAnyKey("Press any key to continue.");
+            Console.ReadKey();
+        }
         public static bool EmailValidator(string value)
         {
             var re = new Regex(@".+@.+\..+");
@@ -54,8 +61,9 @@ namespace StoreCli
             return true;
         }
 
-        public static string GetPassword()
+        public static string GetPassword(string prompt)
         {
+            Console.Write($"{prompt} ");
             string password = "";
             ConsoleKeyInfo cki;
             do

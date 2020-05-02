@@ -17,24 +17,16 @@ namespace StoreCliMenuUser
 
         public void InputLoop()
         {
-            string PasswordLoop()
-            {
-                var pass = "";
-                do {
-                    Console.Write("Create Password: ");
-                    pass = CliInput.GetPassword();
-                    if (pass == "") CliPrinter.Error("Please provide a password.");
-                } while (pass == "");
-                return pass;
-            }
-
             string EmailLoop(DbContextOptions<StoreContext> dbOptions)
             {
-                var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.Required;
+                var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.AbortOnEmpty;
                 string login = "";
                 do
                 {
                     login = CliInput.GetLine(cliOptions, CliInput.EmailValidator, "Email Address:");
+
+                    if (login == "" || login == null) return null;
+
                     if (dbOptions.LoginExists(login))
                         CliPrinter.Error("That email address is already in use.");
                     else break;
@@ -42,17 +34,47 @@ namespace StoreCliMenuUser
                 return login;
             }
 
-            var dbOptions = this.MenuController.ContextOptions;
-            var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.Required;
+            do
+            {
+                var dbOptions = this.MenuController.ContextOptions;
+                var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.AbortOnEmpty;
 
-            var customer = new StoreDb.Customer();
-            customer.FirstName = CliInput.GetLine(cliOptions, CliInput.NameValidator, "First Name:");
-            customer.LastName = CliInput.GetLine(cliOptions, CliInput.NameValidator, "Last Name:");
-            customer.Login = EmailLoop(dbOptions);
-            customer.Password = PasswordLoop();
+                var firstName = CliInput.GetLine(cliOptions, CliInput.NameValidator, "First Name:");
+                if (firstName == "" || firstName == null) {
+                    this.AbortThenExit("Empty entry - exiting.");
+                    return;
+                }
+                var lastName = CliInput.GetLine(cliOptions, CliInput.NameValidator, "Last Name:");
+                if (lastName == "" || lastName == null) {
+                    this.AbortThenExit("Empty entry - exiting.");
+                    return;
+                }
+                var login = EmailLoop(dbOptions);
+                if (login == "" || login == null) {
+                    this.AbortThenExit("Empty entry - exiting.");
+                    return;
+                }
 
-            // TODO: go straight to the user options.
-            this.AbortThenExit("Account created.");
+                var password = CliInput.GetPassword("Password:");
+                if (password == "") {
+                    this.AbortThenExit("Empty entry - exiting.");
+                    return;
+                }
+                var customer = new Customer();
+                customer.FirstName = firstName;
+                customer.LastName = lastName;
+                customer.Login = login;
+                customer.Password = password;
+
+                var createResult = dbOptions.CreateUserAccount(customer);
+                if (createResult == CreateUserAccountResult.Ok) {
+                    this.MenuExit();
+                    this.MenuAdd(new StoreCliMenuUser.Main(this.MenuController));
+                    CliInput.PressAnyKey("\nAccount created. Press any key to continue.");
+                    break;
+                }
+                else CliPrinter.Error("An error occurred while creating your account. Please try again.");
+            } while (true);
         }
     }
 }
