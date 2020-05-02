@@ -55,7 +55,7 @@ namespace StoreCli
                     MenuAdd(newListMenu);
                     return TryNavigateResult.NavigationOk;
                 }
-                else if (cki.Key == ConsoleKey.Enter)
+                else if (cki.Key == ConsoleKey.Enter || cki.Key == ConsoleKey.Escape)
                 {
                     return TryNavigateResult.Exit;
 
