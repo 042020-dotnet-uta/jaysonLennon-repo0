@@ -25,6 +25,23 @@ namespace StoreCli
     }
     public class CliInput
     {
+        public static string GetPassword()
+        {
+            string password = "";
+            ConsoleKeyInfo cki;
+            do
+            {
+                cki = Console.ReadKey(true);
+                if (cki.Key == ConsoleKey.Enter) return password;
+                else if (cki.Key == ConsoleKey.Backspace) {
+                    if (password.Length > 0) {
+                        password = password.Substring(0, password.Length - 1);
+                    } else {
+                        password = "";
+                    }
+                }
+            } while (true);
+        }
         public static int? GetInt(string input)
         {
             try
