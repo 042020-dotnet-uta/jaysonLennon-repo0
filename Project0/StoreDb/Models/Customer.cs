@@ -19,6 +19,7 @@ namespace StoreDb
 
         public Customer(string firstName)
         {
+            this.CustomerId = Guid.NewGuid();
             this.FirstName = firstName;
         }
     }

@@ -12,9 +12,11 @@ namespace StoreDb
 
         public Product(){}
         public Product(string name) {
+            this.ProductId = Guid.NewGuid();
             this.Name = name;
         }
         public Product(string name, double price) {
+            this.ProductId = Guid.NewGuid();
             this.Name = name;
             this.Price = price;
         }

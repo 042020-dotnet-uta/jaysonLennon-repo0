@@ -17,6 +17,7 @@ namespace StoreDb
         public Order(){}
         public Order(Customer customer, Location location)
         {
+            this.OrderId = Guid.NewGuid();
             this.Customer = customer;
             this.Location = location;
         }
@@ -33,6 +34,7 @@ namespace StoreDb
         public OrderLineItem(){}
         public OrderLineItem(Order order, Product product)
         {
+            this.OrderLineItemId = Guid.NewGuid();
             this.Order = order;
             this.Product = product;
         }

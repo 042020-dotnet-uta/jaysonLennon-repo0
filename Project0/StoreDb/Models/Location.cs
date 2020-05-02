@@ -13,6 +13,7 @@ namespace StoreDb
         public Location() { }
         public Location(string name)
         {
+            this.LocationId = Guid.NewGuid();
             this.Name = name;
         }
     }
@@ -28,6 +29,7 @@ namespace StoreDb
         public LocationInventory() { }
         public LocationInventory(Product product, Location location, int quantity)
         {
+            this.LocationInventoryId = Guid.NewGuid();
             this.Product = product;
             this.Location = location;
             this.Quantity = quantity;
