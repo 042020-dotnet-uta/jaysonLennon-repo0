@@ -6,9 +6,17 @@ namespace StoreCliMenuUser
 {
     class Main : CliMenu, IMenu
     {
+        private Nullable<Guid> GetDefaultLocationId()
+        {
+            return this.ApplicationState.DbOptions.GetDefaultLocation(this.ApplicationState.CustomerId);
+        }
+
         public Main(ApplicationData.State appState) : base(appState)
         {
             this.AddListMenuOption("Set default store", ConsoleKey.D1, () => new StoreCliMenuUser.SelectLocation(appState));
+            this.ApplicationState.OperatingLocationId = GetDefaultLocationId();
+            Console.Write($"set appstate store to {this.ApplicationState.OperatingLocationId}");
+            Console.ReadKey();
         }
 
         public void PrintMenu()
@@ -22,23 +30,19 @@ namespace StoreCliMenuUser
                 if (location != null)
                 {
                     Console.Write($"{location.Name}\n");
-                } else
+                }
+                else
                 {
                     Console.Write("None selected\n");
                 }
             }
         }
-
         public void InputLoop()
         {
-            using (var db = new StoreDb.StoreContext(this.ApplicationState.DbOptions))
+            if (GetDefaultLocationId() == null)
             {
-                var location = db.GetLocation(this.ApplicationState.OperatingLocationId);
-                if (location == null)
-                {
-                    this.MenuAdd(new StoreCliMenuUser.SelectLocation(this.ApplicationState));
-                    return;
-                }
+                this.MenuAdd(new StoreCliMenuUser.SelectLocation(this.ApplicationState));
+                return;
             }
             this.RunListMenu(this.PrintMenu);
         }

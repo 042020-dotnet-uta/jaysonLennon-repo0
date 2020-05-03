@@ -14,7 +14,7 @@ namespace ApplicationData
             set { _OperatingLocationId = value; }
         }
         
-        public Nullable<Guid> _CustomerId;
+        private Nullable<Guid> _CustomerId;
         public Nullable<Guid> CustomerId
         {
             get { return _CustomerId; }

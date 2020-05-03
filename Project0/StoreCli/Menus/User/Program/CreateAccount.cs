@@ -66,10 +66,12 @@ namespace StoreCliMenuUser
                 customer.Password = password;
 
                 var createResult = this.ApplicationState.DbOptions.CreateUserAccount(customer);
+
                 if (createResult == CreateUserAccountResult.Ok) {
+                    this.ApplicationState.CustomerId = customer.CustomerId;
                     this.MenuExit();
                     this.MenuAdd(new StoreCliMenuUser.Main(this.ApplicationState));
-                    CliInput.PressAnyKey("\nAccount created. Press any key to continue.");
+                    CliInput.PressAnyKey("\nAccount created.");
                     break;
                 }
                 else CliPrinter.Error("An error occurred while creating your account. Please try again.");

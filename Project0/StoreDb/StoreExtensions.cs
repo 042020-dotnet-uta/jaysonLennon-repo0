@@ -52,6 +52,11 @@ namespace StoreExtensions
             return customer.Count() == 1 ? customer.First() : null;
         }
 
+        public static Customer GetCustomerByLogin(this StoreContext ctx, string login) {
+            var customer = from c in ctx.Customers where c.Login == login select c;
+            return customer.Count() == 1 ? customer.First() : null;
+        }
+
         public static Location GetLocationById(this StoreContext ctx, Guid? locationId)
         {
             if (locationId == null) return null;
@@ -173,6 +178,18 @@ namespace StoreExtensions
                 db.SaveChanges();
                 return true;
             }
+        }
+
+        public static Guid? GetDefaultLocation(this DbContextOptions<StoreContext> options, Guid? customerId)
+        {
+            if (customerId == null) return null;
+            using (var db = new StoreContext(options))
+            {
+                var customer = from c in db.Customers where c.CustomerId == customerId select c;
+                if (customer.Count() == 1) return customer.First().DefaultLocation.LocationId;
+                return null;
+            }
+
         }
     }
 }

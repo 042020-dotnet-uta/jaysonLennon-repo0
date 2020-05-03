@@ -43,10 +43,11 @@ namespace Util
         public static void PressAnyKey(string message)
         {
             Console.WriteLine(message);
+            PressAnyKey();
         }
         public static void PressAnyKey()
         {
-            PressAnyKey("Press any key to continue.");
+            Console.WriteLine("\n\nPress any key to continue.");
             Console.ReadKey();
         }
         public static bool EmailValidator(string value)
