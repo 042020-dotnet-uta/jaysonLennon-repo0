@@ -4,7 +4,7 @@
 - [X] add a new customer
 - [X] search customers by name
 - [X] display details of an order
-- [ ] display all order history of a store location
+- [X] display all order history of a store location
 - [X] display all order history of a customer
 - [X] input validation
 - [ ] exception handling
