@@ -7,8 +7,8 @@ namespace Util
     {
         public static void AbortThenExit(this CliMenu menu, string message)
         {
-            Console.Write($"\n\n{message}\n\nPress any key to continue.");
-            Console.ReadKey(true);
+            CliPrinter.Error(message);
+            CliInput.PressAnyKey();
             menu.MenuExit();
         }
     }
@@ -22,7 +22,7 @@ namespace Util
 
         public static string Error(string message)
         {
-            return $"{message}\n";
+            return $"\n{message}\n";
         }
     }
 
@@ -155,7 +155,7 @@ namespace Util
 
                 input = Console.ReadLine();
 
-                if ((options & GetIntOptions.AllowEmpty) != 0 && input == "") break;
+                if ((options & GetIntOptions.AllowEmpty) != 0 && input.Trim() == "" || input == null) break;
 
                 if (input == "" || input == null)
                 {

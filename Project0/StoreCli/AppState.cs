@@ -34,6 +34,14 @@ namespace ApplicationData
             get { return _MenuController; }
             set { _MenuController = value; }
         }
+
+        private Order _CurrentOrder;
+        public Order CurrentOrder
+        {
+            get { return _CurrentOrder; }
+            set { _CurrentOrder = value; }
+        }
+        
         
     }
 

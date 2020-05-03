@@ -13,13 +13,24 @@ namespace StoreDb
         public DateTime TimeSubmitted { get; set; }
         public DateTime TimeFulfilled { get; set; }
         public double AmountPaid { get; set; }
-        public virtual List<OrderLineItem> OrderLineItems { get; } = new List<OrderLineItem>();
+        private List<OrderLineItem> _OrderLineItems = new List<OrderLineItem>();
+        public virtual List<OrderLineItem> OrderLineItems
+        {
+            get { return _OrderLineItems; }
+            set { _OrderLineItems = value; }
+        }
+        
         public Order(){}
         public Order(Customer customer, Location location)
         {
             this.OrderId = Guid.NewGuid();
             this.Customer = customer;
             this.Location = location;
+        }
+
+        public void AddLineItem(OrderLineItem lineItem)
+        {
+            this.OrderLineItems.Add(lineItem);
         }
     }
 

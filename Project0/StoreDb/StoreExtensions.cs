@@ -189,7 +189,31 @@ namespace StoreExtensions
                 if (customer.Count() == 1) return customer.First().DefaultLocation.LocationId;
                 return null;
             }
+        }
 
+        public static IQueryable<LocationInventory> GetProductsAvailable(this StoreContext ctx, Guid? locationId)
+        {
+            if (locationId == null) return null;
+            return from i in ctx.LocationInventories where i.Location.LocationId == locationId select i;
+        }
+
+        public static LocationInventory GetInventory(this StoreContext ctx, Guid? locationInventoryId)
+        {
+            if (locationInventoryId == null) return null;
+            var inventory =
+                from i in ctx.LocationInventories
+                where i.LocationInventoryId == locationInventoryId
+                select i;
+            if (inventory.Count() != 1) return null;
+            return inventory.First();
+        }
+
+        public static Product GetProductById(this StoreContext ctx, Guid? productId)
+        {
+            if (productId == null) return null;
+            var product = from p in ctx.Products where p.ProductId == productId select p;
+            if (product.Count() != 1) return null;
+            return product.First();
         }
     }
 }

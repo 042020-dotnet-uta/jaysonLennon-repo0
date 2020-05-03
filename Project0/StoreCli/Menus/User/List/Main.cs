@@ -14,9 +14,9 @@ namespace StoreCliMenuUser
         public Main(ApplicationData.State appState) : base(appState)
         {
             this.AddListMenuOption("Set default store", ConsoleKey.D1, () => new StoreCliMenuUser.SelectLocation(appState));
+            this.AddListMenuOption("Order Items", ConsoleKey.D2, () => new StoreCliMenuUser.OrderItems(appState));
+
             this.ApplicationState.OperatingLocationId = GetDefaultLocationId();
-            Console.Write($"set appstate store to {this.ApplicationState.OperatingLocationId}");
-            Console.ReadKey();
         }
 
         public void PrintMenu()
@@ -37,6 +37,7 @@ namespace StoreCliMenuUser
                 }
             }
         }
+
         public void InputLoop()
         {
             if (GetDefaultLocationId() == null)
