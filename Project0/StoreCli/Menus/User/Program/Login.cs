@@ -1,5 +1,5 @@
 using System;
-using StoreCli;
+using Util;
 using StoreExtensions;
 using Microsoft.EntityFrameworkCore;
 using StoreDb;
@@ -8,7 +8,7 @@ namespace StoreCliMenuUser
 {
     class Login : CliMenu, IMenu
     {
-        public Login(MenuController menuController): base(menuController) { }
+        public Login(ApplicationData.State appState): base(appState) { }
         public void PrintMenu()
         {
             Console.Clear();
@@ -17,8 +17,7 @@ namespace StoreCliMenuUser
 
         public void InputLoop()
         {
-            var dbOptions = this.MenuController.ContextOptions;
-            var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.AbortOnEmpty;
+            var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.AcceptEmpty;
 
             do
             {
@@ -30,16 +29,17 @@ namespace StoreCliMenuUser
 
                 var password = CliInput.GetPassword("Password:");
 
-                if (dbOptions.VerifyCredentials(login, password))
+                var customerId = this.ApplicationState.DbOptions.VerifyCredentials(login, password);
+                if (customerId != null)
                 {
+                    this.ApplicationState.CustomerId = customerId;
                     this.MenuExit();
-                    this.MenuAdd(new StoreCliMenuUser.Main(this.MenuController));
+                    this.MenuAdd(new StoreCliMenuUser.Main(this.ApplicationState));
                     break;
                 } else {
                     CliPrinter.Error("Invalid login.");
                 }
             } while (true);
-
         }
     }
 }

@@ -1,5 +1,5 @@
 using System;
-using StoreCli;
+using Util;
 using StoreExtensions;
 using Microsoft.EntityFrameworkCore;
 using StoreDb;
@@ -8,7 +8,7 @@ namespace StoreCliMenuUser
 {
     class CreateAccount : CliMenu, IMenu
     {
-        public CreateAccount(MenuController menuController): base(menuController) { }
+        public CreateAccount(ApplicationData.State appState): base(appState) { }
         public void PrintMenu()
         {
             Console.Clear();
@@ -19,7 +19,7 @@ namespace StoreCliMenuUser
         {
             string EmailLoop(DbContextOptions<StoreContext> dbOptions)
             {
-                var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.AbortOnEmpty;
+                var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.AcceptEmpty;
                 string login = "";
                 do
                 {
@@ -36,8 +36,7 @@ namespace StoreCliMenuUser
 
             do
             {
-                var dbOptions = this.MenuController.ContextOptions;
-                var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.AbortOnEmpty;
+                var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.AcceptEmpty;
 
                 var firstName = CliInput.GetLine(cliOptions, CliInput.NameValidator, "First Name:");
                 if (firstName == "" || firstName == null) {
@@ -49,7 +48,7 @@ namespace StoreCliMenuUser
                     this.AbortThenExit("Empty entry - exiting.");
                     return;
                 }
-                var login = EmailLoop(dbOptions);
+                var login = EmailLoop(this.ApplicationState.DbOptions);
                 if (login == "" || login == null) {
                     this.AbortThenExit("Empty entry - exiting.");
                     return;
@@ -66,10 +65,10 @@ namespace StoreCliMenuUser
                 customer.Login = login;
                 customer.Password = password;
 
-                var createResult = dbOptions.CreateUserAccount(customer);
+                var createResult = this.ApplicationState.DbOptions.CreateUserAccount(customer);
                 if (createResult == CreateUserAccountResult.Ok) {
                     this.MenuExit();
-                    this.MenuAdd(new StoreCliMenuUser.Main(this.MenuController));
+                    this.MenuAdd(new StoreCliMenuUser.Main(this.ApplicationState));
                     CliInput.PressAnyKey("\nAccount created. Press any key to continue.");
                     break;
                 }

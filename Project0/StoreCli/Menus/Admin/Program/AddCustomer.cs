@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using StoreCli;
+using Util;
 using StoreExtensions;
 
 namespace StoreCliMenuAdmin
 {
     class AddCustomer : CliMenu, IMenu
     {
-        public AddCustomer(MenuController menuController): base(menuController) { }
+        public AddCustomer(ApplicationData.State appState): base(appState) { }
         public void PrintMenu()
         {
             Console.Clear();
@@ -28,7 +28,7 @@ namespace StoreCliMenuAdmin
 
             Console.WriteLine("\nAdding new customer...");
 
-            this.MenuController.ContextOptions.AddCustomer(customer);
+            this.ApplicationState.DbOptions.AddCustomer(customer);
 
             Console.WriteLine("\nCustomer added. Press any key to return.");
             Console.ReadKey(true);

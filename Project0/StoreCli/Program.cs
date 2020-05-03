@@ -4,19 +4,22 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using StoreDb;
 
-namespace StoreCli
+namespace Util
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var options = new DbContextOptionsBuilder<StoreContext>()
+            var dbOptions = new DbContextOptionsBuilder<StoreContext>()
                 .UseSqlite("Data Source=store.sqlite")
                 .UseLazyLoadingProxies()
                 .Options;
 
-            var menu = new MenuController(options);
-            menu.Run();
+            var state = new ApplicationData.State();
+            state.DbOptions = dbOptions;
+            state.MenuController = new MenuController(state);
+
+            state.MenuController.Run();
         }
     }
 }

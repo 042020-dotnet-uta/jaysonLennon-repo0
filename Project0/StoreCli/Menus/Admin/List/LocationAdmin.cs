@@ -1,18 +1,17 @@
 using System;
-using StoreCli;
+using Util;
 
 namespace StoreCliMenuAdmin
 {
     class LocationManagement : CliMenu, IMenu
     {
-        public LocationManagement(MenuController menuController): base(menuController)
+        public LocationManagement(ApplicationData.State appState): base(appState)
         {
-            this.AddListMenuOption("Add New Location", ConsoleKey.D1, () => new StoreCliMenuAdmin.AddLocation(this.MenuController));
+            this.AddListMenuOption("Add New Location", ConsoleKey.D1, () => new StoreCliMenuAdmin.AddLocation(appState));
         }
         public void PrintMenu()
         {
-            CliPrinter.Title("Location Management");
-            this.PrintListMenu();
+            this.PrintListMenu("Location Management");
         }
 
         public void InputLoop()

@@ -1,12 +1,12 @@
 using System;
-using StoreCli;
+using Util;
 using StoreExtensions;
 
 namespace StoreCliMenuAdmin
 {
     class AddLocation : CliMenu, IMenu
     {
-        public AddLocation(MenuController menuController): base(menuController) { }
+        public AddLocation(ApplicationData.State appState): base(appState) { }
         public void PrintMenu()
         {
             Console.Clear();
@@ -25,7 +25,7 @@ namespace StoreCliMenuAdmin
             Console.WriteLine("\nAdding new location...");
 
             var location = new StoreDb.Location(name);
-            this.MenuController.ContextOptions.AddLocation(location);
+            this.ApplicationState.DbOptions.AddLocation(location);
 
             Console.WriteLine("\nLocation added. Press any key to return.");
             Console.ReadKey(true);

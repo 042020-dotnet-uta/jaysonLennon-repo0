@@ -149,26 +149,26 @@ namespace TestStoreDb
 
             {
                 // Login and password are both valid.
-                var verifyOk = options.VerifyCredentials(customerLogin, password);
-                Assert.True(verifyOk);
+                var customerId = options.VerifyCredentials(customerLogin, password);
+                Assert.NotNull(customerId);
             }
 
             {
                 // Login is ok, but password is wrong.
-                var verifyOk = options.VerifyCredentials(customerLogin, Guid.NewGuid().ToString());
-                Assert.False(verifyOk);
+                var customerId = options.VerifyCredentials(customerLogin, Guid.NewGuid().ToString());
+                Assert.Null(customerId);
             }
 
             {
                 // Login is wrong, but password is ok.
-                var verifyOk = options.VerifyCredentials(Guid.NewGuid().ToString(), password);
-                Assert.False(verifyOk);
+                var customerId = options.VerifyCredentials(Guid.NewGuid().ToString(), password);
+                Assert.Null(customerId);
             }
 
             {
                 // Both login and password are wrong.
-                var verifyOk = options.VerifyCredentials(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
-                Assert.False(verifyOk);
+                var customerId = options.VerifyCredentials(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
+                Assert.Null(customerId);
             }
         }
 

@@ -2,22 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using StoreCli;
+using Util;
 
 namespace StoreCliMenu
 {
     class Main : CliMenu, IMenu
     {
-        public Main(MenuController menuController) : base(menuController)
+        public Main(ApplicationData.State appState) : base(appState)
         {
-            this.AddListMenuOption("User", ConsoleKey.D1, () => new StoreCliMenuUser.Landing(this.MenuController));
-            this.AddListMenuOption("Administrator", ConsoleKey.D2, () => new StoreCliMenuAdmin.Main(this.MenuController));
+            this.AddListMenuOption("User", ConsoleKey.D1, () => new StoreCliMenuUser.Landing(this.ApplicationState));
+            this.AddListMenuOption("Administrator", ConsoleKey.D2, () => new StoreCliMenuAdmin.Main(this.ApplicationState));
         }
 
         public void PrintMenu()
         {
-            CliPrinter.Title("Main");
-            this.PrintListMenu();
+            this.PrintListMenu("Main");
         }
 
         public void InputLoop()

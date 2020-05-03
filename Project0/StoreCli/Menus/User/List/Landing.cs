@@ -1,20 +1,19 @@
 using System;
-using StoreCli;
+using Util;
 
 namespace StoreCliMenuUser
 {
     class Landing : CliMenu, IMenu
     {
-        public Landing(MenuController menuController) : base(menuController)
+        public Landing(ApplicationData.State appState) : base(appState)
         {
-            this.AddListMenuOption("Login", ConsoleKey.D1, () => new StoreCliMenuUser.Login(this.MenuController));
-            this.AddListMenuOption("Create Account", ConsoleKey.D2, () => new StoreCliMenuUser.CreateAccount(this.MenuController));
+            this.AddListMenuOption("Login", ConsoleKey.D1, () => new StoreCliMenuUser.Login(appState));
+            this.AddListMenuOption("Create Account", ConsoleKey.D2, () => new StoreCliMenuUser.CreateAccount(appState));
         }
 
         public void PrintMenu()
         {
-            CliPrinter.Title("Landing");
-            this.PrintListMenu();
+            this.PrintListMenu("Landing");
         }
 
         public void InputLoop()

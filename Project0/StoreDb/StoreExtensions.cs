@@ -45,6 +45,20 @@ namespace StoreExtensions
                    select customer;
         }
 
+        public static Customer GetCustomerById(this StoreContext ctx, Guid? customerId)
+        {
+            if (customerId == null) return null;
+            var customer = from c in ctx.Customers where c.CustomerId == customerId select c;
+            return customer.Count() == 1 ? customer.First() : null;
+        }
+
+        public static Location GetLocationById(this StoreContext ctx, Guid? locationId)
+        {
+            if (locationId == null) return null;
+            var location = from l in ctx.Locations where l.LocationId == locationId select l;
+            return location.Count() == 1 ? location.First() : null;
+        }
+
         public static void AddCustomer(this DbContextOptions<StoreContext> options, Customer customer)
         {
             using (var db = new StoreContext(options))
@@ -94,7 +108,7 @@ namespace StoreExtensions
             return PlaceOrderResult.Ok;
         }
 
-        public static bool VerifyCredentials(this DbContextOptions<StoreContext> options, string login, string password)
+        public static Nullable<Guid> VerifyCredentials(this DbContextOptions<StoreContext> options, string login, string password)
         {
             var hashed = Util.Hash.Sha256(password);
             using (var db = new StoreContext(options))
@@ -103,7 +117,8 @@ namespace StoreExtensions
                     from c in db.Customers
                     where login == c.Login && hashed == c.Password
                     select c;
-                return customer.Count() == 1;
+                if (customer.Count() == 1) return customer.First().CustomerId;
+                return null;
             }
         }
 
@@ -134,6 +149,30 @@ namespace StoreExtensions
         public static IQueryable<Location> GetLocations (this StoreContext ctx)
         {
             return from l in ctx.Locations orderby l.Name select l;
+        }
+
+        public static Location GetLocation(this StoreContext ctx, Guid? locationId)
+        {
+            if (locationId == null) return null;
+
+            var locations = from l in ctx.Locations where l.LocationId == locationId select l;
+            return locations.Count() > 0 ? locations.First() : null;
+        }
+
+        public static bool SetDefaultLocation(this DbContextOptions<StoreContext> options, Guid? customerId, Guid? locationId)
+        {
+            if (customerId == null || locationId == null) return false;
+
+            using (var db = new StoreContext(options))
+            {
+                var location = db.GetLocationById(locationId);
+                var customer = db.GetCustomerById(customerId);
+                if (location == null || customer == null) return false;
+
+                customer.DefaultLocation = location;
+                db.SaveChanges();
+                return true;
+            }
         }
     }
 }

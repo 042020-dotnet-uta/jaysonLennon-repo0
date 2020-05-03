@@ -54,7 +54,7 @@ namespace TestStoreDb
                               select o).First();
 
                 Assert.Equal(customer.CustomerId, order.Customer.CustomerId);
-                Assert.Equal(order.OrderLineItems[0].Quantity, 8);
+                Assert.Equal(8, order.OrderLineItems[0].Quantity);
 
                 Assert.Equal(PlaceOrderResult.Ok, db.PlaceOrder(order));
 
@@ -113,7 +113,7 @@ namespace TestStoreDb
                     where o.Customer.CustomerId == customer.CustomerId
                     select o).First();
 
-                Assert.Equal(order.OrderLineItems.Count(), 2);
+                Assert.Equal(2, order.OrderLineItems.Count());
                 Assert.Equal(PlaceOrderResult.Ok, db.PlaceOrder(order));
 
                 var invProduct1 =

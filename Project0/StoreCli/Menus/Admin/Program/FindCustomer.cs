@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using StoreCli;
+using Util;
 using StoreExtensions;
 
 namespace StoreCliMenuAdmin
@@ -12,7 +12,7 @@ namespace StoreCliMenuAdmin
         private const int ResultRow = 4;
         private const int QueryRow = 2;
 
-        public FindCustomer(MenuController menuController) : base(menuController) { }
+        public FindCustomer(ApplicationData.State appState) : base(appState) { }
         public void PrintMenu()
         {
             Console.Clear();
@@ -84,7 +84,7 @@ namespace StoreCliMenuAdmin
 
                 if (searchTerm.Length == 0) continue;
 
-                using (var db = new StoreDb.StoreContext(this.MenuController.ContextOptions))
+                using (var db = new StoreDb.StoreContext(this.ApplicationState.DbOptions))
                 {
                     var customers = db.FindCustomerByName(searchTerm).Take(20);
                     Console.Write($"{customers.Count()} customers found.\n\n");

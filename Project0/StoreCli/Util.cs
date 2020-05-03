@@ -1,7 +1,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace StoreCli
+namespace Util
 {
     public static class MenuHelper
     {
@@ -13,24 +13,39 @@ namespace StoreCli
         }
     }
 
+    public class CliFormatter
+    {
+        public static string Title(string title)
+        {
+            return $"=== {title} ===\n";
+        }
+
+        public static string Error(string message)
+        {
+            return $"{message}\n";
+        }
+    }
+
     public class CliPrinter
     {
         public static void Title(string title)
         {
-            Console.WriteLine($"=== {title} ===\n\n");
+            Console.WriteLine(CliFormatter.Title(title));
         }
 
         public static void Error(string message)
         {
-            Console.WriteLine($"{message}\n");
+            Console.WriteLine(CliFormatter.Error(message));
         }
     }
     public class CliInput
     {
-        public static void PressAnyKey(string message) {
+        public static void PressAnyKey(string message)
+        {
             Console.WriteLine(message);
         }
-        public static void PressAnyKey() {
+        public static void PressAnyKey()
+        {
             PressAnyKey("Press any key to continue.");
             Console.ReadKey();
         }
@@ -47,12 +62,13 @@ namespace StoreCli
 
         public static bool NameValidator(string value)
         {
-            foreach(char c in value.ToCharArray())
+            foreach (char c in value.ToCharArray())
             {
                 if (!Char.IsLetter(c))
                 {
                     if (c == '.' || c == ' ') continue;
-                    else {
+                    else
+                    {
                         CliPrinter.Error("Only letters are allowed in a name.");
                         return false;
                     }
@@ -70,13 +86,19 @@ namespace StoreCli
             {
                 cki = Console.ReadKey(true);
                 if (cki.Key == ConsoleKey.Enter) return password;
-                else if (cki.Key == ConsoleKey.Backspace) {
-                    if (password.Length > 0) {
+                else if (cki.Key == ConsoleKey.Backspace)
+                {
+                    if (password.Length > 0)
+                    {
                         password = password.Substring(0, password.Length - 1);
-                    } else {
+                    }
+                    else
+                    {
                         password = "";
                     }
-                } else {
+                }
+                else
+                {
                     if (!Char.IsControl(cki.KeyChar)) password += cki.KeyChar;
                 }
             } while (true);
@@ -86,9 +108,7 @@ namespace StoreCli
         public enum GetLineOptions
         {
             TrimSpaces = 1,
-            AllowEmpty = 2,
-            AbortOnEmpty = 4,
-            Required = 8,
+            AcceptEmpty = 4,
         }
 
         public static string GetLine(GetLineOptions options, Func<string, bool> validator, string prompt)
@@ -102,11 +122,9 @@ namespace StoreCli
 
                 if ((options & GetLineOptions.TrimSpaces) != 0) input = input.Trim();
 
-                if ((options & GetLineOptions.AbortOnEmpty) != 0 && input == "") return null;
+                if ((options & GetLineOptions.AcceptEmpty) != 0 && (input == "" || input == null)) return "";
 
-                if ((options & GetLineOptions.AllowEmpty) != 0 && input == "") break;
-
-                if ((options & GetLineOptions.Required) != 0 && input == "")
+                if (input == "" || input == null)
                 {
                     CliPrinter.Error("Empty value not allowed.");
                     continue;
@@ -120,28 +138,45 @@ namespace StoreCli
             return input;
         }
 
-        public static int? GetInt(string input)
+        [Flags]
+        public enum GetIntOptions
         {
-            try
-            {
-                return Int32.Parse(input);
-            }
-            catch
-            {
-                return null;
-            }
+            AllowEmpty = 1,
         }
-
-        public static double? GetDouble(string input)
+        public static int? GetInt(GetIntOptions options, Func<int, bool> rangeValidator, string prompt)
         {
-            try
+            string input = "";
+            Nullable<int> inputAsInt = null;
+
+            do
             {
-                return Double.Parse(input);
-            }
-            catch
-            {
-                return null;
-            }
+                Console.Write($"{prompt} ");
+
+                input = Console.ReadLine();
+
+                if ((options & GetIntOptions.AllowEmpty) != 0 && input == "") break;
+
+                if (input == "" || input == null)
+                {
+                    CliPrinter.Error("Empty value not allowed.");
+                    continue;
+                }
+
+                try
+                {
+                    var asInt = Int32.Parse(input);
+                    if (!rangeValidator(asInt)) continue;
+                    inputAsInt = asInt;
+                    break;
+                }
+                catch
+                {
+                    CliPrinter.Error("Please enter a number.");
+                    continue;
+                }
+            } while (true);
+
+            return inputAsInt;
         }
     }
 }

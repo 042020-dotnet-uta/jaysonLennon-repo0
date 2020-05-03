@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using StoreDb;
 
-namespace StoreCli
+namespace Util
 {
     public enum TryNavigateResult
     {
@@ -23,11 +21,19 @@ namespace StoreCli
     public abstract class CliMenu
     {
         protected MenuController MenuController { get; private set; }
+        private ApplicationData.State _ApplicationState;
+        public ApplicationData.State ApplicationState
+        {
+            get { return _ApplicationState; }
+            set { _ApplicationState = value; }
+        }
+
         protected List<ListMenuOption> ListMenuOptions { get; } = new List<ListMenuOption>();
 
-        public CliMenu(MenuController menuController)
+        public CliMenu(ApplicationData.State appState)
         {
-            this.MenuController = menuController;
+            this.ApplicationState = appState;
+            this.MenuController = appState.MenuController;
         }
 
         protected void MenuAdd(IMenu menu)
@@ -64,7 +70,7 @@ namespace StoreCli
             return TryNavigateResult.NotFound;
         }
 
-        protected void PrintListMenu()
+        protected void PrintListMenu(string title)
         {
             Console.Clear();
             foreach(var entry in this.ListMenuOptions)
@@ -94,13 +100,13 @@ namespace StoreCli
     public class MenuController
     {
         public Stack<IMenu> Menus { get; } = new Stack<IMenu>();
-        private DbContextOptions<StoreContext> contextOptions;
-        public DbContextOptions<StoreContext> ContextOptions
+        private ApplicationData.State _AppState;
+        public ApplicationData.State AppState
         {
-            get { return contextOptions; }
-            private set { contextOptions = value; }
+            get { return _AppState; }
+            set { _AppState = value; }
         }
-
+        
         public void Push(IMenu menu)
         {
             this.Menus.Push(menu);
@@ -111,18 +117,18 @@ namespace StoreCli
             this.Menus.Pop();
         }
 
-        public MenuController(DbContextOptions<StoreContext> options)
+        private MenuController() {}
+        public MenuController(ApplicationData.State appState)
         {
-            this.ContextOptions = options;
+            this.AppState = appState;
         }
 
         public void Run()
         {
-            Push(new StoreCliMenu.Main(this));
+            Push(new StoreCliMenu.Main(this.AppState));
 
             while (this.Menus.Count > 0)
             {
-                Console.WriteLine("call input loop");
                 this.Menus.Peek().PrintMenu();
                 this.Menus.Peek().InputLoop();
             }
