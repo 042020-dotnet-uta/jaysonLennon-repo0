@@ -9,8 +9,8 @@ using StoreDb;
 namespace StoreDb.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20200502012248_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200503060158_Seed")]
+    partial class Seed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -108,13 +108,13 @@ namespace StoreDb.Migrations
                     b.Property<Guid?>("LocationId")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("TimeCreated")
+                    b.Property<DateTime?>("TimeCreated")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("TimeFulfilled")
+                    b.Property<DateTime?>("TimeFulfilled")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("TimeSubmitted")
+                    b.Property<DateTime?>("TimeSubmitted")
                         .HasColumnType("TEXT");
 
                     b.HasKey("OrderId");

@@ -9,9 +9,28 @@ namespace StoreDb
         public Guid OrderId { get; set; }
         public virtual Customer Customer { get; set; }
         public virtual Location Location { get; set; }
-        public DateTime TimeCreated { get; set; }
-        public DateTime TimeSubmitted { get; set; }
-        public DateTime TimeFulfilled { get; set; }
+        private Nullable<DateTime> _TimeCreated;
+
+        public virtual Nullable<DateTime> TimeCreated
+        {
+            get { return _TimeCreated; }
+            set { _TimeCreated = value; }
+        }
+
+        private Nullable<DateTime> _TimeSubmitted;
+        public virtual Nullable<DateTime> TimeSubmitted
+        {
+            get { return _TimeSubmitted; }
+            set { _TimeSubmitted = value; }
+        }
+
+        private Nullable<DateTime> _TimeFulfilled;
+        public virtual Nullable<DateTime> TimeFulfilled
+        {
+            get { return _TimeFulfilled; }
+            set { _TimeFulfilled = value; }
+        }
+        
         public double AmountPaid { get; set; }
         private List<OrderLineItem> _OrderLineItems = new List<OrderLineItem>();
         public virtual List<OrderLineItem> OrderLineItems
@@ -20,12 +39,17 @@ namespace StoreDb
             set { _OrderLineItems = value; }
         }
         
-        public Order(){}
+        public Order(){
+            this.OrderId = Guid.NewGuid();
+            this.TimeCreated = DateTime.Now;
+        }
+
         public Order(Customer customer, Location location)
         {
             this.OrderId = Guid.NewGuid();
             this.Customer = customer;
             this.Location = location;
+            this.TimeCreated = DateTime.Now;
         }
 
         public void AddLineItem(OrderLineItem lineItem)

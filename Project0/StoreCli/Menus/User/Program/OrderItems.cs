@@ -9,7 +9,24 @@ namespace StoreCliMenuUser
 {
     class OrderItems : CliMenu, IMenu
     {
-        public OrderItems(ApplicationData.State appState): base(appState) { }
+        public OrderItems(ApplicationData.State appState): base(appState) {
+            appState.RefreshCurrentOrder();
+
+            if (appState.CurrentOrderId == null)
+            {
+                using (var db = new StoreContext(appState.DbOptions))
+                {
+                    var customer = db.GetCustomerById(appState.CustomerId);
+                    var location = db.GetLocationById(appState.OperatingLocationId);
+                    var order = new Order(customer, location);
+                    order.Customer = customer;
+                    db.Add(order);
+                    db.SaveChanges();
+                    appState.CurrentOrderId = order.OrderId;
+                }
+            }
+        }
+
         public void PrintMenu()
         {
             Console.Clear();
@@ -18,6 +35,7 @@ namespace StoreCliMenuUser
 
         public void InputLoop()
         {
+            Console.WriteLine($"order id = {this.ApplicationState.CurrentOrderId}");
             using (var db = new StoreContext(this.ApplicationState.DbOptions))
             {
                 var inventory = db.GetProductsAvailable(this.ApplicationState.OperatingLocationId);
@@ -48,8 +66,8 @@ namespace StoreCliMenuUser
                     return;
                 }
 
-                var productId = inventoryIds[itemIndex - 1];
-                var maxQuantity = db.GetInventory(productId).Quantity;
+                var inventoryId = inventoryIds[itemIndex - 1];
+                var maxQuantity = db.GetInventory(inventoryId).Quantity;
 
                 bool quantityValidator(int num) {
                     if (num >= 0 && num <= maxQuantity) return true;
@@ -66,19 +84,11 @@ namespace StoreCliMenuUser
                     return;
                 }
 
-                var customer = db.GetCustomerById(this.ApplicationState.CustomerId);
-                var location = db.GetLocationById(this.ApplicationState.OperatingLocationId);
-                if (customer == null || location == null)
-                {
-                    this.AbortThenExit("An error occurred while creating the order. Please try again.");
-                    return;
-                }
-
-                var product = db.GetProductById(productId);
-                var order = new Order(customer, location);
+                var product = db.GetProductFromInventoryId(inventoryId);
+                var order = db.FindCurrentOrder(this.ApplicationState.CustomerId);
                 var orderLine = new OrderLineItem(order, product);
-                order.AddLineItem(orderLine);
-                db.Add(order);
+                orderLine.Quantity = orderQuantity;
+                db.Add(orderLine);
                 db.SaveChanges();
 
                 CliInput.PressAnyKey("\nAdded to order.");

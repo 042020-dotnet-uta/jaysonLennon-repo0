@@ -90,9 +90,9 @@ namespace StoreDb.Migrations
                     OrderId = table.Column<Guid>(nullable: false),
                     CustomerId = table.Column<Guid>(nullable: true),
                     LocationId = table.Column<Guid>(nullable: true),
-                    TimeCreated = table.Column<DateTime>(nullable: false),
-                    TimeSubmitted = table.Column<DateTime>(nullable: false),
-                    TimeFulfilled = table.Column<DateTime>(nullable: false),
+                    TimeCreated = table.Column<DateTime>(nullable: true),
+                    TimeSubmitted = table.Column<DateTime>(nullable: true),
+                    TimeFulfilled = table.Column<DateTime>(nullable: true),
                     AmountPaid = table.Column<double>(nullable: false)
                 },
                 constraints: table =>

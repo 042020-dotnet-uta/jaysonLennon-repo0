@@ -31,6 +31,7 @@ namespace StoreDb
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
+            modelBuilder.Entity<Order>().Property(t => t.TimeCreated).IsRequired(false);
         }
     }
 }

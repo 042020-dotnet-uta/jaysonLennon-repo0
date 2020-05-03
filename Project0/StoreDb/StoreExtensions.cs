@@ -186,7 +186,11 @@ namespace StoreExtensions
             using (var db = new StoreContext(options))
             {
                 var customer = from c in db.Customers where c.CustomerId == customerId select c;
-                if (customer.Count() == 1) return customer.First().DefaultLocation.LocationId;
+                if (customer.Count() == 1) {
+                    var c = customer.First();
+                    if (c.DefaultLocation != null) return c.DefaultLocation.LocationId;
+                    else return null;
+                }
                 return null;
             }
         }
@@ -212,8 +216,44 @@ namespace StoreExtensions
         {
             if (productId == null) return null;
             var product = from p in ctx.Products where p.ProductId == productId select p;
-            if (product.Count() != 1) return null;
-            return product.First();
+            if (product.Count() == 1) return product.First();
+            return null;
+        }
+
+        public static Product GetProductFromInventoryId(this StoreContext ctx, Guid? inventoryId)
+        {
+            if (inventoryId == null) return null;
+            var product =
+                from p in ctx.Products
+                join li in ctx.LocationInventories on p.ProductId equals li.Product.ProductId
+                where li.LocationInventoryId == inventoryId
+                select p;
+            if (product.Count() == 1) return product.First();
+            return null;
+        }
+
+        public static Order FindCurrentOrder(this StoreContext ctx, Guid? customerId)
+        {
+            if (customerId == null) return null;
+            var order =
+                from o in ctx.Orders
+                where o.Customer.CustomerId == customerId
+                      && o.TimeCreated != null
+                      && o.TimeSubmitted == null
+                select o;
+            if (order.Count() > 0) return order.First();
+            return null;
+        }
+
+        public static Order GetOrderById(this StoreContext ctx, Guid? orderId)
+        {
+            if (orderId == null) return null;
+            var order = 
+                from o in ctx.Orders
+                where o.OrderId == orderId
+                select o;
+            if (order.Count() > 0) return order.First();
+            return null;
         }
     }
 }

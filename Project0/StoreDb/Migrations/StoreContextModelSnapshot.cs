@@ -106,13 +106,13 @@ namespace StoreDb.Migrations
                     b.Property<Guid?>("LocationId")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("TimeCreated")
+                    b.Property<DateTime?>("TimeCreated")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("TimeFulfilled")
+                    b.Property<DateTime?>("TimeFulfilled")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("TimeSubmitted")
+                    b.Property<DateTime?>("TimeSubmitted")
                         .HasColumnType("TEXT");
 
                     b.HasKey("OrderId");
