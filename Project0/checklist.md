@@ -9,7 +9,7 @@
 - [X] input validation
 - [ ] exception handling
 - [X] persistent data; no hardcoding of data.(prices, customers, order history, etc.)
-- [ ] (optional: order history can be sorted by earliest, latest, cheapest, most expensive)
+- [X] (optional: order history can be sorted by earliest, latest, cheapest, most expensive)
 - [ ] (optional: get a suggested order for a customer based on his order history)
 - [ ] (optional: display some statistics based on order history)
 - [ ] (optional: deserialize data from disk) [optional]

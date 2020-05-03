@@ -100,7 +100,7 @@ namespace StoreCliMenuUser
             do
             {
                 Console.Write("\n\n");
-                var line = CliInput.GetLine(inputOptions, v => true, "Sort by [D]ate / [P]rice / [L]ocation\nor enter an order number to view details:");
+                var line = CliInput.GetLine(inputOptions, v => true, "Sort by [D]ate / [P]rice / [S]tore\nor enter an order number to view details:");
                 switch (line)
                 {
                     case "D":
@@ -111,8 +111,8 @@ namespace StoreCliMenuUser
                     case "p":
                         this.SortKey = this.SortKey != OrderSortKey.PriceDesc ? OrderSortKey.PriceDesc : OrderSortKey.PriceAsc;
                         break;
-                    case "L":
-                    case "l":
+                    case "S":
+                    case "s":
                         this.SortKey = this.SortKey != OrderSortKey.LocationAsc ? OrderSortKey.LocationAsc : OrderSortKey.LocationDesc;
                         break;
                     default:
