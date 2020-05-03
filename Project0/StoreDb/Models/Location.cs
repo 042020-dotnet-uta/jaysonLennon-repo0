@@ -43,7 +43,7 @@ namespace StoreDb
         // Otherwise, the amount remaining in stock will be returned.
         public Nullable<int> TryAdjustQuantity(int amount)
         {
-            if (this.Quantity - amount < 0)
+            if (this.Quantity + amount < 0)
             {
                 return null;
             }

@@ -30,6 +30,7 @@ namespace TestStoreDb
 
             String productName;
             Guid customerId;
+            Guid orderId;
             using (var db = new StoreContext(options))
             {
                 var (customer, location, product, inventory) = SimplePopulate(db);
@@ -37,6 +38,7 @@ namespace TestStoreDb
                 productName = product.Name;
 
                 var order = new Order(customer, location);
+                orderId = order.OrderId;
                 var orderLine = new OrderLineItem(order, product);
                 orderLine.Quantity = 8;
                 order.OrderLineItems.Add(orderLine);
@@ -49,18 +51,20 @@ namespace TestStoreDb
             {
                 var customer = (from c in db.Customers where c.CustomerId == customerId select c).First();
 
-                var order  = (from o in db.Orders
-                              where o.Customer.CustomerId == customer.CustomerId
-                              select o).First();
+                var order = (from o in db.Orders
+                             where o.Customer.CustomerId == customer.CustomerId
+                             select o).First();
 
                 Assert.Equal(customer.CustomerId, order.Customer.CustomerId);
                 Assert.Equal(8, order.OrderLineItems[0].Quantity);
+            }
 
-                Assert.Equal(PlaceOrderResult.Ok, db.PlaceOrder(order));
+            Assert.Equal(PlaceOrderResult.Ok, options.PlaceOrder(orderId));
 
+            using (var db = new StoreContext(options))
+            {
                 var inventory = (from i in db.LocationInventories where i.Product.Name == productName select i).First();
                 Assert.Equal(2, inventory.Quantity);
-
             }
         }
 
@@ -71,6 +75,7 @@ namespace TestStoreDb
 
             Guid product1Id, product2Id;
             Guid customerId;
+            Guid orderId;
 
             using (var db = new StoreContext(options))
             {
@@ -93,6 +98,7 @@ namespace TestStoreDb
                 product2Id = product2.ProductId;
 
                 var order = new Order(customer, location);
+                orderId = order.OrderId;
                 var orderLine1 = new OrderLineItem(order, product1);
                 orderLine1.Quantity = 5;
                 var orderLine2 = new OrderLineItem(order, product2);
@@ -110,12 +116,16 @@ namespace TestStoreDb
 
                 var order =
                     (from o in db.Orders
-                    where o.Customer.CustomerId == customer.CustomerId
-                    select o).First();
+                     where o.Customer.CustomerId == customer.CustomerId
+                     select o).First();
 
                 Assert.Equal(2, order.OrderLineItems.Count());
-                Assert.Equal(PlaceOrderResult.Ok, db.PlaceOrder(order));
+            }
 
+            Assert.Equal(PlaceOrderResult.Ok, options.PlaceOrder(orderId));
+
+            using (var db = new StoreContext(options))
+            {
                 var invProduct1 =
                     (from i in db.LocationInventories where i.Product.ProductId == product1Id select i).First();
                 Assert.Equal(5, invProduct1.Quantity);
@@ -133,6 +143,7 @@ namespace TestStoreDb
 
             String product1Name, product2Name;
             Guid customerId;
+            Guid orderId;
             using (var db = new StoreContext(options))
             {
                 var (customer, location, product1, inventory) = SimplePopulate(db);
@@ -146,14 +157,19 @@ namespace TestStoreDb
                 product2Name = product2.Name;
 
                 var order = new Order(customer, location);
+                orderId = order.OrderId;
 
                 var orderLine1 = new OrderLineItem(order, product1);
                 orderLine1.Quantity = 9;
                 order.OrderLineItems.Add(orderLine1);
 
                 var orderLine2 = new OrderLineItem(order, product2);
-                orderLine2.Quantity = 21;
+                orderLine2.Quantity = 10;
                 order.OrderLineItems.Add(orderLine2);
+
+                var orderLine3 = new OrderLineItem(order, product2);
+                orderLine3.Quantity = 11;
+                order.OrderLineItems.Add(orderLine3);
 
                 db.Add(order);
                 db.SaveChanges();
@@ -163,14 +179,14 @@ namespace TestStoreDb
             {
                 var customer = (from c in db.Customers where c.CustomerId == customerId select c).First();
 
-                var order  = (from o in db.Orders
-                              where o.Customer.CustomerId == customer.CustomerId
-                              select o).First();
+                var order = (from o in db.Orders
+                             where o.Customer.CustomerId == customer.CustomerId
+                             select o).First();
 
                 Assert.Equal(customer.CustomerId, order.Customer.CustomerId);
-
-                Assert.Equal(PlaceOrderResult.OutOfStock, db.PlaceOrder(order));
             }
+
+            Assert.Equal(PlaceOrderResult.OutOfStock, options.PlaceOrder(orderId));
 
             using (var db = new StoreContext(options))
             {
@@ -189,6 +205,7 @@ namespace TestStoreDb
 
             String productName;
             Guid customerId;
+            Guid orderId;
             using (var db = new StoreContext(options))
             {
                 var (customer, location, product1, inventory) = SimplePopulate(db);
@@ -202,6 +219,7 @@ namespace TestStoreDb
                 // db.Add(inventory2);
 
                 var order = new Order(customer, location);
+                orderId = order.OrderId;
 
                 var orderLine1 = new OrderLineItem(order, product1);
                 orderLine1.Quantity = 9;
@@ -219,14 +237,15 @@ namespace TestStoreDb
             {
                 var customer = (from c in db.Customers where c.CustomerId == customerId select c).First();
 
-                var order  = (from o in db.Orders
-                              where o.Customer.CustomerId == customer.CustomerId
-                              select o).First();
+                var order = (from o in db.Orders
+                             where o.Customer.CustomerId == customer.CustomerId
+                             select o).First();
 
                 Assert.Equal(customer.CustomerId, order.Customer.CustomerId);
 
-                Assert.Equal(PlaceOrderResult.OutOfStock, db.PlaceOrder(order));
             }
+
+            Assert.Equal(PlaceOrderResult.OutOfStock, options.PlaceOrder(orderId));
 
             using (var db = new StoreContext(options))
             {
@@ -234,6 +253,29 @@ namespace TestStoreDb
                 Assert.Equal(10, inventoryP1.Quantity);
             }
         }
- 
+
+        [Fact]
+        public void TODOProperReturnValueWhenOrderNotFound()
+        {
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void TODOProperReturnValueWhenOrderIdIsNull()
+        {
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void TODOProperReturnValueWhenOrderHasNoLineItems()
+        {
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void TODOUpdatesSubmittedTimeWhenOrderPlaced()
+        {
+            Assert.True(false);
+        }
     }
 }

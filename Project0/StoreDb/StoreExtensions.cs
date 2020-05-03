@@ -9,8 +9,11 @@ namespace StoreExtensions
     public enum PlaceOrderResult
     {
         Ok,
-        OutOfStock
+        OutOfStock,
+        NoLineItems,
+        OrderNotFound,
     }
+
     public enum CreateUserAccountResult
     {
         Ok,
@@ -52,7 +55,8 @@ namespace StoreExtensions
             return customer.Count() == 1 ? customer.First() : null;
         }
 
-        public static Customer GetCustomerByLogin(this StoreContext ctx, string login) {
+        public static Customer GetCustomerByLogin(this StoreContext ctx, string login)
+        {
             var customer = from c in ctx.Customers where c.Login == login select c;
             return customer.Count() == 1 ? customer.First() : null;
         }
@@ -82,35 +86,44 @@ namespace StoreExtensions
             }
         }
 
-        public static PlaceOrderResult PlaceOrder(this StoreContext ctx, Order order)
+        public static PlaceOrderResult PlaceOrder(this DbContextOptions<StoreContext> options, Guid? orderId)
         {
-            using (var transaction = ctx.Database.BeginTransaction())
+            if (orderId == null) throw new NullReferenceException("Missing orderId");
+            using (var db = new StoreContext(options))
             {
-                foreach (var lineItem in order.OrderLineItems)
+                var order = db.GetOrderById(orderId);
+                if (order == null) return PlaceOrderResult.OrderNotFound;
+
+                if (order.OrderLineItems.Count() == 0) return PlaceOrderResult.NoLineItems;
+
+                var totalOrderPrice = 0.0;
+
+                var location = order.Location;
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    try
+                    foreach(var lineItem in order.OrderLineItems)
                     {
-                        var inventory =
-                            (from i in ctx.LocationInventories
-                            where i.Quantity >= lineItem.Quantity && i.Product.ProductId == lineItem.Product.ProductId
-                            select i).First();
-                        
-                        // Query already determines if there is sufficient quantity,
-                        // so we can ignore the return value of this method call.
-                        var newInventory = inventory.TryAdjustQuantity(-lineItem.Quantity);
-                        ctx.SaveChanges();
+                        var locationInventory = db.FindInventoryId(location, lineItem.Product);
+                        if (locationInventory == null) return PlaceOrderResult.OutOfStock;
+                        var newStockQuantity = locationInventory.TryAdjustQuantity(-lineItem.Quantity);
+                        if (newStockQuantity == null)
+                        {
+                            transaction.Rollback();
+                            return PlaceOrderResult.OutOfStock;
+                        }
+
+                        var lineItemPrice = lineItem.Quantity * lineItem.Product.Price;
+                        totalOrderPrice += lineItemPrice;
+                        lineItem.AmountCharged = lineItemPrice;
+                        db.SaveChanges();
                     }
-                    // This occurs when the location is out of stock or if the location
-                    // does not carry a product needed to fulfill the order.
-                    catch (InvalidOperationException e)
-                    {
-                        transaction.Rollback();
-                        return PlaceOrderResult.OutOfStock;
-                    }
+                    order.AmountCharged = totalOrderPrice;
+                    order.TimeSubmitted = DateTime.Now;
+                    db.SaveChanges();
+                    transaction.Commit();
                 }
-                transaction.Commit();
+                return PlaceOrderResult.Ok;
             }
-            return PlaceOrderResult.Ok;
         }
 
         public static Nullable<Guid> VerifyCredentials(this DbContextOptions<StoreContext> options, string login, string password)
@@ -151,7 +164,7 @@ namespace StoreExtensions
             }
         }
 
-        public static IQueryable<Location> GetLocations (this StoreContext ctx)
+        public static IQueryable<Location> GetLocations(this StoreContext ctx)
         {
             return from l in ctx.Locations orderby l.Name select l;
         }
@@ -186,7 +199,8 @@ namespace StoreExtensions
             using (var db = new StoreContext(options))
             {
                 var customer = from c in db.Customers where c.CustomerId == customerId select c;
-                if (customer.Count() == 1) {
+                if (customer.Count() == 1)
+                {
                     var c = customer.First();
                     if (c.DefaultLocation != null) return c.DefaultLocation.LocationId;
                     else return null;
@@ -248,12 +262,39 @@ namespace StoreExtensions
         public static Order GetOrderById(this StoreContext ctx, Guid? orderId)
         {
             if (orderId == null) return null;
-            var order = 
+            var order =
                 from o in ctx.Orders
                 where o.OrderId == orderId
                 select o;
             if (order.Count() > 0) return order.First();
             return null;
+        }
+
+        public static LocationInventory FindInventoryId(this StoreContext ctx, Location location, Product product)
+        {
+            if (location == null || product == null) return null;
+            var inventory =
+                from li in ctx.LocationInventories
+                where li.Location.LocationId == location.LocationId
+                      && li.Product.ProductId == product.ProductId
+                select li;
+            if (inventory.Count() > 0) return inventory.First();
+            return null;
+        }
+
+        public static void AddLineItem(this StoreContext ctx, Order order, Product product, int quantity)
+        {
+            if (order == null || product == null) return;
+            var currentOrderLine = ctx.OrderLineItems
+                .Where(li => li.Product.ProductId == product.ProductId && li.Order.OrderId == order.OrderId);
+            if (currentOrderLine.Count() > 0)
+            {
+                var orderLine = currentOrderLine.First().Quantity += quantity;
+            } else {
+                var orderLine = new OrderLineItem(order, product);
+                orderLine.Quantity = quantity;
+                ctx.Add(orderLine);
+            }
         }
     }
 }

@@ -52,6 +52,10 @@ namespace ApplicationData
                 {
                     this._CurrentOrderId = currentOrder.OrderId;
                 }
+                else
+                {
+                    this._CurrentOrderId = null;
+                }
             }
         }
 

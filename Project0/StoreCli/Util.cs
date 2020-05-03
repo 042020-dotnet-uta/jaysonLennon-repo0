@@ -47,7 +47,7 @@ namespace Util
         }
         public static void PressAnyKey()
         {
-            Console.WriteLine("\n\nPress any key to continue.");
+            Console.WriteLine("\nPress any key to continue.");
             Console.ReadKey();
         }
         public static bool EmailValidator(string value)

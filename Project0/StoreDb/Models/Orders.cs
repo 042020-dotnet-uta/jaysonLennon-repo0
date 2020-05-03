@@ -31,12 +31,14 @@ namespace StoreDb
             set { _TimeFulfilled = value; }
         }
         
-        public double AmountPaid { get; set; }
+        public Nullable<double> AmountPaid { get; set; }
+        public Nullable<double> AmountCharged { get; set; }
+
         private List<OrderLineItem> _OrderLineItems = new List<OrderLineItem>();
         public virtual List<OrderLineItem> OrderLineItems
         {
             get { return _OrderLineItems; }
-            set { _OrderLineItems = value; }
+            private set { _OrderLineItems = value; }
         }
         
         public Order(){
@@ -54,7 +56,18 @@ namespace StoreDb
 
         public void AddLineItem(OrderLineItem lineItem)
         {
-            this.OrderLineItems.Add(lineItem);
+            bool updated = false;
+            foreach(var li in this.OrderLineItems)
+            {
+                if (li.Product == lineItem.Product)
+                {
+                    li.Quantity += lineItem.Quantity;
+                    updated = true;
+                    break;
+                }
+            }
+
+            if (!updated) this.OrderLineItems.Add(lineItem);
         }
     }
 
@@ -63,7 +76,7 @@ namespace StoreDb
         public Guid OrderLineItemId { get; set; }
         public virtual Order Order { get; set; }
         public virtual Product Product { get; set; }
-        public double AmountCharged { get; set; }
+        public virtual Nullable<double> AmountCharged { get; set; }
         public int Quantity { get; set; }
 
         public OrderLineItem(){}

@@ -35,7 +35,6 @@ namespace StoreCliMenuUser
 
         public void InputLoop()
         {
-            Console.WriteLine($"order id = {this.ApplicationState.CurrentOrderId}");
             using (var db = new StoreContext(this.ApplicationState.DbOptions))
             {
                 var inventory = db.GetProductsAvailable(this.ApplicationState.OperatingLocationId);
@@ -58,7 +57,7 @@ namespace StoreCliMenuUser
                     }
                 }
 
-                Console.WriteLine("");
+                Console.Write("\n----------------------------------------------\n");
 
                 var itemIndex = CliInput.GetInt(CliInput.GetIntOptions.AllowEmpty, itemNumberValidator, "Inventory number: ") ?? 0;
                 if (itemIndex == 0) {
@@ -86,9 +85,7 @@ namespace StoreCliMenuUser
 
                 var product = db.GetProductFromInventoryId(inventoryId);
                 var order = db.FindCurrentOrder(this.ApplicationState.CustomerId);
-                var orderLine = new OrderLineItem(order, product);
-                orderLine.Quantity = orderQuantity;
-                db.Add(orderLine);
+                db.AddLineItem(order, product, orderQuantity);
                 db.SaveChanges();
 
                 CliInput.PressAnyKey("\nAdded to order.");
