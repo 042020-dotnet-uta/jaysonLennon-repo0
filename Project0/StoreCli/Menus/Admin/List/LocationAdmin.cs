@@ -8,6 +8,7 @@ namespace StoreCliMenuAdmin
         public LocationManagement(ApplicationData.State appState): base(appState)
         {
             this.AddListMenuOption("Add New Location", ConsoleKey.D1, () => new StoreCliMenuAdmin.AddLocation(appState));
+            this.AddListMenuOption("Order History", ConsoleKey.D2, () => new StoreCliMenuAdmin.LocationOrderHistory(appState));
         }
         public void PrintMenu()
         {

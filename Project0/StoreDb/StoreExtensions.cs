@@ -42,6 +42,7 @@ namespace StoreExtensions
 
         public static IQueryable<Customer> FindCustomerByName(this StoreContext ctx, string name)
         {
+            // TODO: split customer name search when a space is in query.
             name = name.ToLower();
             return from customer in ctx.Customers
                    where customer.FirstName.ToLower().Contains(name) || customer.LastName.ToLower().Contains(name)
@@ -70,6 +71,7 @@ namespace StoreExtensions
 
         public static void AddCustomer(this DbContextOptions<StoreContext> options, Customer customer)
         {
+            // TODO: apply validation when adding customer.
             using (var db = new StoreContext(options))
             {
                 db.Add(customer);
@@ -79,6 +81,7 @@ namespace StoreExtensions
 
         public static void AddLocation(this DbContextOptions<StoreContext> options, Location location)
         {
+            // TODO: disallow duplicate location names.
             using (var db = new StoreContext(options))
             {
                 db.Add(location);
@@ -306,6 +309,15 @@ namespace StoreExtensions
                 from o in ctx.Orders
                 where o.Customer.CustomerId == customerId
                       && o.TimeSubmitted != null
+                select o;
+        }
+
+        public static IQueryable<Order> GetOrderHistory(this StoreContext ctx, Location location)
+        {
+            if (location == null) return null;
+            return
+                from o in ctx.Orders
+                where o.Location.LocationId == location.LocationId
                 select o;
         }
 

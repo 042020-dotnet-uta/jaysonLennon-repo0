@@ -125,7 +125,7 @@ namespace StoreCliMenuUser
                         try
                         {
                             var orderNum = Int32.Parse(line);
-                            if (orderNum > 0 || orderNum <= this.OrderIds.Count)
+                            if (orderNum > 0 && orderNum <= this.OrderIds.Count)
                             {
                                 using (var db = new StoreContext(this.ApplicationState.DbOptions))
                                 {
