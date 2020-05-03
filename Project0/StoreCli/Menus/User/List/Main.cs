@@ -11,6 +11,7 @@ namespace StoreCliMenuUser
             this.AddListMenuOption("Set default store", ConsoleKey.D1, () => new StoreCliMenuUser.SelectLocation(appState));
             this.AddListMenuOption("Order Items", ConsoleKey.D2, () => new StoreCliMenuUser.OrderItems(appState));
             this.AddListMenuOption("Review Order", ConsoleKey.D3, () => new StoreCliMenuUser.ReviewOrder(appState));
+            this.AddListMenuOption("Order History", ConsoleKey.D4, () => new StoreCliMenuUser.OrderHistory(appState));
 
             appState.RefreshDefaultLocation();
         }

@@ -118,6 +118,7 @@ namespace StoreExtensions
                         db.SaveChanges();
                     }
                     order.AmountCharged = totalOrderPrice;
+                    order.AmountPaid = totalOrderPrice;
                     order.TimeSubmitted = DateTime.Now;
                     db.SaveChanges();
                     transaction.Commit();
@@ -295,6 +296,27 @@ namespace StoreExtensions
                 orderLine.Quantity = quantity;
                 ctx.Add(orderLine);
             }
+        }
+
+        public static IQueryable<Order> GetOrderHistory(this StoreContext ctx, Guid? customerId)
+        {
+            if (customerId == null) return null;
+
+            return
+                from o in ctx.Orders
+                where o.Customer.CustomerId == customerId
+                      && o.TimeSubmitted != null
+                select o;
+        }
+
+        public static IQueryable<OrderLineItem> GetOrderLines(this StoreContext ctx, Guid? orderId)
+        {
+            if (orderId == null) return null;
+
+            return
+                from li in ctx.OrderLineItems
+                where li.Order.OrderId == orderId
+                select li;
         }
     }
 }
