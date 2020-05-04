@@ -19,13 +19,11 @@ namespace StoreDb
         /// </summary>
         public string Login { get; set; }
 
-        // TODO: first name validation
         /// <summary>
         /// The first name of this customer.
         /// </summary>
         public string FirstName { get; set; }
 
-        // TODO: last name validation
         /// <summary>
         /// The last name of this customer.
         /// </summary>
@@ -81,11 +79,13 @@ namespace StoreDb
         /// <returns>Whether the name passed validation rules.</returns>
         public static bool Validate(string name)
         {
+            if (name.Trim().Length == 0 || name == null) return false;
+
             foreach (char c in name.ToCharArray())
             {
                 if (!Char.IsLetter(c))
                 {
-                    if (c == '.' || c == ' ') continue;
+                    if (c == '.' || c == ' ' || c == '-') continue;
                     else
                     {
                         return false;
