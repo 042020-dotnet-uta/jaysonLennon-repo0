@@ -19,7 +19,7 @@
 
 - [X] use EF Core (either database-first approach or code-first approach)
 - [X] use a DB in third normal form
-- [ ] don't use public fields
+- [X] don't use public fields
 - [X] define and use at least one interface
 
 # core / domain / business logic
