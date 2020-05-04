@@ -12,6 +12,7 @@ namespace StoreExtensions
         OutOfStock,
         NoLineItems,
         OrderNotFound,
+        HighQuantityRejection
     }
 
     public enum CreateUserAccountResult
@@ -89,7 +90,7 @@ namespace StoreExtensions
             }
         }
 
-        public static PlaceOrderResult PlaceOrder(this DbContextOptions<StoreContext> options, Guid? orderId)
+        public static PlaceOrderResult PlaceOrder(this DbContextOptions<StoreContext> options, Guid? orderId, int maxQuantity)
         {
             if (orderId == null) throw new NullReferenceException("Missing orderId");
             using (var db = new StoreContext(options))
@@ -100,6 +101,7 @@ namespace StoreExtensions
                 if (order.OrderLineItems.Count() == 0) return PlaceOrderResult.NoLineItems;
 
                 var totalOrderPrice = 0.0;
+                var totalItemQuantity = 0;
 
                 var location = order.Location;
                 using (var transaction = db.Database.BeginTransaction())
@@ -118,8 +120,10 @@ namespace StoreExtensions
                         var lineItemPrice = lineItem.Quantity * lineItem.Product.Price;
                         totalOrderPrice += lineItemPrice;
                         lineItem.AmountCharged = lineItemPrice;
+                        totalItemQuantity += lineItem.Quantity;
                         db.SaveChanges();
                     }
+                    if (totalItemQuantity > maxQuantity) return PlaceOrderResult.HighQuantityRejection;
                     order.AmountPaid = totalOrderPrice;
                     order.TimeSubmitted = DateTime.Now;
                     db.SaveChanges();

@@ -5,6 +5,10 @@ using System.Security.Cryptography;
 
 namespace Util
 {
+    public static class Config
+    {
+        public const int MAX_ORDER_QUANTITY = 200;
+    }
     public static class Hash
     {
         public static String Sha256(string input)

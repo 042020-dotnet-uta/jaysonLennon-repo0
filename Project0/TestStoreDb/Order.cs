@@ -59,7 +59,7 @@ namespace TestStoreDb
                 Assert.Equal(8, order.OrderLineItems[0].Quantity);
             }
 
-            Assert.Equal(PlaceOrderResult.Ok, options.PlaceOrder(orderId));
+            Assert.Equal(PlaceOrderResult.Ok, options.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY));
 
             using (var db = new StoreContext(options))
             {
@@ -122,7 +122,7 @@ namespace TestStoreDb
                 Assert.Equal(2, order.OrderLineItems.Count());
             }
 
-            Assert.Equal(PlaceOrderResult.Ok, options.PlaceOrder(orderId));
+            Assert.Equal(PlaceOrderResult.Ok, options.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY));
 
             using (var db = new StoreContext(options))
             {
@@ -186,7 +186,7 @@ namespace TestStoreDb
                 Assert.Equal(customer.CustomerId, order.Customer.CustomerId);
             }
 
-            Assert.Equal(PlaceOrderResult.OutOfStock, options.PlaceOrder(orderId));
+            Assert.Equal(PlaceOrderResult.OutOfStock, options.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY));
 
             using (var db = new StoreContext(options))
             {
@@ -245,7 +245,7 @@ namespace TestStoreDb
 
             }
 
-            Assert.Equal(PlaceOrderResult.OutOfStock, options.PlaceOrder(orderId));
+            Assert.Equal(PlaceOrderResult.OutOfStock, options.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY));
 
             using (var db = new StoreContext(options))
             {
@@ -255,27 +255,120 @@ namespace TestStoreDb
         }
 
         [Fact]
-        public void TODOProperReturnValueWhenOrderNotFound()
+        public void RejectsInvalidOrderId()
         {
-            Assert.True(false);
+            var options = TestUtil.GetMemDbOptions("RejectsInvalidOrderId");
+            Assert.Equal(PlaceOrderResult.OrderNotFound, options.PlaceOrder(Guid.NewGuid(), Util.Config.MAX_ORDER_QUANTITY));
         }
 
         [Fact]
-        public void TODOProperReturnValueWhenOrderIdIsNull()
+        public void RejectsOrderWithoutGuid()
         {
-            Assert.True(false);
+            var options = TestUtil.GetMemDbOptions("RejectsOrderWithoutGuid");
+
+            try
+            {
+                Assert.Equal(PlaceOrderResult.OrderNotFound, options.PlaceOrder(null, Util.Config.MAX_ORDER_QUANTITY));
+                Assert.True(false, "Should be a NullReferenceException to place an order without an id");
+            } catch (NullReferenceException) { }
         }
 
         [Fact]
-        public void TODOProperReturnValueWhenOrderHasNoLineItems()
+        public void RejectsOrderWithoutLineItems()
         {
-            Assert.True(false);
+            var options = TestUtil.GetMemDbOptions("RejectsOrderWithoutLineItems");
+
+            String productName;
+            Guid customerId;
+            Guid orderId;
+            using (var db = new StoreContext(options))
+            {
+                var (customer, location, product, inventory) = SimplePopulate(db);
+                customerId = customer.CustomerId;
+                productName = product.Name;
+
+                var order = new Order(customer, location);
+                orderId = order.OrderId;
+
+                db.Add(order);
+                db.SaveChanges();
+            }
+
+            Assert.Equal(PlaceOrderResult.NoLineItems, options.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY));
+
+            using (var db = new StoreContext(options))
+            {
+                var inventory = (from i in db.LocationInventories where i.Product.Name == productName select i).First();
+                Assert.Equal(10, inventory.Quantity);
+            }
         }
 
         [Fact]
-        public void TODOUpdatesSubmittedTimeWhenOrderPlaced()
+        public void UpdatesSubmittedTimeWhenOrderPlaced()
         {
-            Assert.True(false);
+            var options = TestUtil.GetMemDbOptions("UpdatesSubmittedTimeWhenOrderPlaced");
+
+            String productName;
+            Guid customerId;
+            Guid orderId;
+            using (var db = new StoreContext(options))
+            {
+                var (customer, location, product, inventory) = SimplePopulate(db);
+                customerId = customer.CustomerId;
+                productName = product.Name;
+
+                var order = new Order(customer, location);
+                orderId = order.OrderId;
+                var orderLine = new OrderLineItem(order, product);
+                orderLine.Quantity = 1;
+                order.OrderLineItems.Add(orderLine);
+
+                db.Add(order);
+                db.SaveChanges();
+            }
+
+            Assert.Equal(PlaceOrderResult.Ok, options.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY));
+
+            using (var db = new StoreContext(options))
+            {
+                var order = db.GetOrderById(orderId);
+                Assert.NotNull(order.TimeSubmitted);
+            }
+
+        }
+
+        [Fact]
+        public void RejectsHighOrderQuantities()
+        {
+            var options = TestUtil.GetMemDbOptions("RejectsHighOrderQuantities");
+
+            String productName;
+            Guid customerId;
+            Guid orderId;
+            using (var db = new StoreContext(options))
+            {
+                var (customer, location, product, inventory) = SimplePopulate(db);
+                customerId = customer.CustomerId;
+                productName = product.Name;
+                inventory.Quantity = 300;
+
+                var order = new Order(customer, location);
+                orderId = order.OrderId;
+                var orderLine = new OrderLineItem(order, product);
+                orderLine.Quantity = 201;
+                order.OrderLineItems.Add(orderLine);
+
+                db.Add(order);
+                db.SaveChanges();
+            }
+
+            Assert.Equal(PlaceOrderResult.HighQuantityRejection, options.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY));
+
+            using (var db = new StoreContext(options))
+            {
+                var inventory = (from i in db.LocationInventories where i.Product.Name == productName select i).First();
+                Assert.Equal(300, inventory.Quantity);
+            }
         }
     }
 }
