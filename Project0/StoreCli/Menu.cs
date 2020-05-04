@@ -131,6 +131,7 @@ namespace Util
         protected void PrintListMenu(string title)
         {
             Console.Clear();
+            CliPrinter.Title(title);
             // TODO: print list menu title
             foreach(var entry in this.ListMenuOptions)
             {

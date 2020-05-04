@@ -25,7 +25,7 @@ namespace StoreCliMenuAdmin
         /// </summary>
         public void PrintMenu()
         {
-            this.PrintListMenu("Root Menu");
+            this.PrintListMenu("Administration Menu");
         }
 
         /// <summary>
