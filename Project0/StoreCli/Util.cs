@@ -115,28 +115,6 @@ namespace Util
         }
 
         /// <summary>
-        /// Validates a user name.
-        /// </summary>
-        /// <param name="name">The name to validate.</param>
-        /// <returns>Whether the name passed validation rules.</returns>
-        public static bool NameValidator(string name)
-        {
-            foreach (char c in name.ToCharArray())
-            {
-                if (!Char.IsLetter(c))
-                {
-                    if (c == '.' || c == ' ') continue;
-                    else
-                    {
-                        CliPrinter.Error("Only letters are allowed in a name.");
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
-        /// <summary>
         /// Prompts the user for a password while printing a custom prompt.
         /// The password will not be echoed to the terminal.
         /// </summary>

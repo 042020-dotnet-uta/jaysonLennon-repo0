@@ -27,7 +27,7 @@
 - [X] class library
 - [X] contains all business logic
 - [X] contains domain classes (customer, order, store, product, etc.)
-- [ ] documentation with <summary> XML comments on all public types and members (optional: <params> and <return>)
+- [X] documentation with <summary> XML comments on all public types and members (optional: <params> and <return>)
 - [ ] (recommended: has no dependency on UI, data access, or any input/output considerations)
 
 # customer
@@ -65,5 +65,5 @@
 
 # test
 
-- [ ] at least 10 test methods
+- [X] at least 10 test methods
 - [ ] focus on unit testing business logic; testing the console app is low priority because it will be replaced with the WebUI.

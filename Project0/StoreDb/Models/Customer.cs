@@ -73,5 +73,26 @@ namespace StoreDb
             this.CustomerId = Guid.NewGuid();
             this.FirstName = firstName;
         }
+
+        /// <summary>
+        /// Validates the given name against validation rules.
+        /// </summary>
+        /// <param name="name">The name to validate.</param>
+        /// <returns>Whether the name passed validation rules.</returns>
+        public static bool Validate(string name)
+        {
+            foreach (char c in name.ToCharArray())
+            {
+                if (!Char.IsLetter(c))
+                {
+                    if (c == '.' || c == ' ') continue;
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
     }
 }

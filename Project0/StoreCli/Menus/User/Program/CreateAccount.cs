@@ -53,12 +53,14 @@ namespace StoreCliMenuUser
             {
                 var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.AcceptEmpty;
 
-                var firstName = CliInput.GetLine(cliOptions, CliInput.NameValidator, "First Name:");
+                var firstName = CliInput.GetLine(cliOptions, Customer.Validate, "First Name:");
+
                 if (firstName == "" || firstName == null) {
                     this.AbortThenExit("Empty entry - exiting.");
                     return;
                 }
-                var lastName = CliInput.GetLine(cliOptions, CliInput.NameValidator, "Last Name:");
+
+                var lastName = CliInput.GetLine(cliOptions, Customer.Validate, "Last Name:");
                 if (lastName == "" || lastName == null) {
                     this.AbortThenExit("Empty entry - exiting.");
                     return;
