@@ -179,7 +179,7 @@ namespace CodingChallengeWeek3
                 var element = Console.ReadLine();
 
                 // If no input is entered, then exit to the main menu.
-                if (element == "" || element == null)
+                if (element.Trim() == "" || element == null)
                 {
                     Console.WriteLine("\nEmpty data. Aborting.");
                     return null;
