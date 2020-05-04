@@ -132,7 +132,6 @@ namespace Util
         {
             Console.Clear();
             CliPrinter.Title(title);
-            // TODO: print list menu title
             foreach(var entry in this.ListMenuOptions)
             {
                 Console.WriteLine($"{(char)entry.Key}.  {entry.Name}");
