@@ -212,7 +212,6 @@ namespace Util
             while (this.Menus.Count > 0)
             {
                 this.Menus.Peek().PrintMenu();
-                // TODO: Automatically pop the menu after it's input loop finishes.
                 this.Menus.Peek().InputLoop();
             }
         }
