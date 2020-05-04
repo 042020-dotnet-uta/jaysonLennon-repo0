@@ -11,9 +11,9 @@ namespace CodingChallengeWeek3
         /// </summary>
         public enum MenuChoice
         {
-            IsNumberEven,
-            MultiplicationTable,
-            AlternatingElements,
+            IsEven,
+            MultTable,
+            Shuffle,
             Unknown,
             Exit
         }
@@ -43,11 +43,11 @@ namespace CodingChallengeWeek3
                 switch (choice.ToUpper())
                 {
                     case "1":
-                        return MenuChoice.IsNumberEven;
+                        return MenuChoice.IsEven;
                     case "2":
-                        return MenuChoice.MultiplicationTable;
+                        return MenuChoice.MultTable;
                     case "3":
-                        return MenuChoice.AlternatingElements;
+                        return MenuChoice.Shuffle;
                     case "4":
                         return MenuChoice.Exit;
                     case "EXIT":
@@ -230,13 +230,13 @@ namespace CodingChallengeWeek3
                 var choice = GetMenuChoice();
                 switch (choice)
                 {
-                    case MenuChoice.IsNumberEven:
+                    case MenuChoice.IsEven:
                         IsEven();
                         break;
-                    case MenuChoice.MultiplicationTable:
+                    case MenuChoice.MultTable:
                         MultTable();
                         break;
-                    case MenuChoice.AlternatingElements:
+                    case MenuChoice.Shuffle:
                         Shuffle();
                         break;
                     case MenuChoice.Unknown:
