@@ -18,6 +18,7 @@ namespace StoreCliMenuAdmin
         /// <returns>This menu.</returns>
         public Query(ApplicationData.State appState): base(appState) {
             this.AddListMenuOption("Find Customer", ConsoleKey.D1, () => new StoreCliMenuAdmin.FindCustomer(appState));
+            this.AddListMenuOption("Get orders by location", ConsoleKey.D2, () => new StoreCliMenuAdmin.LocationOrderHistory(appState));
         }
 
         /// <summary>

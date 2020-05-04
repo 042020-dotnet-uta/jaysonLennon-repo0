@@ -18,7 +18,6 @@ namespace StoreCliMenuAdmin
             this.AddListMenuOption("Customer", ConsoleKey.D1, () => new StoreCliMenuAdmin.Customer(appState));
             this.AddListMenuOption("Query", ConsoleKey.D2, () => new StoreCliMenuAdmin.Query(appState));
             this.AddListMenuOption("Location Management", ConsoleKey.D3, () => new StoreCliMenuAdmin.LocationManagement(appState));
-            this.AddListMenuOption("Master Menu List", ConsoleKey.D9, () => new StoreCliMenuAdmin.Master(appState));
         }
 
         /// <summary>
