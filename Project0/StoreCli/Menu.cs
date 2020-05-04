@@ -142,8 +142,7 @@ namespace Util
         /// Input loop when running a List menu.
         /// </summary>
         /// <param name="printMenu">Function to print out the List menu.</param>
-        // TODO: make this virtual
-        protected void RunListMenu(Action printMenu)
+        protected virtual void RunListMenu(Action printMenu)
         {
             ConsoleKeyInfo cki;
 
