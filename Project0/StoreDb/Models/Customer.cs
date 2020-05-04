@@ -8,7 +8,9 @@ namespace StoreDb
     {
         public Guid CustomerId { get; set; }
         public string Login { get; set; }
+        // TODO: first name validation
         public string FirstName { get; set; }
+        // TODO: last name validation
         public string LastName { get; set; }
         public virtual Address Address { get; set; }
         public string PhoneNumber { get; set; }
