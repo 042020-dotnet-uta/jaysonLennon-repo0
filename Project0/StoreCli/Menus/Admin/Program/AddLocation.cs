@@ -30,22 +30,27 @@ namespace StoreCliMenuAdmin
         /// </summary>
         public void InputLoop()
         {
-            Console.Write("Location name: ");
-            var name = Console.ReadLine();
-            if (name.Trim() == "") {
-                this.AbortThenExit("No name provided.");
-                return;
-            }
+            do
+            {
+                Console.Write("Location name: ");
+                var name = Console.ReadLine();
+                if (name.Trim() == "") {
+                    this.AbortThenExit("No name provided.");
+                    return;
+                }
 
-            Console.WriteLine("\nAdding new location...");
+                var location = new StoreDb.Location(name);
+                var added = this.ApplicationState.DbOptions.AddLocation(location);
+                if (!added)
+                {
+                    CliPrinter.Error("A location with that name already exists.");
+                    continue;
+                }
 
-            var location = new StoreDb.Location(name);
-            this.ApplicationState.DbOptions.AddLocation(location);
-
-            Console.WriteLine("\nLocation added. Press any key to return.");
-            Console.ReadKey(true);
-
-            this.MenuExit();
+                this.MenuExit();
+                CliInput.PressAnyKey("Location added.");
+                break;
+            } while (true);
         }
     }
 }

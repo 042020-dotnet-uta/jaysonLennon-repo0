@@ -141,13 +141,20 @@ namespace StoreExtensions
         /// </summary>
         /// <param name="options">Options for creating a new <c>StoreContext</c>.</param>
         /// <param name="location">The <c>Location</c> object to be saved.</param>
-        public static void AddLocation(this DbContextOptions<StoreContext> options, Location location)
+        /// <returns>True if the location was created successfully.
+        /// False if a location already exists with the requested name.</returns>
+        public static bool AddLocation(this DbContextOptions<StoreContext> options, Location location)
         {
             // TODO: disallow duplicate location names.
             using (var db = new StoreContext(options))
             {
+                var existingLocation = db.Locations.Where(l => l.Name.ToUpper() == location.Name.ToUpper());
+                if (existingLocation.Count() > 0) return false;
+
                 db.Add(location);
                 db.SaveChanges();
+
+                return true;
             }
         }
 
