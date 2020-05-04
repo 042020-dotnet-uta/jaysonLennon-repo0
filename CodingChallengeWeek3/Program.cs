@@ -14,7 +14,6 @@ namespace CodingChallengeWeek3
             IsEven,
             MultTable,
             Shuffle,
-            Unknown,
             Exit
         }
 
@@ -39,6 +38,7 @@ namespace CodingChallengeWeek3
             do
             {
                 Console.Write("\nOption: ");
+
                 var choice = Console.ReadLine();
                 switch (choice.ToUpper())
                 {
@@ -75,8 +75,10 @@ namespace CodingChallengeWeek3
 
                 var input = Console.ReadLine();
 
+                // TryParse will populate 'number' if it returns true.
                 int number;
                 var isNumber = Int32.TryParse(input, out number);
+
                 if (isNumber)
                 {
                     // Remainder division determines if the number is even or odd.
@@ -91,7 +93,7 @@ namespace CodingChallengeWeek3
                 }
                 else
                 {
-                    // If we get 'EXIT', or no input then just exit to the main menu.
+                    // If the input is 'EXIT', or no input is entered, then exit to the main menu.
                     if (input.ToUpper() == "EXIT" || input == "" || input == null) return;
 
                     // If the input is anything else, notify the user and try again.
@@ -118,8 +120,10 @@ namespace CodingChallengeWeek3
 
                 var input = Console.ReadLine();
 
+                // TryParse will populate 'number' if it returns true.
                 int number;
                 var isNumber = Int32.TryParse(input, out number);
+
                 if (isNumber)
                 {
                     // Hardcode 0 so we have a simpler loop later.
@@ -127,10 +131,15 @@ namespace CodingChallengeWeek3
                     {
                         Console.WriteLine("0x0 = 0");
                     }
+                    // We only want positive numbers.
                     else if (number < 0)
                     {
                         Console.WriteLine("Please enter a positive number.");
                     }
+
+                    // Two loops needed to print every possible permutation.
+                    // The outer loop is the LHS of the expression and the
+                    // inner loop is the RHS of the expression.
                     for (var o = 1; o <= number; o++)
                     {
                         for (var i = 1; i <= number; i++)
@@ -141,7 +150,7 @@ namespace CodingChallengeWeek3
                 }
                 else
                 {
-                    // If we get 'EXIT', or no input then just exit to the main menu.
+                    // If the input is 'EXIT', or no input is entered, then exit to the main menu.
                     if (input.ToUpper() == "EXIT" || input == "" || input == null) return;
 
                     // If the input is anything else, notify the user and try again.
@@ -160,13 +169,16 @@ namespace CodingChallengeWeek3
         public static List<string> GetList()
         {
             var list = new List<string>();
-            // 'i' is for user feedback on which entry they are entering data for.
-            var i = 1;
+
+            // 'entryNumber' tracks which entry the user is on. This is so we can provide
+            // feedback to the user.
+            var entryNumber = 1;
             do
             {
-                Console.Write($"Entry {i}: ");
+                Console.Write($"Entry {entryNumber}: ");
                 var element = Console.ReadLine();
 
+                // If no input is entered, then exit to the main menu.
                 if (element == "" || element == null)
                 {
                     Console.WriteLine("\nEmpty data. Aborting.");
@@ -174,7 +186,8 @@ namespace CodingChallengeWeek3
                 }
 
                 list.Add(element);
-                i += 1;
+
+                entryNumber += 1;
 
             // Continue until we get 5.
             } while (list.Count < 5);
@@ -239,13 +252,8 @@ namespace CodingChallengeWeek3
                     case MenuChoice.Shuffle:
                         Shuffle();
                         break;
-                    case MenuChoice.Unknown:
-                        // This should only occur when adding new menu options and if
-                        // we forget to code in the corresponding choice in GetMenuChoice().
-                        Console.WriteLine("Unknown menu option. Please try again.");
-                        return;
                     case MenuChoice.Exit:
-                        return; ;
+                        return;
                 }
             } while (true);
         }
