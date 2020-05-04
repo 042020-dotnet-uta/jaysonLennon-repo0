@@ -9,7 +9,7 @@ namespace StoreCliMenuUser
 {
     class OrderHistory : CliMenu, IMenu
     {
-        private List<Guid> OrderIds { get; } = new List<Guid>();
+        private List<Guid> OrderIds { get; set; } = new List<Guid>();
         private enum OrderSortKey
         {
             DateAsc,
@@ -19,7 +19,7 @@ namespace StoreCliMenuUser
             LocationAsc,
             LocationDesc,
         }
-        private OrderSortKey SortKey { set; get; }
+        private OrderSortKey SortKey { set; get; } = OrderSortKey.DateDesc;
 
         public void DisplayDetail(StoreContext db, Order order, double? amountCharged)
         {

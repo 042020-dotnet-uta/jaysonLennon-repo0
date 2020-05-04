@@ -8,40 +8,11 @@ namespace ApplicationData
 {
     public class State
     {
-        private Nullable<Guid> _OperatingLocationId;
-        public Nullable<Guid> OperatingLocationId
-        {
-            get { return _OperatingLocationId; }
-            set { _OperatingLocationId = value; }
-        }
-
-        private Nullable<Guid> _CustomerId;
-        public Nullable<Guid> CustomerId
-        {
-            get { return _CustomerId; }
-            set { _CustomerId = value; }
-        }
-
-        private DbContextOptions<StoreContext> _DbOptions;
-        public DbContextOptions<StoreContext> DbOptions
-        {
-            get { return _DbOptions; }
-            set { _DbOptions = value; }
-        }
-
-        private MenuController _MenuController;
-        public MenuController MenuController
-        {
-            get { return _MenuController; }
-            set { _MenuController = value; }
-        }
-
-        private Nullable<Guid> _CurrentOrderId;
-        public Nullable<Guid> CurrentOrderId
-        {
-            get { return _CurrentOrderId; }
-            set { _CurrentOrderId = value; }
-        }
+        public Nullable<Guid> OperatingLocationId { get; set; }
+        public Nullable<Guid> CustomerId { get; set; }
+        public DbContextOptions<StoreContext> DbOptions { get; set; }
+        public MenuController MenuController { get; set; }
+        public Nullable<Guid> CurrentOrderId { get; set; }
 
         public void RefreshCurrentOrder()
         {
@@ -50,18 +21,18 @@ namespace ApplicationData
                 var currentOrder = db.FindCurrentOrder(this.CustomerId);
                 if (currentOrder != null)
                 {
-                    this._CurrentOrderId = currentOrder.OrderId;
+                    this.CurrentOrderId = currentOrder.OrderId;
                 }
                 else
                 {
-                    this._CurrentOrderId = null;
+                    this.CurrentOrderId = null;
                 }
             }
         }
 
         public void RefreshDefaultLocation()
         {
-            this._OperatingLocationId = this.DbOptions.GetDefaultLocation(this.CustomerId);
+            this.OperatingLocationId = this.DbOptions.GetDefaultLocation(this.CustomerId);
         }
     }
 }

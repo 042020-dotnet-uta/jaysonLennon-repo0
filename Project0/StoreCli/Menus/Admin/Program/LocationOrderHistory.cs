@@ -16,7 +16,7 @@ namespace StoreCliMenuAdmin
             PriceAsc,
             PriceDesc,
         }
-        private OrderSortKey SortKey { set; get; }
+        private OrderSortKey SortKey { set; get; } = OrderSortKey.DateDesc;
 
         private enum OperatingMode
         {
@@ -25,8 +25,8 @@ namespace StoreCliMenuAdmin
         }
         private OperatingMode CurrentOperatingMode { get; set; } = OperatingMode.SelectLocation;
         private Nullable<Guid> SelectedLocation { get; set; } = null;
-        private List<Guid> OrderIds { get; } = new List<Guid>();
-        private List<Guid> LocationIds { get; } = new List<Guid>();
+        private List<Guid> OrderIds { get; set; } = new List<Guid>();
+        private List<Guid> LocationIds { get; set; } = new List<Guid>();
 
         private enum HandlerMsg
         {

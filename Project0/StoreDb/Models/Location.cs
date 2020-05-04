@@ -6,9 +6,9 @@ namespace StoreDb
 {
     public class Location
     {
-        public Guid LocationId { get; private set; }
-        public string Name { get; private set; }
-        public virtual Address Address { get; private set; }
+        public Guid LocationId { get; set; }
+        public string Name { get; set; }
+        public virtual Address Address { get; set; }
 
         public Location() { }
         public Location(string name)
@@ -20,11 +20,11 @@ namespace StoreDb
 
     public class LocationInventory
     {
-        public Guid LocationInventoryId { get; private set; }
-        public virtual Product Product { get; private set; }
-        public virtual Location Location { get; private set; }
+        public Guid LocationInventoryId { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual Location Location { get; set; }
 
-        public int Quantity { get; private set; }
+        public int Quantity { get; set; }
 
         public LocationInventory() { }
         public LocationInventory(Product product, Location location, int quantity)

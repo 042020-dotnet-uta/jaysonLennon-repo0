@@ -28,7 +28,7 @@ namespace Util
             set { _ApplicationState = value; }
         }
 
-        protected List<ListMenuOption> ListMenuOptions { get; } = new List<ListMenuOption>();
+        protected List<ListMenuOption> ListMenuOptions { get; set; } = new List<ListMenuOption>();
 
         public CliMenu(ApplicationData.State appState)
         {
@@ -100,12 +100,7 @@ namespace Util
     public class MenuController
     {
         public Stack<IMenu> Menus { get; } = new Stack<IMenu>();
-        private ApplicationData.State _AppState;
-        public ApplicationData.State AppState
-        {
-            get { return _AppState; }
-            set { _AppState = value; }
-        }
+        public ApplicationData.State AppState { get; set; }
         
         public void Push(IMenu menu)
         {
