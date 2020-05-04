@@ -137,22 +137,6 @@ namespace StoreExtensions
         }
 
         /// <summary>
-        /// Adds a new <c>Customer</c> to the database.
-        /// </summary>
-        /// <param name="options">Options for creating a new <c>StoreContext</c>.</param>
-        /// <param name="customer">The <c>Customer</c> object to be saved.</param>
-        // TODO: get rid of this method.
-        public static void AddCustomer(this DbContextOptions<StoreContext> options, Customer customer)
-        {
-            // TODO: apply validation when adding customer.
-            using (var db = new StoreContext(options))
-            {
-                db.Add(customer);
-                db.SaveChanges();
-            }
-        }
-
-        /// <summary>
         /// Adds a new <c>Location</c> to the database.
         /// </summary>
         /// <param name="options">Options for creating a new <c>StoreContext</c>.</param>
