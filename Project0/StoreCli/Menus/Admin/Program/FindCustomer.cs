@@ -7,43 +7,76 @@ using StoreExtensions;
 
 namespace StoreCliMenuAdmin
 {
+    /// <summary>
+    /// Menu to query customers by name.
+    /// </summary>
     class FindCustomer : CliMenu, IMenu
     {
-        private const int ResultRow = 4;
-        private const int QueryRow = 2;
+        /// <summary>
+        /// The terminal row to print the results to.
+        /// </summary>
+        private const int ResultCliRow = 4;
 
+        /// <summary>
+        /// The terminal row to print the query to.
+        /// </summary>
+        private const int QueryCliRow = 2;
+
+        /// <summary>
+        /// Create this menu.
+        /// </summary>
+        /// <param name="appState">Global application state.</param>
+        /// <returns>This menu.</returns>
         public FindCustomer(ApplicationData.State appState) : base(appState) { }
+
+        /// <summary>
+        /// Print this menu.
+        /// </summary>
         public void PrintMenu()
         {
             Console.Clear();
             CliPrinter.Title("Find Customer");
         }
 
+        /// <summary>
+        /// Clear search results from the terminal.
+        /// </summary>
         private void ClearResults()
         {
             //Console.SetCursorPosition(0, ResultRow + 1);
-            for (var i = ResultRow + 1; i < Console.WindowHeight; i++)
+            for (var i = ResultCliRow + 1; i < Console.WindowHeight; i++)
             {
                 ClearConsoleRow(i);
                 //Console.Write(new string(' ', Console.WindowWidth));
             }
         }
 
+        /// <summary>
+        /// Clear a single for from the terminal.
+        /// </summary>
+        /// <param name="row">The row number to clear.</param>
         private void ClearConsoleRow(int row)
         {
             Console.SetCursorPosition(0, row);
             Console.Write(new string(' ', Console.WindowWidth));
         }
 
+        /// <summary>
+        /// Print the user search term to the terminal.
+        /// </summary>
+        /// <param name="term">The term print.</param>
         private void DisplaySearchTerm(string term)
         {
-            ClearConsoleRow(QueryRow);
-            Console.SetCursorPosition(0, QueryRow);
+            ClearConsoleRow(QueryCliRow);
+            Console.SetCursorPosition(0, QueryCliRow);
             Console.Write("Search: ");
             Console.Write(term);
             Console.Write("_");
         }
 
+        /// <summary>
+        /// Handle user input.
+        /// </summary>
         public void InputLoop()
         {
 
@@ -51,7 +84,7 @@ namespace StoreCliMenuAdmin
             string searchTerm = "";
 
             this.DisplaySearchTerm("");
-            Console.SetCursorPosition(0, ResultRow);
+            Console.SetCursorPosition(0, ResultCliRow);
             Console.WriteLine("=============================");
 
             do
@@ -79,7 +112,7 @@ namespace StoreCliMenuAdmin
 
                 ClearResults();
 
-                Console.SetCursorPosition(0, ResultRow);
+                Console.SetCursorPosition(0, ResultCliRow);
                 Console.WriteLine("=============================");
 
                 if (searchTerm.Length == 0) continue;

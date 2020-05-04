@@ -7,33 +7,79 @@ using System.Linq;
 
 namespace StoreCliMenuAdmin
 {
+    /// <summary>
+    /// Menu to get the order history for a location.
+    /// </summary>
     class LocationOrderHistory : CliMenu, IMenu
     {
+        /// <summary>
+        /// Key to use for sorting orders.
+        /// </summary>
         private enum OrderSortKey
         {
+            /// <summary>Sort by Date Ascending</summary>
             DateAsc,
+            /// <summary>Sort by Date Descending</summary>
             DateDesc,
+            /// <summary>Sort by Price Ascending</summary>
             PriceAsc,
+            /// <summary>Sort by Price Descending</summary>
             PriceDesc,
         }
+
+        /// <summary>
+        /// Current sort key.
+        /// </summary>
         private OrderSortKey SortKey { set; get; } = OrderSortKey.DateDesc;
 
+        /// <summary>
+        /// Possible modes this menu may operate in.
+        /// </summary>
         private enum OperatingMode
         {
+            /// <summary>Display and select locations.</summary>
             SelectLocation,
+            /// <summary>View and sort orders.</summary>
             ViewOrders
         }
+
+        /// <summary>
+        /// The current operating mode.
+        /// </summary>
         private OperatingMode CurrentOperatingMode { get; set; } = OperatingMode.SelectLocation;
+
+        /// <summary>
+        /// The location to display orders from.
+        /// </summary>
         private Nullable<Guid> SelectedLocation { get; set; } = null;
+
+        /// <summary>
+        /// The order ids being displayed in the UI.
+        /// </summary>
         private List<Guid> OrderIds { get; set; } = new List<Guid>();
+
+        /// <summary>
+        /// The location ids that are available to choose from.
+        /// </summary>
         private List<Guid> LocationIds { get; set; } = new List<Guid>();
 
+        /// <summary>
+        /// Return value from input methods indicating the action to perform.
+        /// </summary>
         private enum HandlerMsg
         {
+            /// <summary>Menu should exit.</summary>
             Exit,
+            /// <summary>Menu should continue to take input.</summary>
             Continue
         }
 
+        /// <summary>
+        /// Displays detailed information about an order.
+        /// </summary>
+        /// <param name="db">Store context.</param>
+        /// <param name="order">Order to get information from.</param>
+        /// <param name="amountCharged">Amount charged for the order.</param>
         public void DisplayDetail(StoreContext db, Order order, double? amountCharged)
         {
             var titleString = $"\nOrder placed on {order.TimeSubmitted} at {order.Location.Name} store.";
@@ -59,11 +105,19 @@ namespace StoreCliMenuAdmin
             CliInput.PressAnyKey();
         }
 
+        /// <summary>
+        /// Create this menu.
+        /// </summary>
+        /// <param name="appState">Global application state.</param>
+        /// <returns>This menu.</returns>
         public LocationOrderHistory(ApplicationData.State appState) : base(appState)
         {
             this.SortKey = OrderSortKey.DateDesc;
         }
 
+        /// <summary>
+        /// Print this menu.
+        /// </summary>
         public void PrintMenu()
         {
             Console.Clear();
@@ -145,6 +199,10 @@ namespace StoreCliMenuAdmin
             }
         }
 
+        /// <summary>
+        /// Handle the input when viewing a list of all orders for a location.
+        /// </summary>
+        /// <returns>A <c>HandlerMsg</c> indicating what action should be taken.</returns>
         private HandlerMsg HandleViewOrderInput()
         {
             var inputOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.AcceptEmpty;
@@ -196,6 +254,10 @@ namespace StoreCliMenuAdmin
             } while (true);
         }
 
+        /// <summary>
+        /// Handle the input when selecting a location to query for orders.
+        /// </summary>
+        /// <returns>A <c>HandlerMsg</c> indicating what action should be taken.</returns>
         private HandlerMsg HandleSelectLocationInput()
         {
             var inputOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.AcceptEmpty;
@@ -220,6 +282,9 @@ namespace StoreCliMenuAdmin
             } while (true);
         }
 
+        /// <summary>
+        /// Handle user input.
+        /// </summary>
         public void InputLoop()
         {
             do

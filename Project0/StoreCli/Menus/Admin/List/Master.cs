@@ -3,10 +3,21 @@ using Util;
 
 namespace StoreCliMenuAdmin
 {
+    /// <summary>
+    /// Master list of menus.
+    /// </summary>
     class Master : CliMenu, IMenu
     {
-        public Master(ApplicationData.State appState): base(appState)
-        { }
+        /// <summary>
+        /// Create this menu.
+        /// </summary>
+        /// <param name="appState">Global application state.</param>
+        /// <returns>This menu.</returns>
+        public Master(ApplicationData.State appState): base(appState) { }
+
+        /// <summary>
+        /// Print this menu.
+        /// </summary>
         public void PrintMenu()
         {
             Console.Clear();
@@ -21,6 +32,9 @@ namespace StoreCliMenuAdmin
             Console.WriteLine("32. Admin: Find Customer");
         }
 
+        /// <summary>
+        /// Handle user input.
+        /// </summary>
         public void InputLoop()
         {
             do

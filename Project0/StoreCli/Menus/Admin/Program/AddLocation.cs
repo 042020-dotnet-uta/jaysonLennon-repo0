@@ -4,15 +4,30 @@ using StoreExtensions;
 
 namespace StoreCliMenuAdmin
 {
+    /// <summary>
+    /// Menu to add a new location.
+    /// </summary>
     class AddLocation : CliMenu, IMenu
     {
+        /// <summary>
+        /// Create this menu.
+        /// </summary>
+        /// <param name="appState">Global application state.</param>
+        /// <returns>This menu.</returns>
         public AddLocation(ApplicationData.State appState): base(appState) { }
+
+        /// <summary>
+        /// Prints this menu.
+        /// </summary>
         public void PrintMenu()
         {
             Console.Clear();
             CliPrinter.Title("Add New Location");
         }
 
+        /// <summary>
+        /// Handles user input.
+        /// </summary>
         public void InputLoop()
         {
             Console.Write("Location name: ");

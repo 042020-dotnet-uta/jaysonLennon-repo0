@@ -7,15 +7,31 @@ using StoreExtensions;
 
 namespace StoreCliMenuAdmin
 {
+    /// <summary>
+    /// Menu to add new customer
+    /// </summary>
+    // TODO: delete or change admin customer creation menu.
     class AddCustomer : CliMenu, IMenu
     {
+        /// <summary>
+        /// Create this menu.
+        /// </summary>
+        /// <param name="appState">Global application state.</param>
+        /// <returns>This menu.</returns>
         public AddCustomer(ApplicationData.State appState): base(appState) { }
+
+        /// <summary>
+        /// Prints this menu.
+        /// </summary>
         public void PrintMenu()
         {
             Console.Clear();
             CliPrinter.Title("Create new customer");
         }
 
+        /// <summary>
+        /// Handle user input.
+        /// </summary>
         public void InputLoop()
         {
             // TODO: validate customer first name.
