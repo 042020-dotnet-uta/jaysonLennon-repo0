@@ -21,7 +21,7 @@ namespace StoreCliMenuUser
         }
         private OrderSortKey SortKey { set; get; }
 
-        public void DisplayDetail(StoreContext db, Order order)
+        public void DisplayDetail(StoreContext db, Order order, double? amountCharged)
         {
             var titleString = $"\nOrder placed on {order.TimeSubmitted} at {order.Location.Name} store.";
             Console.WriteLine(titleString);
@@ -41,7 +41,7 @@ namespace StoreCliMenuUser
             }
             Console.Write(displayAlignment, "---", "-------", "----------------------------------------");
             Console.Write("\n");
-            Console.WriteLine("{0,-7}{1,-9}", "Total", "$" + order.AmountCharged);
+            Console.WriteLine("{0,-7}{1,-9}", "Total", "$" + amountCharged);
             Console.WriteLine("{0,-7}{1,-9}", "Paid", "$" + order.AmountPaid);
             CliInput.PressAnyKey();
         }
@@ -57,7 +57,19 @@ namespace StoreCliMenuUser
             CliPrinter.Title("Order History");
             using (var db = new StoreContext(this.ApplicationState.DbOptions))
             {
-                var orders = db.GetOrderHistory(this.ApplicationState.CustomerId);
+                var orders = db
+                    .GetOrderHistory(this.ApplicationState.CustomerId)
+                    .Select(o => new {
+                        OrderId = o.OrderId,
+                        Customer = o.Customer,
+                        Location = o.Location,
+                        TimeCreated = o.TimeCreated,
+                        TimeSubmitted = o.TimeSubmitted,
+                        TimeFulfilled = o.TimeFulfilled,
+                        AmountPaid = o.AmountPaid,
+                        OrderLineItem = o.OrderLineItems,
+                        AmountCharged = db.GetAmountCharged(o),
+                    });
                 switch (this.SortKey)
                 {
                     case OrderSortKey.DateDesc:
@@ -130,7 +142,8 @@ namespace StoreCliMenuUser
                                 using (var db = new StoreContext(this.ApplicationState.DbOptions))
                                 {
                                     var order = db.GetOrderById(this.OrderIds[orderNum - 1]);
-                                    this.DisplayDetail(db, order);
+                                    var amountCharged = db.GetAmountCharged(order);
+                                    this.DisplayDetail(db, order, amountCharged);
                                     break;
                                 }
                             }

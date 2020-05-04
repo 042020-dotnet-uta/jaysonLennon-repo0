@@ -34,7 +34,7 @@ namespace StoreCliMenuAdmin
             Continue
         }
 
-        public void DisplayDetail(StoreContext db, Order order)
+        public void DisplayDetail(StoreContext db, Order order, double? amountCharged)
         {
             var titleString = $"\nOrder placed on {order.TimeSubmitted} at {order.Location.Name} store.";
             Console.WriteLine(titleString);
@@ -54,7 +54,7 @@ namespace StoreCliMenuAdmin
             }
             Console.Write(displayAlignment, "---", "-------", "----------------------------------------");
             Console.Write("\n");
-            Console.WriteLine("{0,-7}{1,-9}", "Total", "$" + order.AmountCharged);
+            Console.WriteLine("{0,-7}{1,-9}", "Total", "$" + amountCharged);
             Console.WriteLine("{0,-7}{1,-9}", "Paid", "$" + order.AmountPaid);
             CliInput.PressAnyKey();
         }
@@ -91,7 +91,19 @@ namespace StoreCliMenuAdmin
                         var location = db.GetLocationById(this.SelectedLocation);
                         if (location == null) break;
 
-                        var orders = db.GetOrderHistory(location);
+                        var orders = db
+                            .GetOrderHistory(location)
+                            .Select(o => new {
+                                OrderId = o.OrderId,
+                                Customer = o.Customer,
+                                Location = o.Location,
+                                TimeCreated = o.TimeCreated,
+                                TimeSubmitted = o.TimeSubmitted,
+                                TimeFulfilled = o.TimeFulfilled,
+                                AmountPaid = o.AmountPaid,
+                                OrderLineItem = o.OrderLineItems,
+                                AmountCharged = db.GetAmountCharged(o),
+                            });
                         if (orders.Count() == 0) {
                             CliPrinter.Error("There are no orders for this location.");
                             this.CurrentOperatingMode = OperatingMode.SelectLocation;
@@ -163,7 +175,8 @@ namespace StoreCliMenuAdmin
                                 using (var db = new StoreContext(this.ApplicationState.DbOptions))
                                 {
                                     var order = db.GetOrderById(this.OrderIds[orderNum - 1]);
-                                    this.DisplayDetail(db, order);
+                                    var amountCharged = db.GetAmountCharged(order);
+                                    this.DisplayDetail(db, order, amountCharged);
                                     break;
                                 }
                             }

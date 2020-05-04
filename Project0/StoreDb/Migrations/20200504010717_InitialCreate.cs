@@ -93,8 +93,7 @@ namespace StoreDb.Migrations
                     TimeCreated = table.Column<DateTime>(nullable: true),
                     TimeSubmitted = table.Column<DateTime>(nullable: true),
                     TimeFulfilled = table.Column<DateTime>(nullable: true),
-                    AmountPaid = table.Column<double>(nullable: true),
-                    AmountCharged = table.Column<double>(nullable: true)
+                    AmountPaid = table.Column<double>(nullable: true)
                 },
                 constraints: table =>
                 {

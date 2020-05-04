@@ -120,7 +120,6 @@ namespace StoreExtensions
                         lineItem.AmountCharged = lineItemPrice;
                         db.SaveChanges();
                     }
-                    order.AmountCharged = totalOrderPrice;
                     order.AmountPaid = totalOrderPrice;
                     order.TimeSubmitted = DateTime.Now;
                     db.SaveChanges();
@@ -128,6 +127,18 @@ namespace StoreExtensions
                 }
                 return PlaceOrderResult.Ok;
             }
+        }
+
+        public static Nullable<double> GetAmountCharged(this StoreContext ctx, Order order)
+        {
+            if (order == null) return null;
+            double totalCharged = 0.0;
+            foreach (var li in ctx.OrderLineItems.Where(li => li.Order.OrderId == order.OrderId))
+            {
+                if (li.AmountCharged == null) return null;
+                totalCharged += li.AmountCharged ?? 0.0;
+            }
+            return totalCharged;
         }
 
         public static Nullable<Guid> VerifyCredentials(this DbContextOptions<StoreContext> options, string login, string password)

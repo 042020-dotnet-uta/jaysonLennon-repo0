@@ -97,9 +97,6 @@ namespace StoreDb.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<double?>("AmountCharged")
-                        .HasColumnType("REAL");
-
                     b.Property<double?>("AmountPaid")
                         .HasColumnType("REAL");
 

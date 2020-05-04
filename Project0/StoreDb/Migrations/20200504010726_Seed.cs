@@ -6,7 +6,7 @@ namespace StoreDb.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("INSERT INTO Locations (LocationId, Name, Address) VALUES ('B8B94F18-D101-4576-AF28-3CBF31EBD6B2', 'Alpha', '41 North Parker St., Upper Darby, PA 19082')");
+                        migrationBuilder.Sql("INSERT INTO Locations (LocationId, Name, Address) VALUES ('B8B94F18-D101-4576-AF28-3CBF31EBD6B2', 'Alpha', '41 North Parker St., Upper Darby, PA 19082')");
             migrationBuilder.Sql("INSERT INTO Locations (LocationId, Name, Address) VALUES ('BBD4B6EB-CF72-4313-9C92-BD1BE7CAF949', 'Beta', '2 South Fairway Avenue, Marquette, MI 49855')");
             migrationBuilder.Sql("INSERT INTO Locations (LocationId, Name, Address) VALUES ('DEA1BDEA-FB74-4372-A9D1-03BF26C8804D', 'Gamma', '65 Central Lane, Metairie, LA 70001')");
 
@@ -62,6 +62,8 @@ namespace StoreDb.Migrations
             migrationBuilder.Sql("INSERT INTO LocationInventories (LocationInventoryId, ProductId, LocationId, Quantity) VALUES ('9764F044-1C28-4309-AFA2-EF5A21835C6A', 'BCCCB075-AA60-443C-A098-820E3B3AAD65', 'DEA1BDEA-FB74-4372-A9D1-03BF26C8804D', '27')");
             migrationBuilder.Sql("INSERT INTO LocationInventories (LocationInventoryId, ProductId, LocationId, Quantity) VALUES ('0939A83A-00A6-46DC-8F06-95C02ACCDBA8', '6616320F-142A-41D6-B673-405779CAC6AB', 'DEA1BDEA-FB74-4372-A9D1-03BF26C8804D', '17')");
             migrationBuilder.Sql("INSERT INTO LocationInventories (LocationInventoryId, ProductId, LocationId, Quantity) VALUES ('FFA610A8-EFA5-40EF-BFAE-4FEC12464981', '3C7076EE-4887-4481-8E37-0D6B6BBE2D86', 'DEA1BDEA-FB74-4372-A9D1-03BF26C8804D', '22')");
+
+
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

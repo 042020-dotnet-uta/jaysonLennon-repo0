@@ -9,7 +9,7 @@ using StoreDb;
 namespace StoreDb.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20200503190610_InitialCreate")]
+    [Migration("20200504010717_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -98,9 +98,6 @@ namespace StoreDb.Migrations
                     b.Property<Guid>("OrderId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
-
-                    b.Property<double?>("AmountCharged")
-                        .HasColumnType("REAL");
 
                     b.Property<double?>("AmountPaid")
                         .HasColumnType("REAL");

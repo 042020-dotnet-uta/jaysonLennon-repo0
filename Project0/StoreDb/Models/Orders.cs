@@ -32,7 +32,6 @@ namespace StoreDb
         }
         
         public Nullable<double> AmountPaid { get; set; }
-        public Nullable<double> AmountCharged { get; set; }
 
         private List<OrderLineItem> _OrderLineItems = new List<OrderLineItem>();
         public virtual List<OrderLineItem> OrderLineItems
