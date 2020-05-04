@@ -6,15 +6,30 @@ using StoreDb;
 
 namespace StoreCliMenuUser
 {
+    /// <summary>
+    /// Menu to create a new user account.
+    /// </summary>
     class CreateAccount : CliMenu, IMenu
     {
+        /// <summary>
+        /// Create this menu.
+        /// </summary>
+        /// <param name="appState">Global application state.</param>
+        /// <returns>This menu.</returns>
         public CreateAccount(ApplicationData.State appState): base(appState) { }
+
+        /// <summary>
+        /// Print this menu.
+        /// </summary>
         public void PrintMenu()
         {
             Console.Clear();
             CliPrinter.Title("Create Account");
         }
 
+        /// <summary>
+        /// Handle user input.
+        /// </summary>
         public void InputLoop()
         {
             string EmailLoop(DbContextOptions<StoreContext> dbOptions)

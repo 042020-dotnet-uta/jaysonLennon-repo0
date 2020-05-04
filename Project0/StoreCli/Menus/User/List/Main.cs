@@ -4,8 +4,16 @@ using StoreExtensions;
 
 namespace StoreCliMenuUser
 {
+    /// <summary>
+    /// Main menu after user login.
+    /// </summary>
     class Main : CliMenu, IMenu
     {
+        /// <summary>
+        /// Create this menu.
+        /// </summary>
+        /// <param name="appState">Global application state.</param>
+        /// <returns>This menu.</returns>
         public Main(ApplicationData.State appState) : base(appState)
         {
             this.AddListMenuOption("Set default store", ConsoleKey.D1, () => new StoreCliMenuUser.SelectLocation(appState));
@@ -16,6 +24,9 @@ namespace StoreCliMenuUser
             appState.RefreshDefaultLocation();
         }
 
+        /// <summary>
+        /// Print this menu.
+        /// </summary>
         public void PrintMenu()
         {
             this.PrintListMenu("User Menu");
@@ -35,6 +46,9 @@ namespace StoreCliMenuUser
             }
         }
 
+        /// <summary>
+        /// Handle menu input.
+        /// </summary>
         public void InputLoop()
         {
             if (this.ApplicationState.OperatingLocationId == null)

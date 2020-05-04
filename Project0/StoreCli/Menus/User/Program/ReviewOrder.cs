@@ -7,17 +7,32 @@ using StoreDb;
 
 namespace StoreCliMenuUser
 {
+    /// <summary>
+    /// Menu to review and place an order.
+    /// </summary>
     class ReviewOrder : CliMenu, IMenu
     {
+        /// <summary>
+        /// Create this menu.
+        /// </summary>
+        /// <param name="appState">Global application state.</param>
+        /// <returns>This menu.</returns>
         public ReviewOrder(ApplicationData.State appState): base(appState) {
             appState.RefreshCurrentOrder();
         }
+
+        /// <summary>
+        /// Print this menu.
+        /// </summary>
         public void PrintMenu()
         {
             Console.Clear();
             CliPrinter.Title("Review Order");
         }
 
+        /// <summary>
+        /// Handle menu input.
+        /// </summary>
         public void InputLoop()
         {
             if (this.ApplicationState.CurrentOrderId == null)

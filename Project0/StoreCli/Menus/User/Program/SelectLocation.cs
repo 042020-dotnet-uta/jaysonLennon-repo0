@@ -7,15 +7,30 @@ using StoreDb;
 
 namespace StoreCliMenuUser
 {
+    /// <summary>
+    /// Menu to set a default location.
+    /// </summary>
     class SelectLocation : CliMenu, IMenu
     {
+        /// <summary>
+        /// Create this menu.
+        /// </summary>
+        /// <param name="appState">Global application state.</param>
+        /// <returns>This menu.</returns>
         public SelectLocation(ApplicationData.State appState): base(appState) { }
+
+        /// <summary>
+        /// Print this menu.
+        /// </summary>
         public void PrintMenu()
         {
             Console.Clear();
             CliPrinter.Title("Select store");
         }
 
+        /// <summary>
+        /// Handle menu input.
+        /// </summary>
         public void InputLoop()
         {
                 Console.WriteLine("Select store for orders:");

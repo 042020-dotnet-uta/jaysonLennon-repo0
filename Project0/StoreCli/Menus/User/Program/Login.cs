@@ -6,15 +6,30 @@ using StoreDb;
 
 namespace StoreCliMenuUser
 {
+    /// <summary>
+    /// User login menu.
+    /// </summary>
     class Login : CliMenu, IMenu
     {
+        /// <summary>
+        /// Create this menu.
+        /// </summary>
+        /// <param name="appState">Global application state.</param>
+        /// <returns>This menu.</returns>
         public Login(ApplicationData.State appState): base(appState) { }
+        
+        /// <summary>
+        /// Print this menu
+        /// </summary>
         public void PrintMenu()
         {
             Console.Clear();
             CliPrinter.Title("Login");
         }
 
+        /// <summary>
+        /// Handle input.
+        /// </summary>
         public void InputLoop()
         {
             var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.AcceptEmpty;

@@ -7,20 +7,46 @@ using System.Linq;
 
 namespace StoreCliMenuUser
 {
+    /// <summary>
+    /// Menu to view order history.
+    /// </summary>
     class OrderHistory : CliMenu, IMenu
     {
+        /// <summary>
+        /// <c>Order</c> ids as listed in the UI.
+        /// </summary>
         private List<Guid> OrderIds { get; set; } = new List<Guid>();
+
+        /// <summary>
+        /// How to sort the orders in the UI.
+        /// </summary>
         private enum OrderSortKey
         {
+            /// <summary>Sort by Date Ascending.</summary>
             DateAsc,
+            /// <summary>Sort by Date Descending.</summary>
             DateDesc,
+            /// <summary>Sort by Price Ascending.</summary>
             PriceAsc,
+            /// <summary>Sort by Price Descending.</summary>
             PriceDesc,
+            /// <summary>Sort by Location Ascending.</summary>
             LocationAsc,
+            /// <summary>Sort by Location Descending.</summary>
             LocationDesc,
         }
+
+        /// <summary>
+        /// Current sort key.
+        /// </summary>
         private OrderSortKey SortKey { set; get; } = OrderSortKey.DateDesc;
 
+        /// <summary>
+        /// Print out detailed information about an order.
+        /// </summary>
+        /// <param name="db">Store context.</param>
+        /// <param name="order">The <c>Order</c> to display details for.</param>
+        /// <param name="amountCharged">How much was charged for the <c>Order</c>.</param>
         public void DisplayDetail(StoreContext db, Order order, double? amountCharged)
         {
             var titleString = $"\nOrder placed on {order.TimeSubmitted} at {order.Location.Name} store.";
@@ -46,11 +72,19 @@ namespace StoreCliMenuUser
             CliInput.PressAnyKey();
         }
 
+        /// <summary>
+        /// Create this menu.
+        /// </summary>
+        /// <param name="appState">Global application state.</param>
+        /// <returns>This menu.</returns>
         public OrderHistory(ApplicationData.State appState) : base(appState)
         {
             this.SortKey = OrderSortKey.DateDesc;
         }
 
+        /// <summary>
+        /// Print this menu.
+        /// </summary>
         public void PrintMenu()
         {
             Console.Clear();
@@ -106,6 +140,9 @@ namespace StoreCliMenuUser
             }
         }
 
+        /// <summary>
+        /// Handle input.
+        /// </summary>
         public void InputLoop()
         {
             var inputOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.AcceptEmpty;

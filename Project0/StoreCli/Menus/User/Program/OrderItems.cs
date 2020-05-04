@@ -7,8 +7,16 @@ using StoreDb;
 
 namespace StoreCliMenuUser
 {
+    /// <summary>
+    /// Menu to place an order.
+    /// </summary>
     class OrderItems : CliMenu, IMenu
     {
+        /// <summary>
+        /// Create this menu.
+        /// </summary>
+        /// <param name="appState">Global application state.</param>
+        /// <returns>This menu.</returns>
         public OrderItems(ApplicationData.State appState): base(appState) {
             appState.RefreshCurrentOrder();
 
@@ -27,12 +35,18 @@ namespace StoreCliMenuUser
             }
         }
 
+        /// <summary>
+        /// Print this menu.
+        /// </summary>
         public void PrintMenu()
         {
             Console.Clear();
             CliPrinter.Title("Order Items");
         }
 
+        /// <summary>
+        /// Handle input.
+        /// </summary>
         public void InputLoop()
         {
             using (var db = new StoreContext(this.ApplicationState.DbOptions))
