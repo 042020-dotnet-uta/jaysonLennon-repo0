@@ -9,43 +9,31 @@ using StoreExtensions;
 /// </summary>
 namespace ApplicationData
 {
-    /// <summary>
-    /// State that needs to be shared across the application.
-    /// </summary>
-    public class State
+    public class UserState
     {
-        //TODO: Separate user state into its own class.
+        private State GlobalState { get; set; }
+
         /// <summary>
-        /// (In User menus) the location to associate with actions.
+        /// The location to associate with actions.
         /// </summary>
         public Nullable<Guid> OperatingLocationId { get; set; }
 
         /// <summary>
-        /// (In User menus) the customer ID to associate with actions.
+        /// The customer ID to associate with actions.
         /// </summary>
         public Nullable<Guid> CustomerId { get; set; }
 
         /// <summary>
-        /// (In User menus) the order ID to associate with actions.
+        /// The order ID to associate with actions.
         /// </summary>
         public Nullable<Guid> CurrentOrderId { get; set; }
 
         /// <summary>
-        /// Database options.
-        /// </summary>
-        public DbContextOptions<StoreContext> DbOptions { get; set; }
-
-        /// <summary>
-        /// The list menu controller.
-        /// </summary>
-        public MenuController MenuController { get; set; }
-
-        /// <summary>
-        /// (In User menus) Retrieves the current open order for the customer.
+        /// Retrieves the current open order for the customer.
         /// </summary>
         public void RefreshCurrentOrder()
         {
-            using (var db = new StoreContext(this.DbOptions))
+            using (var db = new StoreContext(this.GlobalState.DbOptions))
             {
                 var currentOrder = db.FindCurrentOrder(this.CustomerId);
                 if (currentOrder != null)
@@ -64,7 +52,34 @@ namespace ApplicationData
         /// </summary>
         public void RefreshDefaultLocation()
         {
-            this.OperatingLocationId = this.DbOptions.GetDefaultLocation(this.CustomerId);
+            this.OperatingLocationId = this.GlobalState.DbOptions.GetDefaultLocation(this.CustomerId);
+        }
+
+        public UserState(State globalState)
+        {
+            this.GlobalState = globalState;
+        }
+    }
+
+    /// <summary>
+    /// State that needs to be shared across the application.
+    /// </summary>
+    public class State
+    {
+        /// <summary>
+        /// Database options.
+        /// </summary>
+        public DbContextOptions<StoreContext> DbOptions { get; set; }
+
+        /// <summary>
+        /// The list menu controller.
+        /// </summary>
+        public MenuController MenuController { get; set; }
+
+        public UserState UserData { get; set; }
+
+        public State() {
+            this.UserData = new UserState(this);
         }
     }
 }

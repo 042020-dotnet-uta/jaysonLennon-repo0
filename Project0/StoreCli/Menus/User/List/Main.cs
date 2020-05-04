@@ -21,7 +21,7 @@ namespace StoreCliMenuUser
             this.AddListMenuOption("Review Order", ConsoleKey.D3, () => new StoreCliMenuUser.ReviewOrder(appState));
             this.AddListMenuOption("Order History", ConsoleKey.D4, () => new StoreCliMenuUser.OrderHistory(appState));
 
-            appState.RefreshDefaultLocation();
+            appState.UserData.RefreshDefaultLocation();
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace StoreCliMenuUser
 
             using (var db = new StoreDb.StoreContext(this.ApplicationState.DbOptions))
             {
-                var location = db.GetLocation(this.ApplicationState.OperatingLocationId);
+                var location = db.GetLocation(this.ApplicationState.UserData.OperatingLocationId);
                 Console.Write($"\n\nDefault store: ");
                 if (location != null)
                 {
@@ -51,7 +51,7 @@ namespace StoreCliMenuUser
         /// </summary>
         public void InputLoop()
         {
-            if (this.ApplicationState.OperatingLocationId == null)
+            if (this.ApplicationState.UserData.OperatingLocationId == null)
             {
                 this.MenuAdd(new StoreCliMenuUser.SelectLocation(this.ApplicationState));
                 return;

@@ -18,19 +18,19 @@ namespace StoreCliMenuUser
         /// <param name="appState">Global application state.</param>
         /// <returns>This menu.</returns>
         public OrderItems(ApplicationData.State appState): base(appState) {
-            appState.RefreshCurrentOrder();
+            appState.UserData.RefreshCurrentOrder();
 
-            if (appState.CurrentOrderId == null)
+            if (appState.UserData.CurrentOrderId == null)
             {
                 using (var db = new StoreContext(appState.DbOptions))
                 {
-                    var customer = db.GetCustomerById(appState.CustomerId);
-                    var location = db.GetLocationById(appState.OperatingLocationId);
+                    var customer = db.GetCustomerById(appState.UserData.CustomerId);
+                    var location = db.GetLocationById(appState.UserData.OperatingLocationId);
                     var order = new Order(customer, location);
                     order.Customer = customer;
                     db.Add(order);
                     db.SaveChanges();
-                    appState.CurrentOrderId = order.OrderId;
+                    appState.UserData.CurrentOrderId = order.OrderId;
                 }
             }
         }
@@ -51,7 +51,7 @@ namespace StoreCliMenuUser
         {
             using (var db = new StoreContext(this.ApplicationState.DbOptions))
             {
-                var inventory = db.GetProductsAvailable(this.ApplicationState.OperatingLocationId);
+                var inventory = db.GetProductsAvailable(this.ApplicationState.UserData.OperatingLocationId);
                 inventory.Where(i => i.Quantity > 0);
 
                 var i = 1;
@@ -98,7 +98,7 @@ namespace StoreCliMenuUser
                 }
 
                 var product = db.GetProductFromInventoryId(inventoryId);
-                var order = db.FindCurrentOrder(this.ApplicationState.CustomerId);
+                var order = db.FindCurrentOrder(this.ApplicationState.UserData.CustomerId);
                 db.AddLineItem(order, product, orderQuantity);
                 db.SaveChanges();
 

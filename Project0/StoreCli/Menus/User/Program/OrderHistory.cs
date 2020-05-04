@@ -92,7 +92,7 @@ namespace StoreCliMenuUser
             using (var db = new StoreContext(this.ApplicationState.DbOptions))
             {
                 var orders = db
-                    .GetOrderHistory(this.ApplicationState.CustomerId)
+                    .GetOrderHistory(this.ApplicationState.UserData.CustomerId)
                     .Select(o => new {
                         OrderId = o.OrderId,
                         Customer = o.Customer,

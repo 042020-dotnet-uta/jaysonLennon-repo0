@@ -61,13 +61,13 @@ namespace StoreCliMenuUser
 
                 var locationSelected = CliInput.GetInt(0, validator, "Enter store number:");
 
-                var customerId = this.ApplicationState.CustomerId;
+                var customerId = this.ApplicationState.UserData.CustomerId;
                 var locationId = locationIds.ElementAt(locationSelected - 1 ?? 0);
 
                 if (this.ApplicationState.DbOptions.SetDefaultLocation(customerId, locationId))
                 {
                     CliInput.PressAnyKey("Default store set.");
-                    this.ApplicationState.OperatingLocationId = locationId;
+                    this.ApplicationState.UserData.OperatingLocationId = locationId;
                     this.MenuExit();
                     return;
                 } else {

@@ -18,7 +18,7 @@ namespace StoreCliMenuUser
         /// <param name="appState">Global application state.</param>
         /// <returns>This menu.</returns>
         public ReviewOrder(ApplicationData.State appState): base(appState) {
-            appState.RefreshCurrentOrder();
+            appState.UserData.RefreshCurrentOrder();
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace StoreCliMenuUser
         /// </summary>
         public void InputLoop()
         {
-            if (this.ApplicationState.CurrentOrderId == null)
+            if (this.ApplicationState.UserData.CurrentOrderId == null)
             {
                 this.AbortThenExit("No current order on file.");
                 return;
@@ -44,7 +44,7 @@ namespace StoreCliMenuUser
             var orderTotalCost = 0.0;
             using (var db = new StoreContext(this.ApplicationState.DbOptions))
             {
-                var order = db.GetOrderById(this.ApplicationState.CurrentOrderId);
+                var order = db.GetOrderById(this.ApplicationState.UserData.CurrentOrderId);
                 Console.WriteLine("Qty\tEach\tTotal\tName");
                 Console.WriteLine("===\t=====\t=====\t====");
 
@@ -68,7 +68,7 @@ namespace StoreCliMenuUser
                 if (cki.Key == ConsoleKey.D1) {
                     Console.WriteLine("Placing order...");
 
-                    var orderId = this.ApplicationState.CurrentOrderId;
+                    var orderId = this.ApplicationState.UserData.CurrentOrderId;
                     try
                     {
                         var orderResult = this.ApplicationState.DbOptions.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY);

@@ -47,7 +47,7 @@ namespace StoreCliMenuUser
                 var customerId = this.ApplicationState.DbOptions.VerifyCredentials(login, password);
                 if (customerId != null)
                 {
-                    this.ApplicationState.CustomerId = customerId;
+                    this.ApplicationState.UserData.CustomerId = customerId;
                     this.MenuExit();
                     this.MenuAdd(new StoreCliMenuUser.Main(this.ApplicationState));
                     break;

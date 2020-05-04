@@ -85,7 +85,7 @@ namespace StoreCliMenuUser
                 var createResult = this.ApplicationState.DbOptions.CreateUserAccount(customer);
 
                 if (createResult == CreateUserAccountResult.Ok) {
-                    this.ApplicationState.CustomerId = customer.CustomerId;
+                    this.ApplicationState.UserData.CustomerId = customer.CustomerId;
                     this.MenuExit();
                     this.MenuAdd(new StoreCliMenuUser.Main(this.ApplicationState));
                     CliInput.PressAnyKey("\nAccount created.");
