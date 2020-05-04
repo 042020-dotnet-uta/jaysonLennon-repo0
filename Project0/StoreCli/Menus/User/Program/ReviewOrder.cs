@@ -56,7 +56,7 @@ namespace StoreCliMenuUser
                     var orderId = this.ApplicationState.CurrentOrderId;
                     try
                     {
-                        var orderResult = this.ApplicationState.DbOptions.PlaceOrder(orderId);
+                        var orderResult = this.ApplicationState.DbOptions.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY);
                         switch (orderResult)
                         {
                             case PlaceOrderResult.Ok:
