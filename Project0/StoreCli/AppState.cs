@@ -9,6 +9,9 @@ using StoreExtensions;
 /// </summary>
 namespace ApplicationData
 {
+    /// <summary>
+    /// State data and required by various user menus.
+    /// </summary>
     public class UserState
     {
         private State GlobalState { get; set; }
@@ -48,13 +51,17 @@ namespace ApplicationData
         }
 
         /// <summary>
-        /// (In User menus) RRetrieves the default location for the customer.
+        /// Retrieves the default location for the customer.
         /// </summary>
         public void RefreshDefaultLocation()
         {
             this.OperatingLocationId = this.GlobalState.DbOptions.GetDefaultLocation(this.CustomerId);
         }
 
+        /// <summary>
+        /// Create new instance of UserState.
+        /// </summary>
+        /// <param name="globalState">Global state being used by the program.</param>
         public UserState(State globalState)
         {
             this.GlobalState = globalState;
@@ -76,8 +83,14 @@ namespace ApplicationData
         /// </summary>
         public MenuController MenuController { get; set; }
 
+        /// <summary>
+        /// The state required by User menus.
+        /// </summary>
         public UserState UserData { get; set; }
 
+        /// <summary>
+        /// Create new instance of State.
+        /// </summary>
         public State() {
             this.UserData = new UserState(this);
         }
