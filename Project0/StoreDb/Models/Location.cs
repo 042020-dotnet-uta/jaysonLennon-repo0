@@ -8,7 +8,7 @@ namespace StoreDb
     {
         public Guid LocationId { get; private set; }
         public string Name { get; private set; }
-        public string Address { get; private set; }
+        public virtual Address Address { get; private set; }
 
         public Location() { }
         public Location(string name)

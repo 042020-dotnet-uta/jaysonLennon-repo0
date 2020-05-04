@@ -6,20 +6,20 @@ namespace StoreDb.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-                        migrationBuilder.Sql("INSERT INTO Locations (LocationId, Name, Address) VALUES ('B8B94F18-D101-4576-AF28-3CBF31EBD6B2', 'Alpha', '41 North Parker St., Upper Darby, PA 19082')");
-            migrationBuilder.Sql("INSERT INTO Locations (LocationId, Name, Address) VALUES ('BBD4B6EB-CF72-4313-9C92-BD1BE7CAF949', 'Beta', '2 South Fairway Avenue, Marquette, MI 49855')");
-            migrationBuilder.Sql("INSERT INTO Locations (LocationId, Name, Address) VALUES ('DEA1BDEA-FB74-4372-A9D1-03BF26C8804D', 'Gamma', '65 Central Lane, Metairie, LA 70001')");
+            migrationBuilder.Sql("INSERT INTO Locations (LocationId, Name) VALUES ('B8B94F18-D101-4576-AF28-3CBF31EBD6B2', 'Alpha')");
+            migrationBuilder.Sql("INSERT INTO Locations (LocationId, Name) VALUES ('BBD4B6EB-CF72-4313-9C92-BD1BE7CAF949', 'Beta')");
+            migrationBuilder.Sql("INSERT INTO Locations (LocationId, Name) VALUES ('DEA1BDEA-FB74-4372-A9D1-03BF26C8804D', 'Gamma')");
 
-            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PhoneNumber, Password, Login) VALUES ('59A3989B-8D6E-4B11-B360-52C4F94159B9', 'Gema', 'Halliday', '28 West Buckingham Street, Bemidji, MN 56601', '721-555-2195', '123', 'gema@example.com')");
-            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PhoneNumber, Password, Login) VALUES ('33CC1DEC-2B88-472D-8798-1D37D8823F0E', 'Abdul', 'Seneca', '249 Paris Hill Street, Reisterstown, MD 21136', '616-555-2521', '123', 'abdul@example.com')");
-            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PhoneNumber, Password, Login) VALUES ('A53B4693-D6AC-4D84-BB0A-9340D21D4779', 'Marx', 'Eckley', '842 Hillside Rd., Pompano Beach, FL 33060', '312-555-0972', '123', 'marx@example.com')");
-            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PhoneNumber, Password, Login) VALUES ('AE344F9D-29C6-4412-885B-F589873447ED', 'Leanna', 'Dibiase', '70 South University St., Oswego, NY 13126', '453-555-3116', '123', 'leanna@example.com')");
-            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PhoneNumber, Password, Login) VALUES ('01A326C5-A5F5-463D-99D5-EBB91ADAD452', 'Dan', 'Iles', '596 Pennsylvania Street, Fremont, OH 43420', '525-555-6283', '123', 'dan@example.com')");
-            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PhoneNumber, Password, Login) VALUES ('A23A4DDE-A0B7-4AA7-BC1A-BEDC4D965D26', 'Melissa', 'Alfonso', '9966 N. Oxford Ave., Twin Falls, ID 83301', '697-555-6791', '123', 'melissa@example.com')");
-            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PhoneNumber, Password, Login) VALUES ('6118C5C8-2F44-4634-8370-0C5623438BB7', 'Olin', 'Gillooly', '292 Glenholme Drive, Circle Pines, MN 55014', '879-555-5982', '123', 'olin@example.com')");
-            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PhoneNumber, Password, Login) VALUES ('653083A2-39A5-4D69-A615-3505710F3BB2', 'Tamica', 'Higgs', '8234 Edgefield Ave., Massapequa, NY 11758', '669-555-9601', '123', 'tamica@example.com')");
-            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PhoneNumber, Password, Login) VALUES ('E0E0B819-2D8D-484F-9013-AEB054F227B1', 'Sherry', 'Roa', '63 Bank Drive, Woodside, NY 11377', '211-555-9292', '123', 'sherry@example.com')");
-            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PhoneNumber, Password, Login) VALUES ('F91FA2F2-0E35-4476-BA81-DA325CBE6C32', 'Sara', 'Primm', '7649 Arch Drive, Marietta, GA 30008', '284-555-3831', '123', 'sara@example.com')");
+            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, PhoneNumber, Password, Login) VALUES ('59A3989B-8D6E-4B11-B360-52C4F94159B9', 'Gema', 'Halliday','721-555-2195', '123', 'gema@example.com')");
+            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, PhoneNumber, Password, Login) VALUES ('33CC1DEC-2B88-472D-8798-1D37D8823F0E', 'Abdul', 'Seneca', '616-555-2521', '123', 'abdul@example.com')");
+            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, PhoneNumber, Password, Login) VALUES ('A53B4693-D6AC-4D84-BB0A-9340D21D4779', 'Marx', 'Eckley', '312-555-0972', '123', 'marx@example.com')");
+            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, PhoneNumber, Password, Login) VALUES ('AE344F9D-29C6-4412-885B-F589873447ED', 'Leanna', 'Dibiase', '453-555-3116', '123', 'leanna@example.com')");
+            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, PhoneNumber, Password, Login) VALUES ('01A326C5-A5F5-463D-99D5-EBB91ADAD452', 'Dan', 'Iles', '525-555-6283', '123', 'dan@example.com')");
+            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, PhoneNumber, Password, Login) VALUES ('A23A4DDE-A0B7-4AA7-BC1A-BEDC4D965D26', 'Melissa', 'Alfonso', '697-555-6791', '123', 'melissa@example.com')");
+            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, PhoneNumber, Password, Login) VALUES ('6118C5C8-2F44-4634-8370-0C5623438BB7', 'Olin', 'Gillooly', '879-555-5982', '123', 'olin@example.com')");
+            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, PhoneNumber, Password, Login) VALUES ('653083A2-39A5-4D69-A615-3505710F3BB2', 'Tamica', 'Higgs', '669-555-9601', '123', 'tamica@example.com')");
+            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, PhoneNumber, Password, Login) VALUES ('E0E0B819-2D8D-484F-9013-AEB054F227B1', 'Sherry', 'Roa', '211-555-9292', '123', 'sherry@example.com')");
+            migrationBuilder.Sql("INSERT INTO Customers (CustomerId, FirstName, LastName, PhoneNumber, Password, Login) VALUES ('F91FA2F2-0E35-4476-BA81-DA325CBE6C32', 'Sara', 'Primm', '284-555-3831', '123', 'sara@example.com')");
 
             migrationBuilder.Sql("INSERT INTO Products (ProductId, Price, Name) VALUES ('B52C8E10-A72B-4B74-80A3-7367A108BB46', '1', 'Lollipop')");
             migrationBuilder.Sql("INSERT INTO Products (ProductId, Price, Name) VALUES ('34D34E7B-5911-4805-AF27-C0EE12C1EBA7', '2', 'Milk Chocolate Bar')");
@@ -62,8 +62,6 @@ namespace StoreDb.Migrations
             migrationBuilder.Sql("INSERT INTO LocationInventories (LocationInventoryId, ProductId, LocationId, Quantity) VALUES ('9764F044-1C28-4309-AFA2-EF5A21835C6A', 'BCCCB075-AA60-443C-A098-820E3B3AAD65', 'DEA1BDEA-FB74-4372-A9D1-03BF26C8804D', '27')");
             migrationBuilder.Sql("INSERT INTO LocationInventories (LocationInventoryId, ProductId, LocationId, Quantity) VALUES ('0939A83A-00A6-46DC-8F06-95C02ACCDBA8', '6616320F-142A-41D6-B673-405779CAC6AB', 'DEA1BDEA-FB74-4372-A9D1-03BF26C8804D', '17')");
             migrationBuilder.Sql("INSERT INTO LocationInventories (LocationInventoryId, ProductId, LocationId, Quantity) VALUES ('FFA610A8-EFA5-40EF-BFAE-4FEC12464981', '3C7076EE-4887-4481-8E37-0D6B6BBE2D86', 'DEA1BDEA-FB74-4372-A9D1-03BF26C8804D', '22')");
-
-
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

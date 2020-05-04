@@ -9,8 +9,8 @@ using StoreDb;
 namespace StoreDb.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20200504010717_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200504012424_Seed")]
+    partial class Seed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,13 +18,91 @@ namespace StoreDb.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.3");
 
+            modelBuilder.Entity("StoreDb.Address", b =>
+                {
+                    b.Property<Guid>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("CityId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("Line1AddressLine1Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("Line2AddressLine2Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("StateId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("ZipCodeId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("AddressId");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("Line1AddressLine1Id");
+
+                    b.HasIndex("Line2AddressLine2Id");
+
+                    b.HasIndex("StateId");
+
+                    b.HasIndex("ZipCodeId");
+
+                    b.ToTable("Addresses");
+                });
+
+            modelBuilder.Entity("StoreDb.AddressLine1", b =>
+                {
+                    b.Property<Guid>("AddressLine1Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Data")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("AddressLine1Id");
+
+                    b.ToTable("AddressLine1");
+                });
+
+            modelBuilder.Entity("StoreDb.AddressLine2", b =>
+                {
+                    b.Property<Guid>("AddressLine2Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Data")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("AddressLine2Id");
+
+                    b.ToTable("AddressLine2");
+                });
+
+            modelBuilder.Entity("StoreDb.City", b =>
+                {
+                    b.Property<Guid>("CityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CityId");
+
+                    b.ToTable("City");
+                });
+
             modelBuilder.Entity("StoreDb.Customer", b =>
                 {
                     b.Property<Guid>("CustomerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Address")
+                    b.Property<Guid?>("AddressId")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid?>("DefaultLocationLocationId")
@@ -47,6 +125,8 @@ namespace StoreDb.Migrations
 
                     b.HasKey("CustomerId");
 
+                    b.HasIndex("AddressId");
+
                     b.HasIndex("DefaultLocationLocationId");
 
                     b.ToTable("Customers");
@@ -58,13 +138,15 @@ namespace StoreDb.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Address")
+                    b.Property<Guid?>("AddressId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.HasKey("LocationId");
+
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Locations");
                 });
@@ -170,11 +252,73 @@ namespace StoreDb.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("StoreDb.State", b =>
+                {
+                    b.Property<Guid>("StateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("StateId");
+
+                    b.ToTable("State");
+                });
+
+            modelBuilder.Entity("StoreDb.ZipCode", b =>
+                {
+                    b.Property<Guid>("ZipCodeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Zip")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ZipCodeId");
+
+                    b.ToTable("ZipCode");
+                });
+
+            modelBuilder.Entity("StoreDb.Address", b =>
+                {
+                    b.HasOne("StoreDb.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId");
+
+                    b.HasOne("StoreDb.AddressLine1", "Line1")
+                        .WithMany()
+                        .HasForeignKey("Line1AddressLine1Id");
+
+                    b.HasOne("StoreDb.AddressLine2", "Line2")
+                        .WithMany()
+                        .HasForeignKey("Line2AddressLine2Id");
+
+                    b.HasOne("StoreDb.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId");
+
+                    b.HasOne("StoreDb.ZipCode", "Zip")
+                        .WithMany()
+                        .HasForeignKey("ZipCodeId");
+                });
+
             modelBuilder.Entity("StoreDb.Customer", b =>
                 {
+                    b.HasOne("StoreDb.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
                     b.HasOne("StoreDb.Location", "DefaultLocation")
                         .WithMany()
                         .HasForeignKey("DefaultLocationLocationId");
+                });
+
+            modelBuilder.Entity("StoreDb.Location", b =>
+                {
+                    b.HasOne("StoreDb.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
                 });
 
             modelBuilder.Entity("StoreDb.LocationInventory", b =>

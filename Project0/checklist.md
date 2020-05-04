@@ -7,7 +7,7 @@
 - [X] display all order history of a store location
 - [X] display all order history of a customer
 - [X] input validation
-- [ ] exception handling
+- [X] exception handling
 - [X] persistent data; no hardcoding of data.(prices, customers, order history, etc.)
 - [X] (optional: order history can be sorted by earliest, latest, cheapest, most expensive)
 - [ ] (optional: get a suggested order for a customer based on his order history)
@@ -18,7 +18,7 @@
 # design
 
 - [X] use EF Core (either database-first approach or code-first approach)
-- [ ] use a DB in third normal form
+- [X] use a DB in third normal form
 - [ ] don't use public fields
 - [X] define and use at least one interface
 
