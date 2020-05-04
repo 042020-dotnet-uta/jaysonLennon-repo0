@@ -145,7 +145,6 @@ namespace StoreExtensions
         /// False if a location already exists with the requested name.</returns>
         public static bool AddLocation(this DbContextOptions<StoreContext> options, Location location)
         {
-            // TODO: disallow duplicate location names.
             using (var db = new StoreContext(options))
             {
                 var existingLocation = db.Locations.Where(l => l.Name.ToUpper() == location.Name.ToUpper());
