@@ -41,7 +41,7 @@
 - [X] has a customer
 - [X] has an order time (when the order was placed)
 - [X] can contain multiple kinds of product in the same order
-- [ ] rejects orders with unreasonably high product quantities
+- [X] rejects orders with unreasonably high product quantities
 - [ ] (optional: some additional business rules, like special deals)
 
 # location

@@ -71,6 +71,9 @@ namespace StoreCliMenuUser
                             case PlaceOrderResult.OrderNotFound:
                                 this.AbortThenExit("Unable to place order: Unable to locate the order.");
                                 return;
+                            case PlaceOrderResult.HighQuantityRejection:
+                                this.AbortThenExit("Unable to place order: Item quantities too high.");
+                                return;
                         }
                     } catch (NullReferenceException) {
                         this.AbortThenExit("Unable to place order: Order id is missing (this is a bug).");
@@ -86,4 +89,3 @@ namespace StoreCliMenuUser
         }
     }
 }
-
