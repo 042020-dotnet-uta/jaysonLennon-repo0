@@ -221,7 +221,7 @@ namespace Util
                     this.Menus.Peek().PrintMenu();
                     this.Menus.Peek().InputLoop();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     CliInput.PressAnyKey("\nAn error occurred while processing your request. Returning.");
                     this.Pop();

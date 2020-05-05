@@ -109,8 +109,8 @@ namespace StoreExtensions
             }
 
             return from customer in ctx.Customers
-                where customer.FirstName.ToLower().Contains(name) || customer.LastName.ToLower().Contains(name)
-                select customer;
+                   where customer.FirstName.ToLower().Contains(name) || customer.LastName.ToLower().Contains(name)
+                   select customer;
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace StoreExtensions
                 var location = order.Location;
                 using (var transaction = db.Database.BeginTransaction())
                 {
-                    foreach(var lineItem in order.OrderLineItems)
+                    foreach (var lineItem in order.OrderLineItems)
                     {
                         var locationInventory = db.FindInventoryId(location, lineItem.Product);
                         if (locationInventory == null) return PlaceOrderResult.OutOfStock;
@@ -502,7 +502,9 @@ namespace StoreExtensions
             if (currentOrderLine.Count() > 0)
             {
                 var orderLine = currentOrderLine.First().Quantity += quantity;
-            } else {
+            }
+            else
+            {
                 var orderLine = new OrderLineItem(order, product);
                 orderLine.Quantity = quantity;
                 ctx.Add(orderLine);
@@ -559,5 +561,64 @@ namespace StoreExtensions
                 where li.Order.OrderId == orderId
                 select li;
         }
+
+        /// <summary>
+        /// /// Deletes an <c>OrderLineItem</c> from an order.
+        /// </summary>
+        /// <param name="ctx">Store context obect.</param>
+        /// <param name="lineItemId">The ID of the <c>OrderLineItem</c> to delete.</param>
+        /// <returns>Whether the deletion was successful.</returns>
+        public static bool DeleteLineItem(this StoreContext ctx, Guid? lineItemId)
+        {
+            if (lineItemId == null) return false;
+
+            var lineItem = ctx.OrderLineItems.Where(li => li.OrderLineItemId == lineItemId);
+            if (lineItem.Count() == 1)
+            {
+                ctx.OrderLineItems.Remove(lineItem.First());
+                ctx.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Sets the quantity of an existing <c>OrderLineItem</c>.
+        /// </summary>
+        /// <remarks>
+        /// This method does not verify if the location has enough items in stock to complete
+        /// the transaction.
+        /// </remarks>
+        /// <param name="ctx">Store context obect.</param>
+        /// <param name="lineItemId">The ID of the <c>OrderLineItem</c> to modify.</param>
+        /// <param name="newQuantity">The quantity that the <c>OrderLineItem</c> should be set to.
+        /// If the quantity is 0 or less, the <c>OrderLineItem</c> will be deleted.</param>
+        /// <returns>Whether the quantity was successfully set.</returns>
+        public static bool SetLineItemQuantity(this StoreContext ctx, Guid? lineItemId, int newQuantity)
+        {
+            if (lineItemId == null) return false;
+
+            var lineItemQuery = ctx.OrderLineItems.Where(li => li.OrderLineItemId == lineItemId);
+            if (lineItemQuery.Count() == 1)
+            {
+                var lineItem = lineItemQuery.First();
+                if (newQuantity <= 0)
+                {
+                    ctx.OrderLineItems.Remove(lineItem);
+                }
+                else
+                {
+                    lineItem.Quantity = newQuantity;
+                }
+                ctx.SaveChanges();
+                return true;
+            }
+            return false;
+        }
     }
+
+
 }

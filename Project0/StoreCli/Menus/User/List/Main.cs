@@ -19,7 +19,8 @@ namespace StoreCliMenuUser
             this.AddListMenuOption("Choose Store", ConsoleKey.D1, () => new StoreCliMenuUser.SelectLocation(appState));
             this.AddListMenuOption("Order Items", ConsoleKey.D2, () => new StoreCliMenuUser.OrderItems(appState));
             this.AddListMenuOption("Review Order", ConsoleKey.D3, () => new StoreCliMenuUser.ReviewOrder(appState));
-            this.AddListMenuOption("Order History", ConsoleKey.D4, () => new StoreCliMenuUser.OrderHistory(appState));
+            this.AddListMenuOption("Edit Order", ConsoleKey.D4, () => new StoreCliMenuUser.EditOrder(appState));
+            this.AddListMenuOption("Order History", ConsoleKey.D5, () => new StoreCliMenuUser.OrderHistory(appState));
         }
 
         /// <summary>
