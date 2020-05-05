@@ -188,5 +188,18 @@ namespace TestStoreDb
 
             Assert.Equal(CreateUserAccountResult.AccountNameExists, options.CreateUserAccount(customer));
         }
+
+        [Fact]
+        public void ValidatesName()
+        {
+            Assert.True(Customer.Validate("ACompletelyNormalName"));
+            Assert.True(Customer.Validate("Spaces are ok"));
+            Assert.True(Customer.Validate("So-are-hyphens"));
+            Assert.True(Customer.Validate("And.periods."));
+
+            Assert.False(Customer.Validate(""));
+            Assert.False(Customer.Validate("!NO GOOD!"));
+            Assert.False(Customer.Validate("123"));
+        }
     }
 }

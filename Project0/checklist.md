@@ -54,7 +54,7 @@
 # user interface
 
 - [X] interactive console application
-- [X] has only display and input related code
+- [ ] has only display and input related code
 
 # data access (recommended)
 
