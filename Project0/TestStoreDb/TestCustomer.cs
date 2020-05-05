@@ -190,14 +190,14 @@ namespace TestStoreDb
         [Fact]
         public void ValidatesName()
         {
-            Assert.True(Customer.Validate("ACompletelyNormalName"));
-            Assert.True(Customer.Validate("Spaces are ok"));
-            Assert.True(Customer.Validate("So-are-hyphens"));
-            Assert.True(Customer.Validate("And.periods."));
+            Assert.True(Customer.ValidateName("ACompletelyNormalName"));
+            Assert.True(Customer.ValidateName("Spaces are ok"));
+            Assert.True(Customer.ValidateName("So-are-hyphens"));
+            Assert.True(Customer.ValidateName("And.periods."));
 
-            Assert.False(Customer.Validate(""));
-            Assert.False(Customer.Validate("!NO GOOD!"));
-            Assert.False(Customer.Validate("123"));
+            Assert.False(Customer.ValidateName(""));
+            Assert.False(Customer.ValidateName("!NO GOOD!"));
+            Assert.False(Customer.ValidateName("123"));
         }
     }
 }

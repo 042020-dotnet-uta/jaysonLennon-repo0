@@ -105,8 +105,7 @@ namespace Util
         /// <returns>Whether the provided text is in an email address format.</returns>
         public static bool EmailValidator(string email)
         {
-            var re = new Regex(@".+@.+\..+");
-            if (!re.IsMatch(email))
+            if (!StoreDb.Customer.ValidateEmail(email))
             {
                 CliPrinter.Error("Please enter a valid email address.");
                 return false;

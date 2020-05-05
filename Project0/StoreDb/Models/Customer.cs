@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 
 namespace StoreDb
 {
@@ -75,7 +76,7 @@ namespace StoreDb
         /// </summary>
         /// <param name="name">The name to validate.</param>
         /// <returns>Whether the name passed validation rules.</returns>
-        public static bool Validate(string name)
+        public static bool ValidateName(string name)
         {
             if (name.Trim().Length == 0 || name == null) return false;
 
@@ -91,6 +92,17 @@ namespace StoreDb
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// Determines whether an email address is valid.
+        /// </summary>
+        /// <param name="email">The email address to check.</param>
+        /// <returns>Whether the email address is valid.</returns>
+        public static bool ValidateEmail(string email)
+        {
+            var re = new Regex(@".+@.+\..+");
+            return re.IsMatch(email);
         }
     }
 }
