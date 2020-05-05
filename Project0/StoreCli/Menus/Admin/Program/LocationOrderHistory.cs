@@ -157,7 +157,8 @@ namespace StoreCliMenuAdmin
                                 AmountPaid = o.AmountPaid,
                                 OrderLineItem = o.OrderLineItems,
                                 AmountCharged = db.GetAmountCharged(o),
-                            });
+                            }).ToList();
+
                         if (orders.Count() == 0) {
                             CliPrinter.Error("There are no orders for this location.");
                             this.CurrentOperatingMode = OperatingMode.SelectLocation;
@@ -165,24 +166,38 @@ namespace StoreCliMenuAdmin
                             this.PrintMenu();
                             return;
                         }
+
+                        var upArrow = '↑';
+                        var downArrow = '↓';
+
+                        var priceSortSymbol = '-';
+                        var dateSortSymbol = '-';
+
                         switch (this.SortKey)
                         {
                             case OrderSortKey.DateDesc:
-                                orders = orders.OrderByDescending(o => o.TimeSubmitted);
+                                orders = orders.OrderByDescending(o => o.TimeSubmitted).ToList();
+                                dateSortSymbol = downArrow;
                                 break;
                             case OrderSortKey.DateAsc:
-                                orders = orders.OrderBy(o => o.TimeSubmitted);
+                                orders = orders.OrderBy(o => o.TimeSubmitted).ToList();
+                                dateSortSymbol = upArrow;
                                 break;
                             case OrderSortKey.PriceDesc:
-                                orders = orders.OrderByDescending(o => o.AmountCharged);
+                                orders = orders.OrderByDescending(o => o.AmountCharged).ToList();
+                                priceSortSymbol = downArrow;
                                 break;
                             case OrderSortKey.PriceAsc:
-                                orders = orders.OrderBy(o => o.AmountCharged);
+                                orders = orders.OrderBy(o => o.AmountCharged).ToList();
+                                priceSortSymbol = upArrow;
                                 break;
                         }
-                        var historyDisplayAlignment = "{0,-5}{1,-7}{2,-25}";
+                        var historyDisplayAlignment = "{0,-6}{1,-9}{2,-25}";
+                        var priceSortLine = $"{priceSortSymbol}----";
+                        var dateSortLine = $"{dateSortSymbol}---";
+
                         Console.WriteLine(historyDisplayAlignment, "Num", "Price", "Date");
-                        Console.WriteLine(historyDisplayAlignment, "---", "-----", "----");
+                        Console.WriteLine(historyDisplayAlignment, "---", priceSortLine, dateSortLine);
                         var i = 1;
                         this.OrderIds.Clear();
                         foreach (var order in orders)
