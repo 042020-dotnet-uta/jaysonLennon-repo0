@@ -20,8 +20,6 @@ namespace StoreCliMenuUser
             this.AddListMenuOption("Order Items", ConsoleKey.D2, () => new StoreCliMenuUser.OrderItems(appState));
             this.AddListMenuOption("Review Order", ConsoleKey.D3, () => new StoreCliMenuUser.ReviewOrder(appState));
             this.AddListMenuOption("Order History", ConsoleKey.D4, () => new StoreCliMenuUser.OrderHistory(appState));
-
-            appState.UserData.RefreshDefaultLocation();
         }
 
         /// <summary>
@@ -29,6 +27,7 @@ namespace StoreCliMenuUser
         /// </summary>
         public void PrintMenu()
         {
+            this.ApplicationState.UserData.RefreshDefaultLocation();
             this.PrintListMenu("User Menu");
 
             using (var db = new StoreDb.StoreContext(this.ApplicationState.DbOptions))

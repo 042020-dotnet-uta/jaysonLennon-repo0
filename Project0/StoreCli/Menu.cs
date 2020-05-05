@@ -132,7 +132,7 @@ namespace Util
         {
             Console.Clear();
             CliPrinter.Title(title);
-            foreach(var entry in this.ListMenuOptions)
+            foreach (var entry in this.ListMenuOptions)
             {
                 Console.WriteLine($"{(char)entry.Key}.  {entry.Name}");
             }
@@ -174,7 +174,7 @@ namespace Util
         /// Global shared application state.
         /// </summary>
         public ApplicationData.State AppState { get; set; }
-        
+
         /// <summary>
         /// Add a new menu to navigate to.
         /// </summary>
@@ -210,8 +210,18 @@ namespace Util
 
             while (this.Menus.Count > 0)
             {
-                this.Menus.Peek().PrintMenu();
-                this.Menus.Peek().InputLoop();
+                try
+                {
+                    this.Menus.Peek().PrintMenu();
+                    this.Menus.Peek().InputLoop();
+                }
+                catch (Exception)
+                {
+                    // TODO: log exception.
+                    CliInput.PressAnyKey("\nAn error occurred while processing your request. Returning.");
+                    this.Pop();
+                    continue;
+                }
             }
         }
     }
