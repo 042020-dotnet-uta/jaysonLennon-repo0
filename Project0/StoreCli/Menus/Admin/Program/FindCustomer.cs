@@ -15,12 +15,15 @@ namespace StoreCliMenuAdmin
         /// <summary>
         /// The terminal row to print the results to.
         /// </summary>
-        private const int ResultCliRow = 4;
+        private const int SearchResultTerminalRow = 4;
 
         /// <summary>
         /// The terminal row to print the query to.
         /// </summary>
-        private const int QueryCliRow = 2;
+        private const int QueryEntryTerminalRow = 2;
+
+        private IQueryable<Customer> SearchResults;
+        private string SearchQuery = "";
 
         /// <summary>
         /// Create this menu.
@@ -36,6 +39,29 @@ namespace StoreCliMenuAdmin
         {
             Console.Clear();
             CliPrinter.Title("Find Customer");
+            this.DisplaySearchTerm(this.SearchQuery);
+            Console.SetCursorPosition(0, SearchResultTerminalRow);
+
+            DisplaySearchTerm(this.SearchQuery);
+
+            ClearResults();
+
+            Console.SetCursorPosition(0, SearchResultTerminalRow);
+            Console.WriteLine("=============================");
+
+            if (this.SearchQuery.Length == 0) return;
+
+            var maxResults = Console.WindowHeight - SearchResultTerminalRow - 4;
+            using (var db = new StoreDb.StoreContext(this.ApplicationState.DbOptions))
+            {
+                var customers = db.FindCustomerByName(this.SearchQuery);
+                var displayAmount = customers.Count() > maxResults ? maxResults : customers.Count();
+                Console.Write($"{customers.Count()} customers found. Displaying {displayAmount}.\n\n");
+                foreach (var customer in customers.Take(displayAmount))
+                {
+                    Console.WriteLine($"{customer.CustomerId}: {customer.FirstName} {customer.LastName}");
+                }
+            }
         }
 
         /// <summary>
@@ -44,7 +70,7 @@ namespace StoreCliMenuAdmin
         private void ClearResults()
         {
             //Console.SetCursorPosition(0, ResultRow + 1);
-            for (var i = ResultCliRow + 1; i < Console.WindowHeight; i++)
+            for (var i = SearchResultTerminalRow + 1; i < Console.WindowHeight; i++)
             {
                 ClearConsoleRow(i);
                 //Console.Write(new string(' ', Console.WindowWidth));
@@ -67,8 +93,8 @@ namespace StoreCliMenuAdmin
         /// <param name="term">The term print.</param>
         private void DisplaySearchTerm(string term)
         {
-            ClearConsoleRow(QueryCliRow);
-            Console.SetCursorPosition(0, QueryCliRow);
+            ClearConsoleRow(QueryEntryTerminalRow);
+            Console.SetCursorPosition(0, QueryEntryTerminalRow);
             Console.Write("Search: ");
             Console.Write(term);
             Console.Write("_");
@@ -81,51 +107,31 @@ namespace StoreCliMenuAdmin
         {
 
             ConsoleKeyInfo cki;
-            string searchTerm = "";
+            this.SearchQuery = "";
 
-            this.DisplaySearchTerm("");
-            Console.SetCursorPosition(0, ResultCliRow);
             Console.WriteLine("=============================");
 
             do
             {
+                PrintMenu();
                 cki = Console.ReadKey(true);
                 if (cki.Key == ConsoleKey.Enter)
                 {
                     // Exit searching if search term is empty,
                     // otherwise we will just clear the search term.
-                    if (searchTerm.Trim() == "") break;
-                    else searchTerm = "";
+                    if (this.SearchQuery.Trim() == "") break;
+                    else this.SearchQuery = "";
                 }
                 else if (cki.Key == ConsoleKey.Backspace) {
-                    if (searchTerm.Length > 0) {
-                        searchTerm = searchTerm.Substring(0, searchTerm.Length - 1);
+                    if (this.SearchQuery.Length > 0) {
+                        this.SearchQuery = this.SearchQuery.Substring(0, this.SearchQuery.Length - 1);
                     } else {
-                        searchTerm = "";
+                        this.SearchQuery = "";
                     }
                 }
                 // Always exit when using Esc key.
                 else if (cki.Key == ConsoleKey.Escape) break;
-                else searchTerm += cki.KeyChar;
-
-                DisplaySearchTerm(searchTerm);
-
-                ClearResults();
-
-                Console.SetCursorPosition(0, ResultCliRow);
-                Console.WriteLine("=============================");
-
-                if (searchTerm.Length == 0) continue;
-
-                using (var db = new StoreDb.StoreContext(this.ApplicationState.DbOptions))
-                {
-                    var customers = db.FindCustomerByName(searchTerm).Take(20);
-                    Console.Write($"{customers.Count()} customers found.\n\n");
-                    foreach (var customer in customers)
-                    {
-                        Console.WriteLine($"{customer.CustomerId}: {customer.FirstName} {customer.LastName}");
-                    }
-                }
+                else this.SearchQuery += cki.KeyChar;
 
             } while (true);
 

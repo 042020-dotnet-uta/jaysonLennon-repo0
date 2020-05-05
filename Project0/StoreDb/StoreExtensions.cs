@@ -91,11 +91,26 @@ namespace StoreExtensions
         /// <returns>An <c>IQueryable</c> representing customers that have either a first or last name containing the search string.</returns>
         public static IQueryable<Customer> FindCustomerByName(this StoreContext ctx, string name)
         {
-            // TODO: split customer name search when a space is in query.
             name = name.ToLower();
+            var nameComponents = name.Split(' ', 2);
+            if (nameComponents.Length == 2)
+            {
+                var query1 = ctx.FindCustomerByName(nameComponents[0].Trim());
+                var query2 = ctx.FindCustomerByName(nameComponents[1].Trim());
+                return query1.Intersect(query2);
+            }
+
+            var lastThenFirst = name.Split(',', 2);
+            if (lastThenFirst.Length == 2)
+            {
+                var query1 = ctx.FindCustomerByLastName(lastThenFirst[0].Trim());
+                var query2 = ctx.FindCustomerByFirstName(lastThenFirst[1].Trim());
+                return query1.Intersect(query2);
+            }
+
             return from customer in ctx.Customers
-                   where customer.FirstName.ToLower().Contains(name) || customer.LastName.ToLower().Contains(name)
-                   select customer;
+                where customer.FirstName.ToLower().Contains(name) || customer.LastName.ToLower().Contains(name)
+                select customer;
         }
 
         /// <summary>
