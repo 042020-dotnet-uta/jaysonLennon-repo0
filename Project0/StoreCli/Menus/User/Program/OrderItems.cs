@@ -21,21 +21,6 @@ namespace StoreCliMenuUser
         /// <param name="appState">Global application state.</param>
         /// <returns>This menu.</returns>
         public OrderItems(ApplicationData.State appState): base(appState) {
-            appState.UserData.RefreshCurrentOrder();
-
-            if (appState.UserData.CurrentOrderId == null)
-            {
-                using (var db = new StoreContext(appState.DbOptions))
-                {
-                    var customer = db.GetCustomerById(appState.UserData.CustomerId);
-                    var location = db.GetLocationById(appState.UserData.OperatingLocationId);
-                    var order = new Order(customer, location);
-                    order.Customer = customer;
-                    db.Add(order);
-                    db.SaveChanges();
-                    appState.UserData.CurrentOrderId = order.OrderId;
-                }
-            }
         }
 
         /// <summary>
@@ -45,6 +30,22 @@ namespace StoreCliMenuUser
         {
             Console.Clear();
             CliPrinter.Title("Order Items");
+            this.ApplicationState.UserData.RefreshCurrentOrder();
+
+            if (this.ApplicationState.UserData.CurrentOrderId == null)
+            {
+                using (var db = new StoreContext(this.ApplicationState.DbOptions))
+                {
+                    var customer = db.GetCustomerById(this.ApplicationState.UserData.CustomerId);
+                    var location = db.GetLocationById(this.ApplicationState.UserData.OperatingLocationId);
+                    var order = new Order(customer, location);
+                    order.Customer = customer;
+                    db.Add(order);
+                    db.SaveChanges();
+                    this.ApplicationState.UserData.CurrentOrderId = order.OrderId;
+                }
+            }
+
             using (var db = new StoreContext(this.ApplicationState.DbOptions))
             {
                 var inventory = db.GetProductsAvailable(this.ApplicationState.UserData.OperatingLocationId);

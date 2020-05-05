@@ -22,6 +22,12 @@ namespace ApplicationData
         public Nullable<Guid> OperatingLocationId { get; set; }
 
         /// <summary>
+        /// The location name selected by the user (cache only).
+        /// </summary>
+        /// <value></value>
+        public string OperatingLocationName { get; set; }
+
+        /// <summary>
         /// The customer ID to associate with actions.
         /// </summary>
         public Nullable<Guid> CustomerId { get; set; }
@@ -56,6 +62,11 @@ namespace ApplicationData
         public void RefreshDefaultLocation()
         {
             this.OperatingLocationId = this.GlobalState.DbOptions.GetDefaultLocation(this.CustomerId);
+            using (var db = new StoreDb.StoreContext(this.GlobalState.DbOptions))
+            {
+                var location = db.GetLocation(this.OperatingLocationId);
+                this.OperatingLocationName = location.Name;
+            }
         }
 
         /// <summary>

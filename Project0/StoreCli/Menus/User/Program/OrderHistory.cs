@@ -55,9 +55,10 @@ namespace StoreCliMenuUser
             Console.Write("\n");
 
             var displayAlignment = "{0,-7}{1,-9}{2,-40}";
+            var itemNameDividerSize = order.OrderLineItems.Max(li => li.Product.Name.Length);
             Console.Write(displayAlignment, "Qty", "Charged", "Item");
             Console.Write("\n");
-            Console.Write(displayAlignment, "---", "-------", "----------------------------------------");
+            Console.Write(displayAlignment, "---", "-------", new string('-', itemNameDividerSize));
             Console.Write("\n");
 
             foreach (var li in order.OrderLineItems)
@@ -65,10 +66,9 @@ namespace StoreCliMenuUser
                 Console.WriteLine(displayAlignment,
                     li.Quantity, "$" + li.AmountCharged, li.Product.Name);
             }
-            Console.Write(displayAlignment, "---", "-------", "----------------------------------------");
+            Console.Write(displayAlignment, "---", "-------", new string('-', itemNameDividerSize));
             Console.Write("\n");
-            Console.WriteLine("{0,-7}{1,-9}", "Total", "$" + amountCharged);
-            Console.WriteLine("{0,-7}{1,-9}", "Paid", "$" + order.AmountPaid);
+            Console.WriteLine(displayAlignment, order.OrderLineItems.Sum(li => li.Quantity), "$" + amountCharged, "Total");
             CliInput.PressAnyKey();
         }
 
@@ -187,7 +187,6 @@ namespace StoreCliMenuUser
                         if (line == "" || line == null)
                         {
                             this.MenuExit();
-                            CliInput.PressAnyKey();
                             return;
                         }
                         try
@@ -205,9 +204,9 @@ namespace StoreCliMenuUser
                             }
                             else break;
                         }
-                        catch {
-                            CliPrinter.Error("Invalid order number");
-                            continue;
+                        catch (Exception) {
+                            // We will just ignore parse errors and reprint the menu.
+                            break;
                         }
                 }
                 this.PrintMenu();

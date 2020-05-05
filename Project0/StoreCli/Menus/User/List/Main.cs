@@ -27,21 +27,16 @@ namespace StoreCliMenuUser
         /// </summary>
         public void PrintMenu()
         {
-            this.ApplicationState.UserData.RefreshDefaultLocation();
             this.PrintListMenu("User Menu");
-
-            using (var db = new StoreDb.StoreContext(this.ApplicationState.DbOptions))
+            var locationName = this.ApplicationState.UserData.OperatingLocationName;
+            Console.Write($"\n\nStore: ");
+            if (locationName != "" && locationName != null)
             {
-                var location = db.GetLocation(this.ApplicationState.UserData.OperatingLocationId);
-                Console.Write($"\n\nStore: ");
-                if (location != null)
-                {
-                    Console.Write($"{location.Name}\n");
-                }
-                else
-                {
-                    Console.Write("None selected\n");
-                }
+                Console.Write($"{locationName}\n");
+            }
+            else
+            {
+                Console.Write("None selected\n");
             }
         }
 

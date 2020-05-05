@@ -68,6 +68,7 @@ namespace StoreCliMenuUser
                 {
                     CliInput.PressAnyKey("Store set.");
                     this.ApplicationState.UserData.OperatingLocationId = locationId;
+                    this.ApplicationState.UserData.RefreshDefaultLocation();
                     this.MenuExit();
                     return;
                 } else {

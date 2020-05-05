@@ -53,6 +53,7 @@ namespace StoreCliMenuUser
                     CliPrinter.Error("Invalid login.");
                 }
             } while (true);
+            this.ApplicationState.UserData.RefreshDefaultLocation();
         }
     }
 }

@@ -16,7 +16,6 @@ namespace StoreCliMenuUser
         /// <param name="appState">Global application state.</param>
         /// <returns>This menu.</returns>
         public ReviewOrder(ApplicationData.State appState): base(appState) {
-            appState.UserData.RefreshCurrentOrder();
         }
 
         /// <summary>
@@ -26,6 +25,7 @@ namespace StoreCliMenuUser
         {
             Console.Clear();
             CliPrinter.Title("Review Order");
+            this.ApplicationState.UserData.RefreshCurrentOrder();
         }
 
         /// <summary>
