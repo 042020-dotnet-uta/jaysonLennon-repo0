@@ -40,6 +40,7 @@ namespace StoreCliMenuAdmin
                 }
 
                 var location = new StoreDb.Location(name);
+
                 var added = this.ApplicationState.DbOptions.AddLocation(location);
                 if (!added)
                 {

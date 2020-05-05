@@ -4,19 +4,19 @@ using StoreExtensions;
 using Microsoft.EntityFrameworkCore;
 using StoreDb;
 
-namespace StoreCliMenuUser
+namespace StoreCliMenuAdmin
 {
     /// <summary>
-    /// Menu to create a new user account.
+    /// Menu to add a new customer
     /// </summary>
-    class CreateAccount : CliMenu, IMenu
+    class AddCustomer : CliMenu, IMenu
     {
         /// <summary>
         /// Create this menu.
         /// </summary>
         /// <param name="appState">Global application state.</param>
         /// <returns>This menu.</returns>
-        public CreateAccount(ApplicationData.State appState): base(appState) { }
+        public AddCustomer(ApplicationData.State appState): base(appState) { }
 
         /// <summary>
         /// Print this menu.
@@ -24,7 +24,7 @@ namespace StoreCliMenuUser
         public void PrintMenu()
         {
             Console.Clear();
-            CliPrinter.Title("Create Account");
+            CliPrinter.Title("Add new customer");
         }
 
         /// <summary>
@@ -53,14 +53,14 @@ namespace StoreCliMenuUser
             {
                 var cliOptions = CliInput.GetLineOptions.TrimSpaces | CliInput.GetLineOptions.AcceptEmpty;
 
-                var firstName = CliInput.GetLine(cliOptions, Customer.Validate, "First Name:");
+                var firstName = CliInput.GetLine(cliOptions, StoreDb.Customer.Validate, "First Name:");
 
                 if (firstName == "" || firstName == null) {
                     this.AbortThenExit("Empty entry - exiting.");
                     return;
                 }
 
-                var lastName = CliInput.GetLine(cliOptions, Customer.Validate, "Last Name:");
+                var lastName = CliInput.GetLine(cliOptions, StoreDb.Customer.Validate, "Last Name:");
                 if (lastName == "" || lastName == null) {
                     this.AbortThenExit("Empty entry - exiting.");
                     return;
@@ -76,7 +76,8 @@ namespace StoreCliMenuUser
                     this.AbortThenExit("Empty entry - exiting.");
                     return;
                 }
-                var customer = new Customer();
+
+                var customer = new StoreDb.Customer();
                 // Data pre-validated above.
                 customer.FirstName = firstName;
                 customer.LastName = lastName;
@@ -88,11 +89,10 @@ namespace StoreCliMenuUser
                 if (createResult == CreateUserAccountResult.Ok) {
                     this.ApplicationState.UserData.CustomerId = customer.CustomerId;
                     this.MenuExit();
-                    this.MenuAdd(new StoreCliMenuUser.Main(this.ApplicationState));
                     CliInput.PressAnyKey("\nAccount created.");
                     break;
                 }
-                else CliPrinter.Error("An error occurred while creating your account. Please try again.");
+                else CliPrinter.Error("An error occurred while adding the customer. Please try again.");
             } while (true);
         }
     }

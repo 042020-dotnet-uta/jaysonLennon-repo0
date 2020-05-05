@@ -22,7 +22,9 @@ namespace StoreCliMenuAdmin
         /// </summary>
         private const int QueryEntryTerminalRow = 2;
 
-        private IQueryable<Customer> SearchResults;
+        /// <summary>
+        /// The current search query entered by the user.
+        /// </summary>
         private string SearchQuery = "";
 
         /// <summary>

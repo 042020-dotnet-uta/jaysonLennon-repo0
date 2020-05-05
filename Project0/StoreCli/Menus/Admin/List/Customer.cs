@@ -19,6 +19,7 @@ namespace StoreCliMenuAdmin
         public Customer(ApplicationData.State appState): base(appState)
         {
             this.AddListMenuOption("Find Customer", ConsoleKey.D1, () => new StoreCliMenuAdmin.FindCustomer(appState));
+            this.AddListMenuOption("Add Customer", ConsoleKey.D2, () => new StoreCliMenuAdmin.AddCustomer(appState));
         }
 
         /// <summary>
