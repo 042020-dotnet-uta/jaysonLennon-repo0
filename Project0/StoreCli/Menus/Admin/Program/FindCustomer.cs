@@ -131,6 +131,9 @@ namespace StoreCliMenuAdmin
                 }
                 // Always exit when using Esc key.
                 else if (cki.Key == ConsoleKey.Escape) break;
+                // Ignore non-printable characters.
+                // https://docs.microsoft.com/en-us/dotnet/api/system.consolekeyinfo.keychar?view=netcore-3.1#remarks
+                else if (cki.KeyChar == '\u0000') continue;
                 else this.SearchQuery += cki.KeyChar;
 
             } while (true);
