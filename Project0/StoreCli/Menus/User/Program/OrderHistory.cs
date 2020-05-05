@@ -102,32 +102,51 @@ namespace StoreCliMenuUser
                         TimeFulfilled = o.TimeFulfilled,
                         AmountPaid = o.AmountPaid,
                         OrderLineItem = o.OrderLineItems,
-                        AmountCharged = db.GetAmountCharged(o),
-                    });
+                        AmountCharged = (double)db.GetAmountCharged(o),
+                    }).ToList();
+
+                var upArrow = '↑';
+                var downArrow = '↓';
+
+                var priceSortSymbol = '-';
+                var dateSortSymbol = '-';
+                var locationSortSymbol = '-';
+
                 switch (this.SortKey)
                 {
                     case OrderSortKey.DateDesc:
-                        orders = orders.OrderByDescending(o => o.TimeSubmitted);
+                        orders = orders.OrderByDescending(o => o.TimeSubmitted).ToList();
+                        dateSortSymbol = downArrow;
                         break;
                     case OrderSortKey.DateAsc:
-                        orders = orders.OrderBy(o => o.TimeSubmitted);
+                        orders = orders.OrderBy(o => o.TimeSubmitted).ToList();
+                        dateSortSymbol = upArrow;
                         break;
                     case OrderSortKey.PriceDesc:
-                        orders = orders.OrderByDescending(o => o.AmountCharged);
+                        orders = orders.OrderByDescending(o => o.AmountCharged).ToList();
+                        priceSortSymbol = downArrow;
                         break;
                     case OrderSortKey.PriceAsc:
-                        orders = orders.OrderBy(o => o.AmountCharged);
+                        orders = orders.OrderBy(o => o.AmountCharged).ToList();
+                        priceSortSymbol = upArrow;
                         break;
                     case OrderSortKey.LocationDesc:
-                        orders = orders.OrderByDescending(o => o.Location.Name);
+                        orders = orders.OrderByDescending(o => o.Location.Name).ToList();
+                        locationSortSymbol = downArrow;
                         break;
                     case OrderSortKey.LocationAsc:
-                        orders = orders.OrderBy(o => o.Location.Name);
+                        orders = orders.OrderBy(o => o.Location.Name).ToList();
+                        locationSortSymbol = upArrow;
                         break;
                 }
-                var historyDisplayAlignment = "{0,-5}{1,-7}{2,-25}{3,-15}";
+
+                var historyDisplayAlignment = "{0,-6}{1,-9}{2,-25}{3,-15}";
+                var priceSortLine = $"{priceSortSymbol}----";
+                var dateSortLine = $"{dateSortSymbol}---";
+                var locationSortLine = $"{locationSortSymbol}----";
+
                 Console.WriteLine(historyDisplayAlignment, "Num", "Price", "Date", "Store");
-                Console.WriteLine(historyDisplayAlignment, "---", "-----", "----", "-----");
+                Console.WriteLine(historyDisplayAlignment, "---", priceSortLine, dateSortLine, locationSortLine);
                 var i = 1;
                 this.OrderIds.Clear();
                 foreach (var order in orders)
