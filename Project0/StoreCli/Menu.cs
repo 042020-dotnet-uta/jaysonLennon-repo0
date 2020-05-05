@@ -206,7 +206,15 @@ namespace Util
         /// </summary>
         public void Run()
         {
-            Push(new StoreCliMenu.Main(this.AppState));
+            try
+            {
+                Push(new StoreCliMenu.Main(this.AppState));
+            }
+            catch (Exception)
+            {
+                CliPrinter.Error("An error occurred while connecting to database. Please try running the program again.");
+                return;
+            }
 
             while (this.Menus.Count > 0)
             {
@@ -217,7 +225,6 @@ namespace Util
                 }
                 catch (Exception)
                 {
-                    // TODO: log exception.
                     CliInput.PressAnyKey("\nAn error occurred while processing your request. Returning.");
                     this.Pop();
                     continue;
