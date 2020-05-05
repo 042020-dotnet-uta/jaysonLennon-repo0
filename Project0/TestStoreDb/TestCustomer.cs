@@ -199,5 +199,17 @@ namespace TestStoreDb
             Assert.False(Customer.ValidateName("!NO GOOD!"));
             Assert.False(Customer.ValidateName("123"));
         }
+
+        [Fact]
+        public void ValidatesEmail()
+        {
+            Assert.True(Customer.ValidateEmail("a@normal.email"));
+            Assert.False(Customer.ValidateEmail("no at symbol"));
+            Assert.False(Customer.ValidateEmail("no@tld"));
+            Assert.False(Customer.ValidateEmail("@no.user"));
+            Assert.False(Customer.ValidateEmail("no.at"));
+            Assert.False(Customer.ValidateEmail("@no_user_or_tld"));
+            Assert.False(Customer.ValidateEmail("@"));
+        }
     }
 }
