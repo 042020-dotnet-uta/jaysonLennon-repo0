@@ -1,6 +1,4 @@
-
 using Xunit;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using StoreDb;
 using System;

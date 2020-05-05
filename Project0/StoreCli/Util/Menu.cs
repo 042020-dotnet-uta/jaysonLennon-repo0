@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using StoreDb;
 
 namespace Util
 {

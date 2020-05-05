@@ -1,8 +1,6 @@
 using System;
 using Util;
 using StoreExtensions;
-using Microsoft.EntityFrameworkCore;
-using StoreDb;
 
 namespace StoreCliMenuUser
 {

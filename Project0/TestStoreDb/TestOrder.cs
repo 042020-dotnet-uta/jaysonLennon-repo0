@@ -3,7 +3,6 @@ using System.Linq;
 using System;
 using StoreDb;
 using StoreExtensions;
-using Microsoft.EntityFrameworkCore;
 
 namespace TestStoreDb
 {
