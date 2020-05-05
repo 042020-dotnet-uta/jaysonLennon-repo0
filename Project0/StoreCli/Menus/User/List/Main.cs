@@ -16,7 +16,7 @@ namespace StoreCliMenuUser
         /// <returns>This menu.</returns>
         public Main(ApplicationData.State appState) : base(appState)
         {
-            this.AddListMenuOption("Set default store", ConsoleKey.D1, () => new StoreCliMenuUser.SelectLocation(appState));
+            this.AddListMenuOption("Choose Store", ConsoleKey.D1, () => new StoreCliMenuUser.SelectLocation(appState));
             this.AddListMenuOption("Order Items", ConsoleKey.D2, () => new StoreCliMenuUser.OrderItems(appState));
             this.AddListMenuOption("Review Order", ConsoleKey.D3, () => new StoreCliMenuUser.ReviewOrder(appState));
             this.AddListMenuOption("Order History", ConsoleKey.D4, () => new StoreCliMenuUser.OrderHistory(appState));
@@ -33,7 +33,7 @@ namespace StoreCliMenuUser
             using (var db = new StoreDb.StoreContext(this.ApplicationState.DbOptions))
             {
                 var location = db.GetLocation(this.ApplicationState.UserData.OperatingLocationId);
-                Console.Write($"\n\nDefault store: ");
+                Console.Write($"\n\nStore: ");
                 if (location != null)
                 {
                     Console.Write($"{location.Name}\n");

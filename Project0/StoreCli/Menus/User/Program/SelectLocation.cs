@@ -66,12 +66,12 @@ namespace StoreCliMenuUser
 
                 if (this.ApplicationState.DbOptions.SetDefaultLocation(customerId, locationId))
                 {
-                    CliInput.PressAnyKey("Default store set.");
+                    CliInput.PressAnyKey("Store set.");
                     this.ApplicationState.UserData.OperatingLocationId = locationId;
                     this.MenuExit();
                     return;
                 } else {
-                    CliInput.PressAnyKey("An error occurred while setting the default store. Please try again.");
+                    CliInput.PressAnyKey("An error occurred while setting the store. Please try again.");
                 }
         }
     }
