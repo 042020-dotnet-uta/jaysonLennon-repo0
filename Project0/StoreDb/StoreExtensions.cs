@@ -540,6 +540,7 @@ namespace StoreExtensions
             return
                 from o in ctx.Orders
                 where o.Location.LocationId == location.LocationId
+                      && o.TimeSubmitted != null
                 select o;
         }
 
