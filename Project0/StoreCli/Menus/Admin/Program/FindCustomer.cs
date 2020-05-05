@@ -57,9 +57,11 @@ namespace StoreCliMenuAdmin
                 var customers = db.FindCustomerByName(this.SearchQuery);
                 var displayAmount = customers.Count() > maxResults ? maxResults : customers.Count();
                 Console.Write($"{customers.Count()} customers found. Displaying {displayAmount}.\n\n");
-                foreach (var customer in customers.Take(displayAmount))
+                foreach (var customer in customers.Take(displayAmount).OrderBy(c => c.FirstName))
                 {
-                    Console.WriteLine($"{customer.CustomerId}: {customer.FirstName} {customer.LastName}");
+                    var phoneNumber = customer.PhoneNumber;
+                    if (phoneNumber == null || phoneNumber == "") phoneNumber = "            ";
+                    Console.WriteLine($"{phoneNumber}: {customer.FirstName} {customer.LastName}");
                 }
             }
         }
