@@ -97,6 +97,10 @@ namespace StoreCliUtil
         {
             this.ListMenuOptions.Add(new ListMenuOption { Name = name, Key = key, CreateListMenu = createMenu });
         }
+        protected void AddListMenuSpace()
+        {
+            this.ListMenuOptions.Add(new ListMenuOption { Name = null, Key = ConsoleKey.NoName, CreateListMenu = null });
+        }
 
         /// <summary>
         /// Attempts to navigate to a list item given the input.
@@ -132,7 +136,8 @@ namespace StoreCliUtil
             CliPrinter.Title(title);
             foreach (var entry in this.ListMenuOptions)
             {
-                Console.WriteLine($"{(char)entry.Key}.  {entry.Name}");
+                if (entry.Name == null) Console.Write("\n");
+                else Console.WriteLine($"{(char)entry.Key}.  {entry.Name}");
             }
         }
 
