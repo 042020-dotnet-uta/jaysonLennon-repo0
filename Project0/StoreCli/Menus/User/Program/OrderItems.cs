@@ -112,7 +112,7 @@ namespace StoreCliMenuUser
 
                     var orderQuantity = CliInput.GetInt(CliInput.GetIntOptions.AllowEmpty,
                                                         v => v > 0 && v <= projectedQuantity,
-                                                        $"Quantity [1-{projectedQuantity}]: ") ?? 0;
+                                                        $"Quantity [1..{projectedQuantity}]: ") ?? 0;
                     if (orderQuantity == 0) continue;
 
                     db.AddLineItem(order, product, orderQuantity);
