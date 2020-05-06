@@ -1,1 +1,4 @@
-http://listofrandomnames.com
+# Project0
+
+## Resources Used
+* http://listofrandomnames.com for name lists

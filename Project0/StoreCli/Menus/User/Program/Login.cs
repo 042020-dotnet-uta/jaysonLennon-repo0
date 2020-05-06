@@ -37,7 +37,7 @@ namespace StoreCliMenuUser
                 var login = CliInput.GetLine(cliOptions, CliInput.EmailValidator, "Email:");
                 if (login == "" || login == null) {
                     this.MenuExit();
-                    break;
+                    return;
                 }
 
                 var password = CliInput.GetPassword("Password:");
