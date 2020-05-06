@@ -1,5 +1,5 @@
 # re-migrate the database
-migrate:
+re-migrate:
     rm -Rf StoreCli/store.sqlite
     dotnet ef database update --startup-project StoreCli --project StoreDb
 
@@ -23,3 +23,9 @@ run:
 # run tests
 test:
     dotnet test TestStoreDb
+
+demo-remove-db:
+    mv StoreCli/store.sqlite StoreCli/store.sqlite.bak
+    
+demo-restore-db:
+    mv StoreCli/store.sqlite.bak StoreCli/store.sqlite
