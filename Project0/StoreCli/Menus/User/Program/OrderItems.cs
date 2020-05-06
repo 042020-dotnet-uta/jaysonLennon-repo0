@@ -52,7 +52,6 @@ namespace StoreCliMenuUser
             using (var db = new StoreContext(this.ApplicationState.DbOptions))
             {
                 var inventory = db.GetProductsAvailable(this.ApplicationState.UserData.OperatingLocationId);
-                inventory = inventory.Where(i => i.Quantity > 0);
 
                 var order = db.GetOrderById(this.ApplicationState.UserData.CurrentOrderId);
 

@@ -401,8 +401,7 @@ namespace StoreExtensions
         {
             if (locationId == null) return null;
             return ctx.LocationInventories
-                      .Where(li => li.Location.LocationId == locationId)
-                      .Where(li => li.Quantity > 0);
+                      .Where(li => li.Location.LocationId == locationId);
         }
 
         /// <summary>

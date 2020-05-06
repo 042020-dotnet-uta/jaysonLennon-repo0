@@ -46,16 +46,18 @@ namespace StoreCliMenuUser
                 Console.WriteLine($"===\t===\t=====\t=====\t{new string('=', itemNameDividerSize)}");
 
                 double orderTotalCost = 0.0;
+                int orderTotalUnits = 0;
                 foreach (var o in order.OrderLineItems)
                 {
                     this.LineItemIds.Add(o.OrderLineItemId);
                     var lineItemTotal = o.Product.Price * o.Quantity;
                     orderTotalCost += lineItemTotal;
+                    orderTotalUnits += o.Quantity;
                     Console.WriteLine($"{this.LineItemIds.Count}\t{o.Quantity}\t${o.Product.Price}\t${lineItemTotal}\t{o.Product.Name}");
                 }
 
                 Console.WriteLine($"---\t-----\t-----\t-----\t{new string('-', itemNameDividerSize)}");
-                Console.Write($"\t\t\t${orderTotalCost}\tTotal\n\n");
+                Console.Write($"\t{orderTotalUnits}\t\t${orderTotalCost}\tTotal\n\n");
             }
         }
 
