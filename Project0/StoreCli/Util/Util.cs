@@ -184,11 +184,7 @@ namespace Util
 
                 if ((options & GetLineOptions.AcceptEmpty) != 0 && (input == "" || input == null)) return "";
 
-                if (input == "" || input == null)
-                {
-                    CliPrinter.Error("Empty value not allowed.");
-                    continue;
-                }
+                if (input == "" || input == null) continue;
 
                 if (!validator(input)) continue;
                 else break;
@@ -230,11 +226,7 @@ namespace Util
 
                 if ((options & GetIntOptions.AllowEmpty) != 0 && input.Trim() == "" || input == null) break;
 
-                if (input == "" || input == null)
-                {
-                    CliPrinter.Error("Empty value not allowed.");
-                    continue;
-                }
+                if (input == "" || input == null) continue;
 
                 try
                 {
@@ -245,7 +237,6 @@ namespace Util
                 }
                 catch
                 {
-                    CliPrinter.Error("Please enter a number.");
                     continue;
                 }
             } while (true);

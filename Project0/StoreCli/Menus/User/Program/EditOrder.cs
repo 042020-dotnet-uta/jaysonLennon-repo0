@@ -37,7 +37,7 @@ namespace StoreCliMenuUser
             {
                 var order = db.GetOrderById(this.ApplicationState.UserData.CurrentOrderId);
                 if (order == null) return;
-
+                if (order.OrderLineItems.Count() == 0) return;
                 var itemNameDividerSize = order.OrderLineItems.Max(li => li.Product.Name.Length);
                 Console.WriteLine("#\tQty\tEach\tTotal\tName");
                 Console.WriteLine($"===\t===\t=====\t=====\t{new string('=', itemNameDividerSize)}");
@@ -69,6 +69,16 @@ namespace StoreCliMenuUser
                     CliInput.PressAnyKey("There is currently no open order.");
                     break;
                 }
+                using (var db = new StoreContext(this.ApplicationState.DbOptions))
+                {
+                    var order = db.GetOrderById(this.ApplicationState.UserData.CurrentOrderId);
+                    if (order == null) break;
+                    if (order.OrderLineItems.Count() == 0)
+                    {
+                        CliInput.PressAnyKey("There are no items in your order.");
+                        break;
+                    }
+                }
 
                 var getLineOptions = CliInput.GetLineOptions.AcceptEmpty | CliInput.GetLineOptions.TrimSpaces;
                 var option = CliInput.GetLine(getLineOptions, v => true, "[D]elete / Change [Q]uantity: ");
@@ -99,11 +109,27 @@ namespace StoreCliMenuUser
                         var itemNumber = CliInput.GetInt(CliInput.GetIntOptions.AllowEmpty, n => n > 0 && n <= this.LineItemIds.Count, "Select item number:");
                         if (itemNumber == null) continue;
 
-                        var newQuantity = CliInput.GetInt(CliInput.GetIntOptions.AllowEmpty, q => q >= 0, "New quantity:");
-                        if (newQuantity == null) continue;
-
                         using (var db = new StoreContext(this.ApplicationState.DbOptions))
                         {
+                            var order = db.GetOrderById(this.ApplicationState.UserData.CurrentOrderId);
+
+                            var lineItemId = this.LineItemIds[(int)itemNumber - 1];
+                            var lineItem = order.OrderLineItems.Where(li => li.OrderLineItemId == lineItemId);
+
+                            var product = lineItem.First().Product;
+
+
+                            var maxOrder = db.LocationInventories
+                                             .Where(i => i.Location.LocationId == order.Location.LocationId)
+                                             .Where(i => i.Product.ProductId == product.ProductId)
+                                             .Select(i => i.Quantity).FirstOrDefault();
+
+                            var newQuantity = CliInput.GetInt(CliInput.GetIntOptions.AllowEmpty,
+                                                              q => q >= 0 && q <= maxOrder,
+                                                              $"New quantity [{maxOrder} max]:");
+
+                            if (newQuantity == null) continue;
+
                             var adjusted = db.SetLineItemQuantity(this.LineItemIds[(int)itemNumber - 1], (int)newQuantity);
                             if (!adjusted) {
                                 CliInput.PressAnyKey("There was a problem adjusting the quantity for that line item. Please try again.");

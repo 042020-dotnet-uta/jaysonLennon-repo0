@@ -592,7 +592,7 @@ namespace StoreExtensions
         /// This method does not verify if the location has enough items in stock to complete
         /// the transaction.
         /// </remarks>
-        /// <param name="ctx">Store context obect.</param>
+        /// <param name="ctx">Store context object.</param>
         /// <param name="lineItemId">The ID of the <c>OrderLineItem</c> to modify.</param>
         /// <param name="newQuantity">The quantity that the <c>OrderLineItem</c> should be set to.
         /// If the quantity is 0 or less, the <c>OrderLineItem</c> will be deleted.</param>
@@ -617,6 +617,35 @@ namespace StoreExtensions
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Calculates the stock of a location if an order was to be placed.
+        /// 
+        /// This is used to show the user updated location stocks based on what is in their current
+        /// order without actually committing any changes.
+        /// In a multiuser scenario, each user would see different stocks since they may
+        /// have different quantities of line items.
+        /// 
+        /// Ex: 10 in stock, 5 in order -> return 5
+        /// </summary>
+        /// <param name="ctx">Database context object.</param>
+        /// <param name="order">Order to query against.</param>
+        /// <param name="product">Product to check for.</param>
+        /// <returns></returns>
+        public static int ProjectStockBasedOnOrder(this StoreContext ctx, Order order, Product product)
+        {
+            int stock = ctx.GetProductsAvailable(order.Location.LocationId)
+                           .Where(inv => inv.Product.ProductId == product.ProductId)
+                           .Select(inv => inv.Quantity)
+                           .FirstOrDefault();
+
+            int quantityInOrder = order.OrderLineItems
+                .Where(ol => ol.Product.ProductId == product.ProductId)
+                .Select(ol => ol.Quantity)
+                .FirstOrDefault();
+
+            return stock - quantityInOrder;
         }
     }
 
