@@ -85,13 +85,32 @@ namespace StoreExtensions
 
         /// <summary>
         /// Searches for a <c>Customer</c> by name.
+        /// <remarks>
+        /// This method runs in multiple different modes depending on the input:
+        /// 
+        /// If a single term is provided, then it will be searched in both the first and last
+        /// names of customers.
+        /// 
+        /// If two terms are provided and delimited with a space, the search will ensure that
+        /// the customer's full name includes both search terms.
+        /// 
+        /// If two terms are provided and delimited with a comma, the first term will be
+        /// searched only in the last names of customers, and the second term will be
+        /// searched only in the first names of customers.
+        /// </remarks>
         /// </summary>
         /// <param name="ctx">Store context object.</param>
-        /// <param name="name">Search for customers that have this search string in either first or last name.</param>
-        /// <returns>An <c>IQueryable</c> representing customers that have either a first or last name containing the search string.</returns>
+        /// <param name="name">Search for customers that have this search
+        /// string in either their first or last name.</param>
+        /// <returns>An <c>IQueryable</c> representing customers that have
+        /// either a first or last name containing the search string.</returns>
         public static IQueryable<Customer> FindCustomerByName(this StoreContext ctx, string name)
         {
             name = name.ToLower();
+
+            // Search by either first name or last name when a space is present between two
+            // search terms. Both search terms must be present in either the first or last
+            // name (or both) of the customer in order to be considered a match.
             var nameComponents = name.Split(' ', 2);
             if (nameComponents.Length == 2)
             {
@@ -100,6 +119,8 @@ namespace StoreExtensions
                 return query1.Intersect(query2);
             }
 
+            // Search for names in a "lastName,firstName" fashion when a comma is present
+            // in the search query.
             var lastThenFirst = name.Split(',', 2);
             if (lastThenFirst.Length == 2)
             {
@@ -108,8 +129,10 @@ namespace StoreExtensions
                 return query1.Intersect(query2);
             }
 
+            // Standard single term search checks both first and last names.
             return from customer in ctx.Customers
-                   where customer.FirstName.ToLower().Contains(name) || customer.LastName.ToLower().Contains(name)
+                   where customer.FirstName.ToLower().Contains(name)
+                         || customer.LastName.ToLower().Contains(name)
                    select customer;
         }
 

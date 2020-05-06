@@ -7,38 +7,28 @@ namespace StoreDb
     /// </summary>
     public class StoreContext : DbContext
     {
-        /// <summary>
-        /// The Products table.
-        /// </summary>
+        /// <summary>The Products table.</summary>
         public DbSet<Product> Products { get; set; }
-        /// <summary>
-        /// The Customers table.
-        /// </summary>
+
+        /// <summary>The Customers table.</summary>
         public DbSet<Customer> Customers { get; set; }
-        /// <summary>
-        /// The Locations table.
-        /// </summary>
+
+        /// <summary>The Locations table.</summary>
         public DbSet<Location> Locations { get; set; }
-        /// <summary>
-        /// The LocationInventories table.
-        /// </summary>
+
+        /// <summary>The LocationInventories table.</summary>
         public DbSet<LocationInventory> LocationInventories { get; set; }
-        /// <summary>
-        /// The Orders table.
-        /// </summary>
+        /// <summary>The Orders table.</summary>
+
         public DbSet<Order> Orders { get; set; }
-        /// <summary>
-        /// The OrderLineItems table.
-        /// </summary>
+        /// <summary>The OrderLineItems table.</summary>
+
         public DbSet<OrderLineItem> OrderLineItems { get; set; }
-        /// <summary>
-        /// The Addresses table.
-        /// </summary>
+        /// <summary>The Addresses table.</summary>
+
         public DbSet<Address> Addresses { get; set; }
 
-        /// <summary>
-        /// Needed for EF.
-        /// </summary>
+        /// <summary>Needed for EF.</summary>
         public StoreContext() { }
 
         /// <summary>
