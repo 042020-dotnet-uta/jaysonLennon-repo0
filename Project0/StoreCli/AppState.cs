@@ -44,7 +44,8 @@ namespace ApplicationData
         {
             using (var db = new StoreContext(this.GlobalState.DbOptions))
             {
-                var currentOrder = db.FindCurrentOrder(this.CustomerId);
+                var location = db.GetLocationById(this.OperatingLocationId);
+                var currentOrder = db.FindCurrentOrder(location, this.CustomerId);
                 if (currentOrder != null)
                 {
                     this.CurrentOrderId = currentOrder.OrderId;

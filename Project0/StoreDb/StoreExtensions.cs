@@ -377,7 +377,9 @@ namespace StoreExtensions
         public static IQueryable<LocationInventory> GetProductsAvailable(this StoreContext ctx, Guid? locationId)
         {
             if (locationId == null) return null;
-            return from i in ctx.LocationInventories where i.Location.LocationId == locationId select i;
+            return ctx.LocationInventories
+                      .Where(li => li.Location.LocationId == locationId)
+                      .Where(li => li.Quantity > 0);
         }
 
         /// <summary>
@@ -434,16 +436,19 @@ namespace StoreExtensions
         /// </summary>
         /// <param name="ctx">Store context object.</param>
         /// <param name="customerId">The ID of the customer to query.</param>
+        /// <param name="location">Location where the order is present.</param>
         /// <returns>The current open <c>Order</c> for the customer, or <c>null</c>
-        /// if the customer has no open orders.</returns>
-        public static Order FindCurrentOrder(this StoreContext ctx, Guid? customerId)
+        /// if the customer has no open orders at the specified location.</returns>
+        public static Order FindCurrentOrder(this StoreContext ctx, Location location, Guid? customerId)
         {
+            if (location == null) return null;
             if (customerId == null) return null;
             var order =
                 from o in ctx.Orders
                 where o.Customer.CustomerId == customerId
                       && o.TimeCreated != null
                       && o.TimeSubmitted == null
+                      && o.Location.LocationId == location.LocationId
                 select o;
             if (order.Count() > 0) return order.First();
             return null;
@@ -644,7 +649,6 @@ namespace StoreExtensions
                 .Where(ol => ol.Product.ProductId == product.ProductId)
                 .Select(ol => ol.Quantity)
                 .FirstOrDefault();
-
             return stock - quantityInOrder;
         }
     }

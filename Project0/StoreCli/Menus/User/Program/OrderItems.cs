@@ -77,7 +77,8 @@ namespace StoreCliMenuUser
                 PrintMenu();
                 using (var db = new StoreContext(this.ApplicationState.DbOptions))
                 {
-                    var order = db.FindCurrentOrder(this.ApplicationState.UserData.CustomerId);
+                    var location = db.GetLocationById(this.ApplicationState.UserData.OperatingLocationId);
+                    var order = db.FindCurrentOrder(location, this.ApplicationState.UserData.CustomerId);
                     if (order == null)
                     {
                         CliPrinter.Error("There was an error retrieving your order. Please try again.");

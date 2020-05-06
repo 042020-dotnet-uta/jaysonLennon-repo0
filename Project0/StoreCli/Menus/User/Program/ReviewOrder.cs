@@ -43,6 +43,12 @@ namespace StoreCliMenuUser
             using (var db = new StoreContext(this.ApplicationState.DbOptions))
             {
                 var order = db.GetOrderById(this.ApplicationState.UserData.CurrentOrderId);
+                if (order.OrderLineItems.Count == 0)
+                {
+                    CliInput.PressAnyKey("There are no items in your order.");
+                    this.MenuExit();
+                    return;
+                }
                 Console.WriteLine("Qty\tEach\tTotal\tName");
                 Console.WriteLine("===\t=====\t=====\t====");
 

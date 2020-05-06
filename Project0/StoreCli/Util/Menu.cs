@@ -223,7 +223,6 @@ namespace Util
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"{e.Message} {e.StackTrace}");
                     CliInput.PressAnyKey("\nAn error occurred while processing your request. Returning.");
                     this.Pop();
                     continue;
