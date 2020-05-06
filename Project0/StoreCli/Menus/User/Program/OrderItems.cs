@@ -13,6 +13,9 @@ namespace StoreCliMenuUser
     /// </summary>
     class OrderItems : CliMenu, IMenu
     {
+        /// <summary>
+        /// IDs of <c>LocationInventory</c> objects that are being show to the user.
+        /// </summary>
         private List<Guid> InventoryIds = new List<Guid>();
 
         /// <summary>

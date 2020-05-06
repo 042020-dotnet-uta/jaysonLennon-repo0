@@ -625,7 +625,8 @@ namespace StoreExtensions
         }
 
         /// <summary>
-        /// Calculates the stock of a location if an order was to be placed.
+        /// Calculates how many items would remain in stock at a location given the order
+        /// and product.
         /// 
         /// This is used to show the user updated location stocks based on what is in their current
         /// order without actually committing any changes.
@@ -637,7 +638,7 @@ namespace StoreExtensions
         /// <param name="ctx">Database context object.</param>
         /// <param name="order">Order to query against.</param>
         /// <param name="product">Product to check for.</param>
-        /// <returns></returns>
+        /// <returns>The amount of items that would be remaining if the order was committed.</returns>
         public static int ProjectStockBasedOnOrder(this StoreContext ctx, Order order, Product product)
         {
             int stock = ctx.GetProductsAvailable(order.Location.LocationId)

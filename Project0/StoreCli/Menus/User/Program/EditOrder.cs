@@ -13,6 +13,9 @@ namespace StoreCliMenuUser
     /// </summary>
     class EditOrder : CliMenu, IMenu
     {
+        /// <summary>
+        /// IDs of <c>OrderLineItem</c> objects that are being show to the user.
+        /// </summary>
         private List<Guid> LineItemIds = new List<Guid>();
 
         /// <summary>
