@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Util;
+using StoreCliUtil;
 using StoreExtensions;
 using StoreDb;
 

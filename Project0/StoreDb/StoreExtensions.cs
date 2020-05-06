@@ -273,7 +273,7 @@ namespace StoreExtensions
         /// <returns>The ID of the customer if the login and password match; otherwise returns <c>null</c>.</returns>
         public static Nullable<Guid> VerifyCredentials(this DbContextOptions<StoreContext> options, string login, string password)
         {
-            var hashed = Util.Hash.Sha256(password);
+            var hashed = StoreDbUtil.Hash.Sha256(password);
             using (var db = new StoreContext(options))
             {
                 var customer =

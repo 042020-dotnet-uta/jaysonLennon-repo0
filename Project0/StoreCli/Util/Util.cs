@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 /// <summary>
 /// Utility classes for working with the CLI.
 /// </summary>
-namespace Util
+namespace StoreCliUtil
 {
     /// <summary>
     /// Extension methods for <c>CliMenu</c>.

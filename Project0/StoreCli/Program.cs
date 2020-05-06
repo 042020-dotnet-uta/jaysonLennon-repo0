@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StoreDb;
-using Util;
+using StoreCliUtil;
 
 namespace StoreCli
 {

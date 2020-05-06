@@ -58,7 +58,7 @@ namespace TestStoreDb
                 Assert.Equal(8, order.OrderLineItems[0].Quantity);
             }
 
-            Assert.Equal(PlaceOrderResult.Ok, options.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY));
+            Assert.Equal(PlaceOrderResult.Ok, options.PlaceOrder(orderId, StoreDbUtil.Config.MAX_ORDER_QUANTITY));
 
             using (var db = new StoreContext(options))
             {
@@ -121,7 +121,7 @@ namespace TestStoreDb
                 Assert.Equal(2, order.OrderLineItems.Count());
             }
 
-            Assert.Equal(PlaceOrderResult.Ok, options.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY));
+            Assert.Equal(PlaceOrderResult.Ok, options.PlaceOrder(orderId, StoreDbUtil.Config.MAX_ORDER_QUANTITY));
 
             using (var db = new StoreContext(options))
             {
@@ -185,7 +185,7 @@ namespace TestStoreDb
                 Assert.Equal(customer.CustomerId, order.Customer.CustomerId);
             }
 
-            Assert.Equal(PlaceOrderResult.OutOfStock, options.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY));
+            Assert.Equal(PlaceOrderResult.OutOfStock, options.PlaceOrder(orderId, StoreDbUtil.Config.MAX_ORDER_QUANTITY));
 
             using (var db = new StoreContext(options))
             {
@@ -244,7 +244,7 @@ namespace TestStoreDb
 
             }
 
-            Assert.Equal(PlaceOrderResult.OutOfStock, options.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY));
+            Assert.Equal(PlaceOrderResult.OutOfStock, options.PlaceOrder(orderId, StoreDbUtil.Config.MAX_ORDER_QUANTITY));
 
             using (var db = new StoreContext(options))
             {
@@ -257,7 +257,7 @@ namespace TestStoreDb
         public void RejectsInvalidOrderId()
         {
             var options = TestUtil.GetMemDbOptions("RejectsInvalidOrderId");
-            Assert.Equal(PlaceOrderResult.OrderNotFound, options.PlaceOrder(Guid.NewGuid(), Util.Config.MAX_ORDER_QUANTITY));
+            Assert.Equal(PlaceOrderResult.OrderNotFound, options.PlaceOrder(Guid.NewGuid(), StoreDbUtil.Config.MAX_ORDER_QUANTITY));
         }
 
         [Fact]
@@ -267,7 +267,7 @@ namespace TestStoreDb
 
             try
             {
-                Assert.Equal(PlaceOrderResult.OrderNotFound, options.PlaceOrder(null, Util.Config.MAX_ORDER_QUANTITY));
+                Assert.Equal(PlaceOrderResult.OrderNotFound, options.PlaceOrder(null, StoreDbUtil.Config.MAX_ORDER_QUANTITY));
                 Assert.True(false, "Should be a NullReferenceException to place an order without an id");
             } catch (NullReferenceException) { }
         }
@@ -293,7 +293,7 @@ namespace TestStoreDb
                 db.SaveChanges();
             }
 
-            Assert.Equal(PlaceOrderResult.NoLineItems, options.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY));
+            Assert.Equal(PlaceOrderResult.NoLineItems, options.PlaceOrder(orderId, StoreDbUtil.Config.MAX_ORDER_QUANTITY));
 
             using (var db = new StoreContext(options))
             {
@@ -326,7 +326,7 @@ namespace TestStoreDb
                 db.SaveChanges();
             }
 
-            Assert.Equal(PlaceOrderResult.Ok, options.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY));
+            Assert.Equal(PlaceOrderResult.Ok, options.PlaceOrder(orderId, StoreDbUtil.Config.MAX_ORDER_QUANTITY));
 
             using (var db = new StoreContext(options))
             {
@@ -361,7 +361,7 @@ namespace TestStoreDb
                 db.SaveChanges();
             }
 
-            Assert.Equal(PlaceOrderResult.HighQuantityRejection, options.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY));
+            Assert.Equal(PlaceOrderResult.HighQuantityRejection, options.PlaceOrder(orderId, StoreDbUtil.Config.MAX_ORDER_QUANTITY));
 
             using (var db = new StoreContext(options))
             {

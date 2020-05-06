@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Security.Cryptography;
 
-namespace Util
+namespace StoreDbUtil
 {
     /// <summary>
     /// Contains global configuration.

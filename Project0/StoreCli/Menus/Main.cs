@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using Util;
+using StoreCliUtil;
 
 namespace StoreCliMenu
 {

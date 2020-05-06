@@ -47,7 +47,7 @@ namespace StoreDb
         public string Password
         {
             get { return _Password; }
-            set { _Password = Util.Hash.Sha256(value); }
+            set { _Password = StoreDbUtil.Hash.Sha256(value); }
         }
 
         /// <summary>

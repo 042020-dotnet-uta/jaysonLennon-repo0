@@ -1,5 +1,5 @@
 using System;
-using Util;
+using StoreCliUtil;
 using StoreExtensions;
 using Microsoft.EntityFrameworkCore;
 using StoreDb;

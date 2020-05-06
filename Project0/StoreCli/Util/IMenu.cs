@@ -1,4 +1,4 @@
-namespace Util
+namespace StoreCliUtil
 {
     /// <summary>
     /// Must be implemented by all menus in order to be tracked by the menu controller.

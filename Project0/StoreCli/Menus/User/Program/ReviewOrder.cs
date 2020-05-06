@@ -1,7 +1,8 @@
 using System;
-using Util;
+using StoreCliUtil;
 using StoreExtensions;
 using StoreDb;
+
 
 namespace StoreCliMenuUser
 {
@@ -53,15 +54,17 @@ namespace StoreCliMenuUser
                 Console.WriteLine("===\t=====\t=====\t====");
 
 
+                var totalItems = 0;
                 foreach (var o in order.OrderLineItems)
                 {
-                    var lineItemTotal = o.Product.Price * o.Quantity;
-                    orderTotalCost += lineItemTotal;
-                    Console.WriteLine($"{o.Quantity}\t${o.Product.Price}\t${lineItemTotal}\t{o.Product.Name}");
+                    var lineItemTotalCost = o.Product.Price * o.Quantity;
+                    orderTotalCost += lineItemTotalCost;
+                    totalItems += o.Quantity;
+                    Console.WriteLine($"{o.Quantity}\t${o.Product.Price}\t${lineItemTotalCost}\t{o.Product.Name}");
                 }
+                Console.Write("---\t-----\t-----\t--------------------------\n");
+                Console.Write($"{totalItems}\t\t${orderTotalCost}\n\n");
             }
-            Console.Write("---\t-----\t-----\t--------------------------\n");
-            Console.Write($"\t\t${orderTotalCost}\n\n");
             Console.WriteLine("1.  Place Order");
             Console.WriteLine("2.  Exit");
 
@@ -75,7 +78,7 @@ namespace StoreCliMenuUser
                     var orderId = this.ApplicationState.UserData.CurrentOrderId;
                     try
                     {
-                        var orderResult = this.ApplicationState.DbOptions.PlaceOrder(orderId, Util.Config.MAX_ORDER_QUANTITY);
+                        var orderResult = this.ApplicationState.DbOptions.PlaceOrder(orderId, StoreDbUtil.Config.MAX_ORDER_QUANTITY);
                         switch (orderResult)
                         {
                             case PlaceOrderResult.Ok:
@@ -91,7 +94,7 @@ namespace StoreCliMenuUser
                                 this.AbortThenExit("Unable to place order: Unable to locate the order.");
                                 return;
                             case PlaceOrderResult.HighQuantityRejection:
-                                this.AbortThenExit("Unable to place order: Item quantities too high.");
+                                this.AbortThenExit($"Unable to place order: Item quantities too high ({StoreDbUtil.Config.MAX_ORDER_QUANTITY} max)");
                                 return;
                         }
                     } catch (NullReferenceException) {

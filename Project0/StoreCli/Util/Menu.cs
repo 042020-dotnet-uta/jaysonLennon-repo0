@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Util
+namespace StoreCliUtil
 {
     /// <summary>
     /// Result from calling <c>TryNavigate()</c>.
