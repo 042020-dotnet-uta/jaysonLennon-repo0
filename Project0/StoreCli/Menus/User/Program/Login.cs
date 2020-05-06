@@ -34,7 +34,7 @@ namespace StoreCliMenuUser
 
             do
             {
-                var login = CliInput.GetLine(cliOptions, CliInput.EmailValidator, "Login:");
+                var login = CliInput.GetLine(cliOptions, CliInput.EmailValidator, "Email:");
                 if (login == "" || login == null) {
                     this.MenuExit();
                     break;
