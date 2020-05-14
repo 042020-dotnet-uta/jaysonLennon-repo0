@@ -10,5 +10,8 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+  - script: cd Project0/TestStoreDb && dotnet test
+    displayName: 'test'
+
   - script: cd Project0/StoreCli && dotnet build
     displayName: 'build'
