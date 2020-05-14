@@ -1,0 +1,9 @@
+@using MvcMovie.Controllers.ViewDataItems.TestingController;
+
+@if (ViewData[VI.Name] != null)
+{
+    <h2>Hi @ViewData[VI.Name], from the view data!</h2>
+} else 
+{
+    <h2>You didn't give me a name.</h2>
+}
