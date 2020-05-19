@@ -9,9 +9,15 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-  - script: cd Project0/TestStoreDb && dotnet test
-    displayName: 'test'
-
-  - script: cd Project0/StoreCli && dotnet build
-    displayName: 'build'
+stages:
+  - stage:
+    jobs:
+      - job: 'test'
+        steps:
+          - script: cd Project0/TestStoreDb && dotnet test
+            displayName: 'test'
+      - job: 'publish'
+        dependsOn: 'test'
+        steps:
+          - script: cd Project0/TestStoreDb && dotnet publish
+            displayName: 'publish'
